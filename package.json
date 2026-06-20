@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "publisher": "aadorian",
   "license": "SEE LICENSE IN LICENSE",
-  "icon": "media/opencode-icon.svg",
+  "icon": "media/opencode-icon.png",
   "pricing": "Free",
   "keywords": [
     "opencode",
@@ -58,14 +58,14 @@
         {
           "id": "opencode-walkthrough",
           "title": "OpenCode",
-          "icon": "media/opencode-icon.svg"
+          "icon": "media/opencode-icon.png"
         }
       ],
       "panel": [
         {
           "id": "opencode-mcp",
           "title": "MCP Servers",
-          "icon": "media/opencode-icon.svg"
+          "icon": "media/opencode-icon.png"
         }
       ]
     },
@@ -220,7 +220,7 @@
         "id": "opencode.gettingStarted",
         "title": "Get Started with OpenCode",
         "description": "Install the CLI, run prompts, and start interactive sessions for software engineering tasks",
-        "icon": "media/opencode-icon.svg",
+  "icon": "media/opencode-icon.png",
         "steps": [
           {
             "id": "opencode.install",
@@ -284,6 +284,7 @@
   },
   "devDependencies": {
     "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^3.0.0"
+    "@vscode/test-electron": "^3.0.0",
+    "sharp": "^0.35.2"
   }
 }

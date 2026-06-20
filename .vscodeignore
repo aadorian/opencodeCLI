@@ -6,6 +6,7 @@ node_modules/
 .vscode-test/
 *.vsix
 *.log
-media/
+media/.DS_Store
+media/opencode-icon.svg
 test/
 .vscode-test.mjs
