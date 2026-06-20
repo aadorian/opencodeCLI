@@ -3,7 +3,31 @@
   "displayName": "OpenCode Walkthrough",
   "description": "A walkthrough for how to execute OpenCode commands in your terminal",
   "version": "0.0.1",
-  "publisher": "your-publisher",
+  "publisher": "aadorian",
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "media/opencode-icon.svg",
+  "pricing": "Free",
+  "keywords": [
+    "opencode",
+    "walkthrough",
+    "getting-started",
+    "ai",
+    "cli"
+  ],
+  "galleryBanner": {
+    "color": "#0a0a0a",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aadorian/opencodeCLI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aadorian/opencodeCLI/issues"
+  },
+  "homepage": "https://opencode.ai",
+  "markdown": "github",
+  "qna": "marketplace",
   "engines": {
     "vscode": "^1.74.0"
   },

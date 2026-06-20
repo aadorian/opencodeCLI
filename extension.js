@@ -8,7 +8,7 @@ function sendToTerminal(text) {
 
 function activate(context) {
   const showWalkthrough = vscode.commands.registerCommand('opencode-walkthrough.showWalkthrough', () => {
-    vscode.commands.executeCommand('workbench.action.openWalkthrough', 'your-publisher.opencode-walkthrough#opencode.gettingStarted');
+    vscode.commands.executeCommand('workbench.action.openWalkthrough', 'aadorian.opencode-walkthrough#opencode.gettingStarted');
   });
 
   const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', () => {
