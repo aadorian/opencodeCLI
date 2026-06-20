@@ -1,29 +1,23 @@
-## Run OpenCode Interactively
+## Interactive Mode
 
-Start an interactive session to have a back-and-forth conversation with OpenCode:
+Start an interactive session for back-and-forth conversation:
 
 ```bash
 opencode
 ```
 
-In interactive mode you can:
+In interactive mode you can ask follow-ups, refine requests, and iterate:
 
-- Ask follow-up questions
-- Refine previous requests
-- Get iterative help on complex tasks
-
-### Interactive Commands
-
-While in interactive mode, use these commands:
-
-- `/help` — Get help with using OpenCode
-- `/clear` — Clear the conversation history
-- `exit` — Exit the interactive session
-
-### Preferred Mode
-
-You can also set a default mode for the session:
-
-```bash
-opencode --interactive
 ```
+opencode> create an Express.js server
+opencode> add a /health route to it
+opencode> now add error handling
+```
+
+### Commands
+
+- `/help` — Get help
+- `/clear` — Clear history
+- `exit` — Exit
+
+[▶ Start Interactive Session](command:opencode-walkthrough.runInteractive)

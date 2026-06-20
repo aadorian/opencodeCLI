@@ -2,19 +2,15 @@
 
 ### Use the Terminal in VS Code
 
-OpenCode runs in your terminal. Use VS Code's integrated terminal (`Ctrl + ``) to run it alongside your code.
+OpenCode runs in your terminal. Use `Ctrl + \` to open VS Code's integrated terminal.
 
 ### Be Specific
 
-Provide clear context in your prompts. Include details about:
-
-- Language or framework
-- Expected behavior
-- Constraints or requirements
+Include language, framework, and expected behavior in your prompts.
 
 ### Iterate
 
-Don't worry about getting everything right in one prompt. Use follow-up prompts to refine results:
+Refine results with follow-ups:
 
 ```bash
 opencode "now add error handling to that function"
@@ -22,4 +18,6 @@ opencode "now add error handling to that function"
 
 ### Check the Docs
 
-For full documentation, visit: [opencode.ai](https://opencode.ai)
+Full documentation at [opencode.ai](https://opencode.ai).
+
+[▶ Open Terminal](command:workbench.action.terminal.toggleTerminal)

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120" viewBox="0 0 200 120">
+  <rect x="10" y="20" width="180" height="80" rx="8" fill="var(--vscode-editor-background)" stroke="var(--vscode-widget-border)" stroke-width="1.5"/>
+  <rect x="10" y="20" width="180" height="24" rx="8" fill="var(--vscode-titleBar-activeBackground)"/>
+  <circle cx="24" cy="32" r="4" fill="var(--vscode-errorForeground)"/>
+  <circle cx="36" cy="32" r="4" fill="var(--vscode-editorWarning-foreground)"/>
+  <circle cx="48" cy="32" r="4" fill="var(--vscode-debugIcon-startForeground)"/>
+  <text x="70" y="37" font-size="10" fill="var(--vscode-titleBar-activeForeground)" font-family="monospace" opacity="0.7">bash</text>
+  <text x="24" y="65" font-size="11" fill="var(--vscode-textLink-foreground)" font-family="monospace">$ npm install -g opencode</text>
+  <text x="24" y="82" font-size="11" fill="var(--vscode-editor-foreground)" font-family="monospace">+ opencode@latest</text>
+  <text x="24" y="95" font-size="11" fill="var(--vscode-debugIcon-startForeground)" font-family="monospace">added 1 package</text>
+</svg>

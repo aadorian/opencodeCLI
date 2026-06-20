@@ -11,7 +11,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:opencode-walkthrough.showWalkthrough"
+    "onCommand:opencode-walkthrough.showWalkthrough",
+    "onWalkthrough:opencode.gettingStarted"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -19,6 +20,18 @@
       {
         "command": "opencode-walkthrough.showWalkthrough",
         "title": "OpenCode: Show Walkthrough"
+      },
+      {
+        "command": "opencode-walkthrough.install",
+        "title": "OpenCode: Install CLI"
+      },
+      {
+        "command": "opencode-walkthrough.runInline",
+        "title": "OpenCode: Run Inline Prompt"
+      },
+      {
+        "command": "opencode-walkthrough.runInteractive",
+        "title": "OpenCode: Start Interactive Session"
       }
     ],
     "viewsContainers": {
@@ -42,7 +55,7 @@
     "viewsWelcome": [
       {
         "view": "opencode-welcome",
-        "contents": "## OpenCode Walkthrough\nStart the guided tour to learn how to execute OpenCode commands.\n\n[▶ Open Walkthrough](command:opencode-walkthrough.showWalkthrough)\n\n---\n\n[📖 View Documentation](https://opencode.ai)\n[🐛 Report Issue](https://github.com/aadorian/opencodeCLI/issues)"
+        "contents": "Start the guided tour to learn how to execute OpenCode commands.\n\n[▶ Start Walkthrough](command:opencode-walkthrough.showWalkthrough)\n\n---\n\n[📖 Documentation](https://opencode.ai)\n[🐛 Report Issue](https://github.com/aadorian/opencodeCLI/issues)"
       }
     ],
     "walkthroughs": [
@@ -56,30 +69,34 @@
             "title": "Install OpenCode",
             "description": "Install OpenCode globally via npm",
             "media": {
+              "image": "media/walkthrough/install.svg",
               "markdown": "walkthroughs/01-install.md"
             }
           },
           {
             "id": "opencode.runInline",
-            "title": "Run OpenCode with a Prompt",
+            "title": "Run a Prompt",
             "description": "Execute OpenCode inline with a one-off prompt",
             "media": {
+              "image": "media/walkthrough/inline.svg",
               "markdown": "walkthroughs/02-run-inline.md"
             }
           },
           {
             "id": "opencode.helloWorld",
-            "title": "Hello World with OpenCode",
-            "description": "Create your first file using OpenCode",
+            "title": "Hello World",
+            "description": "Create your first files using OpenCode",
             "media": {
+              "image": "media/walkthrough/hello-world.svg",
               "markdown": "walkthroughs/03-hello-world.md"
             }
           },
           {
             "id": "opencode.runInteractive",
-            "title": "Run OpenCode Interactively",
+            "title": "Interactive Mode",
             "description": "Start an interactive session with OpenCode",
             "media": {
+              "image": "media/walkthrough/interactive.svg",
               "markdown": "walkthroughs/04-run-interactive.md"
             }
           },
@@ -88,6 +105,7 @@
             "title": "Tips & Best Practices",
             "description": "Get the most out of OpenCode",
             "media": {
+              "image": "media/walkthrough/tips.svg",
               "markdown": "walkthroughs/05-tips.md"
             }
           }
