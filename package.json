@@ -41,7 +41,8 @@
     "onCommand:opencode-walkthrough.runInteractive",
     "onWalkthrough:opencode.gettingStarted",
     "onView:opencode-walkthrough.overview",
-    "onCommand:opencode-walkthrough.showActions"
+    "onCommand:opencode-walkthrough.showActions",
+    "onCommand:opencode-walkthrough.createAgent"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -85,6 +86,11 @@
         "icon": "$(terminal)"
       },
       {
+        "command": "opencode-walkthrough.createAgent",
+        "title": "OpenCode: Create Agent",
+        "icon": "$(robot)"
+      },
+      {
         "command": "opencode-walkthrough.showActions",
         "title": "OpenCode: Show Actions"
       }
@@ -92,7 +98,7 @@
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n\n[Read Documentation](https://opencode.ai)"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Read Documentation](https://opencode.ai)"
       }
     ],
     "menus": {
@@ -114,6 +120,11 @@
         },
         {
           "command": "opencode-walkthrough.runInteractive",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.createAgent",
           "when": "view == opencode-walkthrough.overview",
           "group": "navigation"
         }
@@ -168,11 +179,22 @@
             ]
           },
           {
+            "id": "opencode.createAgent",
+            "title": "Create an Agent",
+            "description": "Create a custom agent with specific instructions and permissions.\n[Create Agent](command:opencode-walkthrough.createAgent)",
+            "media": {
+              "markdown": "walkthroughs/04-create-agent.md"
+            },
+            "completionEvents": [
+              "onCommand:opencode-walkthrough.createAgent"
+            ]
+          },
+          {
             "id": "opencode.tips",
             "title": "Tips & Best Practices",
             "description": "Use VS Code's integrated terminal, write specific prompts, and iterate with follow-ups.\n[Open Terminal](command:workbench.action.terminal.toggleTerminal)\n[Read Documentation](https://opencode.ai)",
             "media": {
-              "markdown": "walkthroughs/04-tips.md"
+              "markdown": "walkthroughs/05-tips.md"
             },
             "completionEvents": [
               "onView:terminal",

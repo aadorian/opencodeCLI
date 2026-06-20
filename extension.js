@@ -23,6 +23,10 @@ function activate(context) {
     sendToTerminal('opencode');
   });
 
+  const createAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.createAgent', () => {
+    sendToTerminal('opencode agent create');
+  });
+
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.text = '$(terminal) OpenCode';
   statusBarItem.tooltip = 'OpenCode — Click to run an action';
@@ -35,6 +39,7 @@ function activate(context) {
       { label: '$(cloud-download) Install CLI', command: 'opencode-walkthrough.install' },
       { label: '$(play) Run Inline Prompt', command: 'opencode-walkthrough.runInline' },
       { label: '$(terminal) Start Interactive', command: 'opencode-walkthrough.runInteractive' },
+      { label: '$(robot) Create Agent', command: 'opencode-walkthrough.createAgent' },
     ]).then(selected => {
       if (selected) {
         vscode.commands.executeCommand(selected.command);
@@ -42,7 +47,7 @@ function activate(context) {
     });
   });
 
-  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd, statusBarItem, showActionsCmd);
+  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd, createAgentCmd, statusBarItem, showActionsCmd);
 }
 
 function deactivate() {}
