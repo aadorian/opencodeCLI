@@ -16,7 +16,8 @@
     "onCommand:opencode-walkthrough.runInline",
     "onCommand:opencode-walkthrough.runInteractive",
     "onWalkthrough:opencode.gettingStarted",
-    "onView:opencode-walkthrough.overview"
+    "onView:opencode-walkthrough.overview",
+    "onCommand:opencode-walkthrough.showActions"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -54,6 +55,10 @@
       {
         "command": "opencode-walkthrough.runInteractive",
         "title": "OpenCode: Start Interactive Session"
+      },
+      {
+        "command": "opencode-walkthrough.showActions",
+        "title": "OpenCode: Show Actions"
       }
     ],
     "startEntries": [

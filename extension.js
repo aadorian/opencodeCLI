@@ -52,7 +52,26 @@ function activate(context) {
     sendToTerminal('opencode');
   });
 
-  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd);
+  const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+  statusBarItem.text = '$(terminal) OpenCode';
+  statusBarItem.tooltip = 'OpenCode — Click to run an action';
+  statusBarItem.command = 'opencode-walkthrough.showActions';
+  statusBarItem.show();
+
+  const showActionsCmd = vscode.commands.registerCommand('opencode-walkthrough.showActions', () => {
+    vscode.window.showQuickPick([
+      { label: '$(book) Show Walkthrough', command: 'opencode-walkthrough.showWalkthrough' },
+      { label: '$(cloud-download) Install CLI', command: 'opencode-walkthrough.install' },
+      { label: '$(play) Run Inline Prompt', command: 'opencode-walkthrough.runInline' },
+      { label: '$(terminal) Start Interactive', command: 'opencode-walkthrough.runInteractive' },
+    ]).then(selected => {
+      if (selected) {
+        vscode.commands.executeCommand(selected.command);
+      }
+    });
+  });
+
+  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd, statusBarItem, showActionsCmd);
 }
 
 function deactivate() {}
