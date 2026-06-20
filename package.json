@@ -42,25 +42,59 @@
     "commands": [
       {
         "command": "opencode-walkthrough.showWalkthrough",
-        "title": "OpenCode: Show Walkthrough"
+        "title": "OpenCode: Show Walkthrough",
+        "icon": "$(book)"
       },
       {
         "command": "opencode-walkthrough.install",
-        "title": "OpenCode: Install CLI"
+        "title": "OpenCode: Install CLI",
+        "icon": "$(cloud-download)"
       },
       {
         "command": "opencode-walkthrough.runInline",
-        "title": "OpenCode: Run Inline Prompt"
+        "title": "OpenCode: Run Inline Prompt",
+        "icon": "$(play)"
       },
       {
         "command": "opencode-walkthrough.runInteractive",
-        "title": "OpenCode: Start Interactive Session"
+        "title": "OpenCode: Start Interactive Session",
+        "icon": "$(terminal)"
       },
       {
         "command": "opencode-walkthrough.showActions",
         "title": "OpenCode: Show Actions"
       }
     ],
+    "viewsWelcome": [
+      {
+        "view": "opencode-walkthrough.overview",
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n\n[Read Documentation](https://opencode.ai)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "opencode-walkthrough.showWalkthrough",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.install",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.runInline",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.runInteractive",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        }
+      ]
+    },
     "startEntries": [
       {
         "title": "Get Started with OpenCode",
