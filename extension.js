@@ -31,6 +31,14 @@ function activate(context) {
     sendToTerminal('opencode agent list');
   });
 
+  const addMcpCmd = vscode.commands.registerCommand('opencode-walkthrough.addMcp', () => {
+    sendToTerminal('opencode mcp add');
+  });
+
+  const listMcpCmd = vscode.commands.registerCommand('opencode-walkthrough.listMcp', () => {
+    sendToTerminal('opencode mcp list');
+  });
+
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.text = '$(terminal) OpenCode';
   statusBarItem.tooltip = 'OpenCode — Click to run an action';
@@ -51,6 +59,8 @@ function activate(context) {
       { label: '$(terminal) Start Interactive', command: 'opencode-walkthrough.runInteractive' },
       { label: '$(robot) Create Agent', command: 'opencode-walkthrough.createAgent' },
       { label: '$(robot) List Agents', command: 'opencode-walkthrough.listAgents' },
+      { label: '$(plug) Add MCP Server', command: 'opencode-walkthrough.addMcp' },
+      { label: '$(list-tree) List MCP Servers', command: 'opencode-walkthrough.listMcp' },
     ]).then(selected => {
       if (selected) {
         vscode.commands.executeCommand(selected.command);
@@ -58,7 +68,7 @@ function activate(context) {
     });
   });
 
-  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd, createAgentCmd, listAgentsCmd, statusBarItem, agentsItem, showActionsCmd);
+  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd, createAgentCmd, listAgentsCmd, addMcpCmd, listMcpCmd, statusBarItem, agentsItem, showActionsCmd);
 }
 
 function deactivate() {}

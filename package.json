@@ -43,7 +43,10 @@
     "onView:opencode-walkthrough.overview",
     "onCommand:opencode-walkthrough.showActions",
     "onCommand:opencode-walkthrough.createAgent",
-    "onCommand:opencode-walkthrough.listAgents"
+    "onCommand:opencode-walkthrough.listAgents",
+    "onView:opencode-walkthrough.mcp",
+    "onCommand:opencode-walkthrough.addMcp",
+    "onCommand:opencode-walkthrough.listMcp"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -54,6 +57,13 @@
           "title": "OpenCode",
           "icon": "media/opencode-icon.svg"
         }
+      ],
+      "panel": [
+        {
+          "id": "opencode-mcp",
+          "title": "MCP Servers",
+          "icon": "media/opencode-icon.svg"
+        }
       ]
     },
     "views": {
@@ -62,6 +72,13 @@
           "type": "tree",
           "id": "opencode-walkthrough.overview",
           "name": "OpenCode"
+        }
+      ],
+      "opencode-mcp": [
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.mcp",
+          "name": "MCP Servers"
         }
       ]
     },
@@ -97,6 +114,16 @@
         "icon": "$(list-tree)"
       },
       {
+        "command": "opencode-walkthrough.addMcp",
+        "title": "OpenCode: Add MCP Server",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "opencode-walkthrough.listMcp",
+        "title": "OpenCode: List MCP Servers",
+        "icon": "$(list-tree)"
+      },
+      {
         "command": "opencode-walkthrough.showActions",
         "title": "OpenCode: Show Actions"
       }
@@ -105,6 +132,10 @@
       {
         "view": "opencode-walkthrough.overview",
         "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Read Documentation](https://opencode.ai)"
+      },
+      {
+        "view": "opencode-walkthrough.mcp",
+        "contents": "Manage Model Context Protocol servers for OpenCode.\n\n[Add MCP Server](command:opencode-walkthrough.addMcp)\n[List MCP Servers](command:opencode-walkthrough.listMcp)\n\n[Read MCP Docs](https://opencode.ai/docs/mcp-servers/)"
       }
     ],
     "menus": {
@@ -132,6 +163,16 @@
         {
           "command": "opencode-walkthrough.createAgent",
           "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.addMcp",
+          "when": "view == opencode-walkthrough.mcp",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.listMcp",
+          "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
         }
       ]
