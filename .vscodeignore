@@ -7,3 +7,5 @@ node_modules/
 *.vsix
 *.log
 media/
+test/
+.vscode-test.mjs

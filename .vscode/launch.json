@@ -11,6 +11,18 @@
       "outFiles": [
         "${workspaceFolder}/**/*.js"
       ]
+    },
+    {
+      "name": "Extension Tests",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/test/extension.test.js"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/test/**/*.js"
+      ]
     }
   ]
 }

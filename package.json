@@ -48,6 +48,9 @@
     "onCommand:opencode-walkthrough.addMcp",
     "onCommand:opencode-walkthrough.listMcp"
   ],
+  "scripts": {
+    "test": "vscode-test"
+  },
   "main": "./extension.js",
   "contributes": {
     "viewsContainers": {
@@ -278,5 +281,9 @@
         ]
       }
     ]
+  },
+  "devDependencies": {
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^3.0.0"
   }
 }
