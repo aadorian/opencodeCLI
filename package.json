@@ -15,10 +15,29 @@
     "onCommand:opencode-walkthrough.install",
     "onCommand:opencode-walkthrough.runInline",
     "onCommand:opencode-walkthrough.runInteractive",
-    "onWalkthrough:opencode.gettingStarted"
+    "onWalkthrough:opencode.gettingStarted",
+    "onView:opencode-walkthrough.overview"
   ],
   "main": "./extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "opencode-walkthrough",
+          "title": "OpenCode",
+          "icon": "media/opencode-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "opencode-walkthrough": [
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.overview",
+          "name": "OpenCode"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "opencode-walkthrough.showWalkthrough",
