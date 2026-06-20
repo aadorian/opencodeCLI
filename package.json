@@ -21,6 +21,30 @@
         "title": "OpenCode: Show Walkthrough"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "opencode-explorer",
+          "title": "OpenCode",
+          "icon": "media/opencode-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "opencode-explorer": [
+        {
+          "type": "tree",
+          "id": "opencode-welcome",
+          "name": "OpenCode"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "opencode-welcome",
+        "contents": "## OpenCode Walkthrough\nStart the guided tour to learn how to execute OpenCode commands.\n\n[▶ Open Walkthrough](command:opencode-walkthrough.showWalkthrough)\n\n---\n\n[📖 View Documentation](https://opencode.ai)\n[🐛 Report Issue](https://github.com/aadorian/opencodeCLI/issues)"
+      }
+    ],
     "walkthroughs": [
       {
         "id": "opencode.gettingStarted",
