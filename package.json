@@ -68,11 +68,19 @@
             }
           },
           {
+            "id": "opencode.helloWorld",
+            "title": "Hello World with OpenCode",
+            "description": "Create your first file using OpenCode",
+            "media": {
+              "markdown": "walkthroughs/03-hello-world.md"
+            }
+          },
+          {
             "id": "opencode.runInteractive",
             "title": "Run OpenCode Interactively",
             "description": "Start an interactive session with OpenCode",
             "media": {
-              "markdown": "walkthroughs/03-run-interactive.md"
+              "markdown": "walkthroughs/04-run-interactive.md"
             }
           },
           {
@@ -80,7 +88,7 @@
             "title": "Tips & Best Practices",
             "description": "Get the most out of OpenCode",
             "media": {
-              "markdown": "walkthroughs/04-tips.md"
+              "markdown": "walkthroughs/05-tips.md"
             }
           }
         ]
