@@ -175,8 +175,35 @@
           "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
         }
+      ],
+      "explorer/context": [
+        {
+          "submenu": "opencode-walkthrough.submenu",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder"
+        }
+      ],
+      "opencode-walkthrough.submenu": [
+        {
+          "command": "opencode-walkthrough.runInline"
+        },
+        {
+          "command": "opencode-walkthrough.runInteractive"
+        },
+        {
+          "command": "opencode-walkthrough.createAgent"
+        },
+        {
+          "command": "opencode-walkthrough.addMcp"
+        }
       ]
     },
+    "submenus": [
+      {
+        "id": "opencode-walkthrough.submenu",
+        "label": "OpenCode"
+      }
+    ],
     "startEntries": [
       {
         "title": "Get Started with OpenCode",
