@@ -42,7 +42,8 @@
     "onWalkthrough:opencode.gettingStarted",
     "onView:opencode-walkthrough.overview",
     "onCommand:opencode-walkthrough.showActions",
-    "onCommand:opencode-walkthrough.createAgent"
+    "onCommand:opencode-walkthrough.createAgent",
+    "onCommand:opencode-walkthrough.listAgents"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -89,6 +90,11 @@
         "command": "opencode-walkthrough.createAgent",
         "title": "OpenCode: Create Agent",
         "icon": "$(robot)"
+      },
+      {
+        "command": "opencode-walkthrough.listAgents",
+        "title": "OpenCode: List Agents",
+        "icon": "$(list-tree)"
       },
       {
         "command": "opencode-walkthrough.showActions",

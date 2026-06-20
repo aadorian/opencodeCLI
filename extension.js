@@ -27,11 +27,21 @@ function activate(context) {
     sendToTerminal('opencode agent create');
   });
 
+  const listAgentsCmd = vscode.commands.registerCommand('opencode-walkthrough.listAgents', () => {
+    sendToTerminal('opencode agent list');
+  });
+
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.text = '$(terminal) OpenCode';
   statusBarItem.tooltip = 'OpenCode — Click to run an action';
   statusBarItem.command = 'opencode-walkthrough.showActions';
   statusBarItem.show();
+
+  const agentsItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 99);
+  agentsItem.text = '$(robot) Agents';
+  agentsItem.tooltip = 'OpenCode Agents — Click to list agents';
+  agentsItem.command = 'opencode-walkthrough.listAgents';
+  agentsItem.show();
 
   const showActionsCmd = vscode.commands.registerCommand('opencode-walkthrough.showActions', () => {
     vscode.window.showQuickPick([
@@ -40,6 +50,7 @@ function activate(context) {
       { label: '$(play) Run Inline Prompt', command: 'opencode-walkthrough.runInline' },
       { label: '$(terminal) Start Interactive', command: 'opencode-walkthrough.runInteractive' },
       { label: '$(robot) Create Agent', command: 'opencode-walkthrough.createAgent' },
+      { label: '$(robot) List Agents', command: 'opencode-walkthrough.listAgents' },
     ]).then(selected => {
       if (selected) {
         vscode.commands.executeCommand(selected.command);
@@ -47,7 +58,7 @@ function activate(context) {
     });
   });
 
-  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd, createAgentCmd, statusBarItem, showActionsCmd);
+  context.subscriptions.push(showWalkthrough, installCmd, runCmd, interactiveCmd, createAgentCmd, listAgentsCmd, statusBarItem, agentsItem, showActionsCmd);
 }
 
 function deactivate() {}
