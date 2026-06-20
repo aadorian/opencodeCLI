@@ -8,10 +8,13 @@
     "vscode": "^1.74.0"
   },
   "categories": [
-    "Other"
+    "Education"
   ],
   "activationEvents": [
     "onCommand:opencode-walkthrough.showWalkthrough",
+    "onCommand:opencode-walkthrough.install",
+    "onCommand:opencode-walkthrough.runInline",
+    "onCommand:opencode-walkthrough.runInteractive",
     "onWalkthrough:opencode.gettingStarted"
   ],
   "main": "./extension.js",
@@ -34,80 +37,65 @@
         "title": "OpenCode: Start Interactive Session"
       }
     ],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "opencode-explorer",
-          "title": "OpenCode",
-          "icon": "media/opencode-icon.svg"
-        }
-      ]
-    },
-    "views": {
-      "opencode-explorer": [
-        {
-          "type": "tree",
-          "id": "opencode-welcome",
-          "name": "OpenCode"
-        }
-      ]
-    },
-    "viewsWelcome": [
+    "startEntries": [
       {
-        "view": "opencode-welcome",
-        "contents": "Start the guided tour to learn how to execute OpenCode commands.\n\n[▶ Start Walkthrough](command:opencode-walkthrough.showWalkthrough)\n\n---\n\n[📖 Documentation](https://opencode.ai)\n[🐛 Report Issue](https://github.com/aadorian/opencodeCLI/issues)"
+        "title": "Get Started with OpenCode",
+        "description": "Learn how to run OpenCode commands in your terminal",
+        "command": "opencode-walkthrough.showWalkthrough",
+        "category": "folder"
       }
     ],
     "walkthroughs": [
       {
         "id": "opencode.gettingStarted",
         "title": "Get Started with OpenCode",
-        "description": "Learn how to execute OpenCode for software engineering tasks",
+        "description": "Install the CLI, run prompts, and start interactive sessions for software engineering tasks",
+        "icon": "media/opencode-icon.svg",
         "steps": [
           {
             "id": "opencode.install",
             "title": "Install OpenCode",
-            "description": "Install OpenCode globally via npm",
+            "description": "OpenCode is a CLI for software engineering tasks. Install it globally with npm, then confirm with `opencode --version`.\n[Install OpenCode](command:opencode-walkthrough.install)",
             "media": {
-              "image": "media/walkthrough/install.svg",
               "markdown": "walkthroughs/01-install.md"
-            }
+            },
+            "completionEvents": [
+              "onCommand:opencode-walkthrough.install"
+            ]
           },
           {
             "id": "opencode.runInline",
             "title": "Run a Prompt",
-            "description": "Execute OpenCode inline with a one-off prompt",
+            "description": "Pass a prompt directly to OpenCode without interactive mode — generate code, save output to a file, or run one-off tasks.\n[Run Inline Prompt](command:opencode-walkthrough.runInline)",
             "media": {
-              "image": "media/walkthrough/inline.svg",
               "markdown": "walkthroughs/02-run-inline.md"
-            }
-          },
-          {
-            "id": "opencode.helloWorld",
-            "title": "Hello World",
-            "description": "Create your first files using OpenCode",
-            "media": {
-              "image": "media/walkthrough/hello-world.svg",
-              "markdown": "walkthroughs/03-hello-world.md"
-            }
+            },
+            "completionEvents": [
+              "onCommand:opencode-walkthrough.runInline"
+            ]
           },
           {
             "id": "opencode.runInteractive",
-            "title": "Interactive Mode",
-            "description": "Start an interactive session with OpenCode",
+            "title": "Start Interactive Mode",
+            "description": "Launch OpenCode without arguments to ask follow-ups, refine requests, and iterate on results.\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)",
             "media": {
-              "image": "media/walkthrough/interactive.svg",
-              "markdown": "walkthroughs/04-run-interactive.md"
-            }
+              "markdown": "walkthroughs/03-run-interactive.md"
+            },
+            "completionEvents": [
+              "onCommand:opencode-walkthrough.runInteractive"
+            ]
           },
           {
             "id": "opencode.tips",
             "title": "Tips & Best Practices",
-            "description": "Get the most out of OpenCode",
+            "description": "Use VS Code's integrated terminal, write specific prompts, and iterate with follow-ups.\n[Open Terminal](command:workbench.action.terminal.toggleTerminal)\n[Read Documentation](https://opencode.ai)",
             "media": {
-              "image": "media/walkthrough/tips.svg",
-              "markdown": "walkthroughs/05-tips.md"
-            }
+              "markdown": "walkthroughs/04-tips.md"
+            },
+            "completionEvents": [
+              "onView:terminal",
+              "onLink:https://opencode.ai"
+            ]
           }
         ]
       }

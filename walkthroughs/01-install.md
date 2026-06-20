@@ -1,17 +1,17 @@
-## Install OpenCode
+![Install OpenCode in the terminal](../media/walkthrough/install.svg)
 
-OpenCode is a CLI tool that helps with software engineering tasks. Install it globally via npm:
+OpenCode is a CLI tool that helps with software engineering tasks.
+
+**Install globally via npm:**
 
 ```bash
 npm install -g opencode
 ```
 
-> 💡 **Tip:** Use `npx opencode` to run it without installing.
+**Tip:** Use `npx opencode` to run without installing.
 
-### Verify Installation
+**Verify installation:**
 
 ```bash
 opencode --version
 ```
-
-[▶ Install Now](command:opencode-walkthrough.install)

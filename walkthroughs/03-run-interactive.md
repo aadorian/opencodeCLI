@@ -1,4 +1,4 @@
-## Interactive Mode
+![Interactive session example](../media/walkthrough/interactive.svg)
 
 Start an interactive session for back-and-forth conversation:
 
@@ -14,10 +14,10 @@ opencode> add a /health route to it
 opencode> now add error handling
 ```
 
-### Commands
+**Session commands**
 
-- `/help` — Get help
-- `/clear` — Clear history
-- `exit` — Exit
-
-[▶ Start Interactive Session](command:opencode-walkthrough.runInteractive)
+| Command | Description |
+| --- | --- |
+| `/help` | Get help |
+| `/clear` | Clear history |
+| `exit` | Exit the session |
