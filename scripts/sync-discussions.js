@@ -123,7 +123,7 @@ function main() {
   if (category.name !== PREFERRED_CATEGORY) {
     console.log(
       `\nTip: add a "${PREFERRED_CATEGORY}" category in repo Settings → Discussions,` +
-        ' then re-run to move future posts there. Template: .github/DISCUSSION_TEMPLATE/open-source-examples.yml'
+        ' then re-run to move future posts there. Templates: .github/DISCUSSION_TEMPLATE/show-and-tell.yml (active), open-source-examples.yml (after category is added)'
     );
   }
 

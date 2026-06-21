@@ -20,12 +20,20 @@ Use it to share what worked, ask for feedback on your setup, and discover patter
 
 ### Share your example
 
-When you open a new thread in **Open Source Examples**, include:
+Use the structured **discussion form** (repo templates in [`.github/DISCUSSION_TEMPLATE/`](https://github.com/aadorian/opencodeCLI/tree/master/.github/DISCUSSION_TEMPLATE)):
+
+| Category | Form template | When to use |
+|----------|---------------|-------------|
+| **Show and tell** (active today) | [`show-and-tell.yml`](https://github.com/aadorian/opencodeCLI/blob/master/.github/DISCUSSION_TEMPLATE/show-and-tell.yml) | [New discussion → Show and tell](https://github.com/aadorian/opencodeCLI/discussions/new?category=show-and-tell) |
+| **Open Source Examples** (optional) | [`open-source-examples.yml`](https://github.com/aadorian/opencodeCLI/blob/master/.github/DISCUSSION_TEMPLATE/open-source-examples.yml) | After maintainers add that category in repo Settings → Discussions |
+
+The form asks for:
 
 1. **Repo or gist link** — public code others can clone or fork
-2. **OpenCode features used** — e.g. agents, MCP, `opencode serve`, walkthrough commands
-3. **VS Code / extension settings** — relevant `opencode.*` keys or workspace snippets
-4. **One thing you learned** — what you'd do differently next time
+2. **What the example demonstrates** — one or two sentences
+3. **OpenCode / extension features used** — agents, MCP, `opencode serve`, walkthrough commands, harness settings
+4. **Config snippet** (optional) — `opencode.json`, VS Code settings, or a shell one-liner
+5. **One thing you learned** — what you'd do differently next time
 
 Short examples are welcome. Maintainers may highlight standout posts in the [wiki](https://github.com/aadorian/opencodeCLI/wiki) or README.
 
