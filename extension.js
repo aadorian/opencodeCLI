@@ -12,7 +12,7 @@ function activate(context) {
   });
 
   const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', () => {
-    sendToTerminal('npm install -g opencode');
+    sendToTerminal('sudo npm install -g opencode');
   });
 
   const runCmd = vscode.commands.registerCommand('opencode-walkthrough.runInline', () => {
