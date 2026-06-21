@@ -6,8 +6,48 @@ A Visual Studio Code extension that provides an interactive walkthrough and quic
 
 ---
 
+## Screenshots
+
+### Activity bar & sidebar overview
+Quick links to install, run prompts, create agents, and open docs from the **OpenCode** sidebar.
+
+![OpenCode sidebar overview with welcome actions](media/screenshots/sidebar-overview.png)
+
+### Agents & models tree views
+Browse custom agents and provider models live from the CLI in the sidebar.
+
+![Agents and Models tree views](media/screenshots/sidebar-trees.png)
+
+### MCP servers & sessions panel
+Manage MCP servers and review recent sessions from the bottom panel.
+
+![MCP Servers and Sessions panel](media/screenshots/panel-mcp-sessions.png)
+
+### Show Actions quick pick
+Access every OpenCode command from the status bar or `⌘⌥O`.
+
+![OpenCode Show Actions quick pick menu](media/screenshots/quick-pick.png)
+
+### Getting Started walkthrough
+Step-by-step onboarding for install, prompts, interactive mode, and agents.
+
+![Get Started with OpenCode walkthrough](media/screenshots/walkthrough.png)
+
+### Tips & Tricks webview
+In-editor reference for shortcuts, CLI commands, and best practices.
+
+![OpenCode Tips and Tricks webview panel](media/screenshots/tips-webview.png)
+
+### Run on Project Files
+Select workspace files, enter a prompt, and run OpenCode in the integrated terminal.
+
+![Run on Project Files prompt dialog](media/screenshots/run-on-project.png)
+
+---
+
 ## Table of Contents
 
+- [Screenshots](#screenshots)
 - [Architecture](#architecture)
 - [Extension Entry Point](#extension-entry-point)
 - [Activation Events](#activation-events)
@@ -350,6 +390,12 @@ opencode-vscode-walkthrough/
 - [Node.js](https://nodejs.org/) 18+
 - [OpenCode CLI](https://opencode.ai) (optional, for testing commands)
 
+Regenerate README screenshots (requires Playwright):
+
+```bash
+npm run screenshots
+```
+
 ### Configuration Settings
 
 This extension contributes OpenCode CLI settings that can be configured in **Settings** → **OpenCode**. Each maps to a CLI environment variable ([full list](https://opencode.ai/docs/cli/#environment-variables)) and is automatically exported when running commands.
@@ -509,23 +555,32 @@ Get a token at https://open-vsx.org/user-settings/tokens
 
 ## Release History
 
+See [CHANGELOG.md](./CHANGELOG.md) for detailed notes. Tags link to [GitHub Releases](https://github.com/aadorian/opencodeCLI/releases).
+
 | Tag | Highlights |
-|---|---|---|
-| `v0.17.0` | Configuration settings for all OpenCode CLI environment variables |
-| `v0.16.0` | Stats toolbar button in editor title and sidebar |
-| `v0.12.0` | Help menu integration, 9 new CLI commands, secondary sidebar view, 18 total commands |
-| `v0.11.1` | Add sudo to install command |
-| `v0.11.0` | Architectural README documenting all components |
-| `v0.10.0` | Comprehensive README |
-| `v0.9.0` | Replace SVG icon with PNG for marketplace |
-| `v0.8.0` | Integration test suite (7 tests) |
-| `v0.7.0` | Explorer context menu, Create Agent step, Agents status bar |
-| `v0.6.0` | MCP Servers panel view container |
-| `v0.5.0` | Welcome views (replaced tree item buttons) |
-| `v0.4.0` | Status bar quick-pick actions |
-| `v0.3.0` | Activity bar with sidebar view |
-| `v0.2.0` | Professional icon + manifest fields |
-| `v0.1.0` | Initial walkthrough + command palette |
+| --- | --- |
+| [v0.19.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.19.0) | Run on Project Files command with file picker, branch detection, and keybinding |
+| [v0.18.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.18.0) | Keyboard shortcuts for main commands; shortcuts listed in sidebar welcome |
+| [v0.17.1](https://github.com/aadorian/opencodeCLI/releases/tag/v0.17.1) | Configuration settings table for OpenCode CLI environment variables |
+| [v0.17.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.17.0) | OpenCode configuration settings mapped to CLI environment variables |
+| [v0.16.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.16.0) | Stats toolbar button in editor title and sidebar |
+| [v0.15.1](https://github.com/aadorian/opencodeCLI/releases/tag/v0.15.1) | Run Inline shows version, configured providers, and available models |
+| [v0.15.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.15.0) | Install check before run; version notification and GitHub install link |
+| [v0.14.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.14.0) | Verify OpenCode install before install command; show version if present |
+| [v0.13.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.13.0) | `.env` setup for paths and credentials; marketplace documentation links |
+| [v0.12.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.12.0) | Help menu integration, 9 new CLI commands, secondary sidebar view, 18 total commands |
+| [v0.11.1](https://github.com/aadorian/opencodeCLI/releases/tag/v0.11.1) | Add `sudo` to install command |
+| [v0.11.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.11.0) | Architectural README documenting all components |
+| [v0.10.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.10.0) | Comprehensive README |
+| [v0.9.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.9.0) | Replace SVG icon with PNG for marketplace |
+| [v0.8.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.8.0) | Integration test suite (7 tests) |
+| [v0.7.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.7.0) | Explorer context menu, Create Agent step, Agents status bar |
+| [v0.6.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.6.0) | MCP Servers panel view container |
+| [v0.5.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.5.0) | Welcome views (replaced tree item buttons) |
+| [v0.4.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.4.0) | Status bar quick-pick actions |
+| [v0.3.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.3.0) | Activity bar with sidebar view |
+| [v0.2.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.2.0) | Professional icon and manifest fields |
+| [v0.1.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.1.0) | Initial walkthrough and command palette |
 
 ---
 

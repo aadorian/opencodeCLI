@@ -106,6 +106,7 @@
   "scripts": {
     "test": "vscode-test",
     "validate": "node scripts/validate-manifest.js",
+    "screenshots": "node scripts/render-screenshots.js",
     "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
   },
   "contributes": {
@@ -774,6 +775,7 @@
   "devDependencies": {
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^3.0.0",
+    "playwright": "^1.61.0",
     "sharp": "^0.35.2"
   }
 }
