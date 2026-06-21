@@ -14,10 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Validate branch name
-        uses: devskim/action-branch-name@v2
-        with:
-          regex: '^(feat|fix|docs|ci|chore|refactor|test|build|perf|style|revert)/[a-z0-9._/-]+$|^dependabot/.+$'
-          regex_syntax: perl
+        shell: bash
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          pattern='^(feat|fix|docs|ci|chore|refactor|test|build|perf|style|revert)/[a-z0-9._/-]+$|^dependabot/.+$'
+          if [[ ! "$BRANCH" =~ $pattern ]]; then
+            echo "::error title=Invalid branch name::Branch '$BRANCH' must match type/description (e.g. feat/my-feature). See .github/GIT_WORKFLOW.md"
+            exit 1
+          fi
+          echo "Branch name OK: $BRANCH"
 
   semantic-title:
     name: Conventional PR title
