@@ -1,0 +1,30 @@
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'walkthroughs/**'
+          - 'docs/**'
+
+enhancement:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'extension.js'
+          - 'package.json'
+          - 'lib/**'
+          - 'snippets/**'
+
+bug:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'extension.js'
+          - 'lib/**'
+
+testing:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'test/**'
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**'

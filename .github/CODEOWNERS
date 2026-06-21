@@ -1,0 +1,10 @@
+# Default reviewers for all changes (GitHub auto-requests review on PRs).
+* @aadorian
+
+# Area owners (optional — narrows review for focused changes)
+/extension.js @aadorian
+/package.json @aadorian
+/test/ @aadorian
+/.github/ @aadorian
+/docs/ @aadorian
+/walkthroughs/ @aadorian
