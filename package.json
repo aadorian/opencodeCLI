@@ -765,6 +765,18 @@
               "onView:terminal",
               "onLink:https://opencode.ai"
             ]
+          },
+          {
+            "id": "opencode.addMcp",
+            "title": "Add an MCP Server",
+            "description": "Extend OpenCode with external tools using the Model Context Protocol. Connect browsers, databases, search engines, and more.\n[Add MCP Server](command:opencode-walkthrough.addMcp)",
+            "media": {
+              "image": "media/walkthrough/mcp.svg",
+              "altText": "OpenCode connected to an MCP server"
+            },
+            "completionEvents": [
+              "onCommand:opencode-walkthrough.addMcp"
+            ]
           }
         ]
       }
