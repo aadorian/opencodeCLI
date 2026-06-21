@@ -54,9 +54,16 @@ const registeredProviders = new Set([
   'opencode-walkthrough.sessions',
 ]);
 
+const registeredWebviews = new Set([
+  'opencode-walkthrough.agent',
+]);
+
 for (const view of views) {
   if (view.type === 'tree' && view.id !== 'opencode-walkthrough.overview' && !registeredProviders.has(view.id)) {
     console.warn(`validate-manifest: warning — tree view "${view.id}" has no known provider in extension.js`);
+  }
+  if (view.type === 'webview' && !registeredWebviews.has(view.id)) {
+    console.warn(`validate-manifest: warning — webview "${view.id}" has no known provider in extension.js`);
   }
 }
 
