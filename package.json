@@ -317,11 +317,43 @@
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Read Documentation](https://opencode.ai)"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Read Documentation](https://opencode.ai)\n\n---\n**Shortcuts**\n\n`$(zap)` Show Actions: `⌥⌘O`\n`$(play)` Inline: `⌥⌘I`\n`$(terminal)` Interactive: `⌥⌘T`\n`$(question)` CLI Help: `⌥⌘H`\n`$(graph)` Stats: `⌥⌘S`"
       },
       {
         "view": "opencode-walkthrough.mcp",
         "contents": "Manage Model Context Protocol servers for OpenCode.\n\n[Add MCP Server](command:opencode-walkthrough.addMcp)\n[List MCP Servers](command:opencode-walkthrough.listMcp)\n\n[Read MCP Docs](https://opencode.ai/docs/mcp-servers/)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "opencode-walkthrough.showActions",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "opencode-walkthrough.runInline",
+        "key": "ctrl+alt+i",
+        "mac": "cmd+alt+i",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "opencode-walkthrough.runInteractive",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "opencode-walkthrough.showCliHelp",
+        "key": "ctrl+alt+h",
+        "mac": "cmd+alt+h",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "opencode-walkthrough.stats",
+        "key": "ctrl+alt+s",
+        "mac": "cmd+alt+s",
+        "when": "editorTextFocus"
       }
     ],
     "submenus": [
