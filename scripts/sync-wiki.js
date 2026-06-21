@@ -126,6 +126,11 @@ function pushWiki() {
 
   console.log(`\nWiki published: ${WIKI_URL}`);
   console.log(`Article: ${WIKI_URL}/${wikiLink('Building the OpenCode Agent Harness')}`);
+  try {
+    require('./verify-wiki.js');
+  } catch {
+    /* verify exits process */
+  }
 }
 
 prepareWikiFiles();

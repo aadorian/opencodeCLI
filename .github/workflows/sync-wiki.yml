@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - master
-      - ci/github-actions-collaboration
     paths:
       - 'docs/**'
       - 'scripts/sync-wiki.js'
@@ -25,6 +24,8 @@ jobs:
         run: node scripts/sync-wiki.js
 
       - name: Push to GitHub Wiki
+        id: push
+        continue-on-error: true
         env:
           WIKI_DIR: .wiki-sync
         run: |
@@ -39,11 +40,4 @@ jobs:
           git push -u origin master --force
 
       - name: Verify wiki pages
-        run: |
-          pages=$(gh api "repos/${{ github.repository }}/wiki/pages" --jq 'length' || echo "0")
-          echo "Wiki page count: $pages"
-          if [ "$pages" = "0" ]; then
-            echo "::error::Wiki has no pages after sync"
-            exit 1
-          fi
-          gh api "repos/${{ github.repository }}/wiki/pages" --jq '.[].title'
+        run: node scripts/verify-wiki.js

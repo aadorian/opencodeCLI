@@ -114,6 +114,8 @@
     "screenshots": "node scripts/render-screenshots.js",
     "wiki": "node scripts/sync-wiki.js",
     "wiki:push": "node scripts/sync-wiki.js --push",
+    "wiki:init": "node scripts/init-wiki-browser.js",
+    "wiki:verify": "node scripts/verify-wiki.js",
     "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
   },
   "contributes": {
