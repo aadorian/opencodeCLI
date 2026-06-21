@@ -33,10 +33,7 @@ function activate(context) {
   const runCmd = vscode.commands.registerCommand('opencode-walkthrough.runInline', async () => {
     const version = await checkInstall();
     if (version) {
-      sendToTerminal(`echo "OpenCode ${version}" && opencode --version && echo "\\n--- Configured Providers ---" && opencode auth ls`);
-      setTimeout(() => {
-        sendToTerminal("opencode \"write a hello world script in Python that prints 'Hello, OpenCode!'\" > hello.py");
-      }, 500);
+      sendToTerminal(`echo "OpenCode ${version}" && opencode --version && echo "\\n--- Configured Providers ---" && opencode auth ls && echo "\\n--- Available Models ---" && opencode models`);
     } else {
       sendToTerminal('echo "OpenCode is not installed. Install it with:" && echo "  sudo npm install -g opencode" && echo "Or visit: https://github.com/anomalyco/opencode"');
       const action = await vscode.window.showWarningMessage(
