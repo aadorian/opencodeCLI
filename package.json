@@ -241,6 +241,11 @@
           "group": "navigation"
         },
         {
+          "command": "opencode-walkthrough.stats",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
           "command": "opencode-walkthrough.addMcp",
           "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
@@ -249,6 +254,13 @@
           "command": "opencode-walkthrough.listMcp",
           "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "opencode-walkthrough.stats",
+          "group": "navigation",
+          "when": "editorTextFocus"
         }
       ],
       "menubar": [
