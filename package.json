@@ -1,167 +1,72 @@
 {
   "name": "opencode-walkthrough",
   "displayName": "OpenCode Walkthrough",
-  "description": "A walkthrough for how to execute OpenCode commands in your terminal",
   "version": "0.0.1",
   "publisher": "aadorian",
-  "license": "SEE LICENSE IN LICENSE",
-  "icon": "media/opencode-icon.png",
-  "pricing": "Free",
+  "author": {
+    "name": "Alejandro Adorjan",
+    "email": "aadorjan@users.noreply.github.com",
+    "url": "https://github.com/aadorian"
+  },
+  "description": "Comprehensive VS Code integration for OpenCode — walkthroughs, tree views, CLI commands, IntelliSense, and keyboard shortcuts for AI-assisted software engineering",
   "keywords": [
     "opencode",
-    "walkthrough",
-    "getting-started",
     "ai",
     "cli",
-    "help",
-    "commands"
+    "coding-agent",
+    "llm",
+    "mcp",
+    "walkthrough",
+    "getting-started",
+    "commands",
+    "terminal",
+    "productivity",
+    "snippets",
+    "intellisense"
   ],
-  "galleryBanner": {
-    "color": "#0a0a0a",
-    "theme": "dark"
-  },
+  "icon": "media/opencode-icon.png",
+  "pricing": "Free",
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://opencode.ai",
   "repository": {
     "type": "git",
     "url": "https://github.com/aadorian/opencodeCLI.git"
   },
   "bugs": {
-    "url": "https://github.com/aadorian/opencodeCLI/issues"
+    "url": "https://github.com/aadorian/opencodeCLI/issues",
+    "email": "aadorjan@users.noreply.github.com"
   },
-  "homepage": "https://opencode.ai",
-  "markdown": "github",
   "qna": "marketplace",
+  "sponsor": {
+    "url": "https://github.com/sponsors/aadorian"
+  },
+  "markdown": "github",
+  "galleryBanner": {
+    "color": "#0a0a0a",
+    "theme": "dark"
+  },
+  "preview": true,
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": [
-    "Education"
+  "extensionKind": [
+    "ui",
+    "workspace"
   ],
-  "configuration": {
-    "title": "OpenCode",
-    "properties": {
-      "opencode.configPath": {
-        "type": "string",
-        "default": "",
-        "markdownDescription": "Path to the OpenCode config file. Maps to `OPENCODE_CONFIG`"
-      },
-      "opencode.configDir": {
-        "type": "string",
-        "default": "",
-        "markdownDescription": "Path to the OpenCode config directory. Maps to `OPENCODE_CONFIG_DIR`"
-      },
-      "opencode.tuiConfigPath": {
-        "type": "string",
-        "default": "",
-        "markdownDescription": "Path to the TUI config file. Maps to `OPENCODE_TUI_CONFIG`"
-      },
-      "opencode.autoShare": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Automatically share sessions. Maps to `OPENCODE_AUTO_SHARE`"
-      },
-      "opencode.modelsUrl": {
-        "type": "string",
-        "default": "",
-        "markdownDescription": "Custom URL for fetching models configuration. Maps to `OPENCODE_MODELS_URL`"
-      },
-      "opencode.serverPassword": {
-        "type": "string",
-        "default": "",
-        "markdownDescription": "Password for HTTP basic auth on `serve`/`web`. Maps to `OPENCODE_SERVER_PASSWORD`"
-      },
-      "opencode.serverUsername": {
-        "type": "string",
-        "default": "opencode",
-        "markdownDescription": "Username for HTTP basic auth. Maps to `OPENCODE_SERVER_USERNAME`"
-      },
-      "opencode.logLevel": {
-        "type": "string",
-        "default": "",
-        "enum": ["", "DEBUG", "INFO", "WARN", "ERROR"],
-        "markdownDescription": "Log level for the OpenCode CLI. Maps to `--log-level` flag"
-      },
-      "opencode.disableAutoUpdate": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable automatic update checks. Maps to `OPENCODE_DISABLE_AUTOUPDATE`"
-      },
-      "opencode.disablePrune": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable pruning of old data. Maps to `OPENCODE_DISABLE_PRUNE`"
-      },
-      "opencode.disableTerminalTitle": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable automatic terminal title updates. Maps to `OPENCODE_DISABLE_TERMINAL_TITLE`"
-      },
-      "opencode.disableDefaultPlugins": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable default plugins. Maps to `OPENCODE_DISABLE_DEFAULT_PLUGINS`"
-      },
-      "opencode.disableLspDownload": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable automatic LSP server downloads. Maps to `OPENCODE_DISABLE_LSP_DOWNLOAD`"
-      },
-      "opencode.disableAutoCompact": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable automatic context compaction. Maps to `OPENCODE_DISABLE_AUTOCOMPACT`"
-      },
-      "opencode.disableClaudeCode": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable reading from `.claude` (prompt + skills). Maps to `OPENCODE_DISABLE_CLAUDE_CODE`"
-      },
-      "opencode.disableModelsFetch": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable fetching models from remote sources. Maps to `OPENCODE_DISABLE_MODELS_FETCH`"
-      },
-      "opencode.disableMouse": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Disable mouse capture in the TUI. Maps to `OPENCODE_DISABLE_MOUSE`"
-      },
-      "opcode.enableExa": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Enable Exa web search tools. Maps to `OPENCODE_ENABLE_EXA`"
-      },
-      "opencode.experimental": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Enable all experimental features. Maps to `OPENCODE_EXPERIMENTAL`"
-      },
-      "opencode.experimental.planMode": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Enable experimental plan mode. Maps to `OPENCODE_EXPERIMENTAL_PLAN_MODE`"
-      },
-      "opencode.experimental.backgroundSubagents": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Enable background subagent tasks. Maps to `OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`"
-      },
-      "opencode.experimental.nativeLlm": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Enable native LLM request path. Maps to `OPENCODE_EXPERIMENTAL_NATIVE_LLM`"
-      },
-      "opencode.experimental.scout": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Enable Scout subagent. Maps to `OPENCODE_EXPERIMENTAL_SCOUT`"
-      },
-      "opencode.experimental.workspaces": {
-        "type": "boolean",
-        "default": null,
-        "markdownDescription": "Enable workspace support. Maps to `OPENCODE_EXPERIMENTAL_WORKSPACES`"
-      }
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Terminal commands require a trusted workspace"
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "CLI commands require a local filesystem"
     }
   },
+  "categories": [
+    "Education",
+    "Other"
+  ],
   "activationEvents": [
     "onCommand:opencode-walkthrough.showWalkthrough",
     "onCommand:opencode-walkthrough.install",
@@ -185,44 +90,156 @@
     "onCommand:opencode-walkthrough.upgrade",
     "onCommand:opencode-walkthrough.serve",
     "onCommand:opencode-walkthrough.web",
-    "onCommand:opencode-walkthrough.runOnProject"
+    "onCommand:opencode-walkthrough.runOnProject",
+    "onCommand:opencode-walkthrough.showTips",
+    "onCommand:opencode-walkthrough.showAgents",
+    "onCommand:opencode-walkthrough.showModels",
+    "onCommand:opencode-walkthrough.refreshAgents",
+    "onCommand:opencode-walkthrough.refreshMcp",
+    "onCommand:opencode-walkthrough.refreshSessions",
+    "onCommand:opencode-walkthrough.refreshModels",
+    "onView:opencode-walkthrough.agents",
+    "onView:opencode-walkthrough.models",
+    "onView:opencode-walkthrough.sessions"
   ],
-  "scripts": {
-    "test": "vscode-test"
-  },
   "main": "./extension.js",
+  "scripts": {
+    "test": "vscode-test",
+    "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
+  },
   "contributes": {
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "opencode-walkthrough",
-          "title": "OpenCode",
-          "icon": "media/opencode-icon.png"
+    "configuration": {
+      "title": "OpenCode",
+      "order": 0,
+      "properties": {
+        "opencode.configPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to the OpenCode config file. Maps to `OPENCODE_CONFIG`"
+        },
+        "opencode.configDir": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to the OpenCode config directory. Maps to `OPENCODE_CONFIG_DIR`"
+        },
+        "opencode.tuiConfigPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to the TUI config file. Maps to `OPENCODE_TUI_CONFIG`"
+        },
+        "opencode.autoShare": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Automatically share sessions. Maps to `OPENCODE_AUTO_SHARE`"
+        },
+        "opencode.modelsUrl": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Custom URL for fetching models configuration. Maps to `OPENCODE_MODELS_URL`"
+        },
+        "opencode.serverPassword": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Password for HTTP basic auth on `serve`/`web`. Maps to `OPENCODE_SERVER_PASSWORD`"
+        },
+        "opencode.serverUsername": {
+          "type": "string",
+          "default": "opencode",
+          "markdownDescription": "Username for HTTP basic auth. Maps to `OPENCODE_SERVER_USERNAME`"
+        },
+        "opencode.logLevel": {
+          "type": "string",
+          "default": "",
+          "enum": [
+            "",
+            "DEBUG",
+            "INFO",
+            "WARN",
+            "ERROR"
+          ],
+          "markdownDescription": "Log level for the OpenCode CLI. Maps to `--log-level` flag"
+        },
+        "opencode.disableAutoUpdate": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable automatic update checks. Maps to `OPENCODE_DISABLE_AUTOUPDATE`"
+        },
+        "opencode.disablePrune": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable pruning of old data. Maps to `OPENCODE_DISABLE_PRUNE`"
+        },
+        "opencode.disableTerminalTitle": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable automatic terminal title updates. Maps to `OPENCODE_DISABLE_TERMINAL_TITLE`"
+        },
+        "opencode.disableDefaultPlugins": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable default plugins. Maps to `OPENCODE_DISABLE_DEFAULT_PLUGINS`"
+        },
+        "opencode.disableLspDownload": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable automatic LSP server downloads. Maps to `OPENCODE_DISABLE_LSP_DOWNLOAD`"
+        },
+        "opencode.disableAutoCompact": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable automatic context compaction. Maps to `OPENCODE_DISABLE_AUTOCOMPACT`"
+        },
+        "opencode.disableClaudeCode": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable reading from `.claude` (prompt + skills). Maps to `OPENCODE_DISABLE_CLAUDE_CODE`"
+        },
+        "opencode.disableModelsFetch": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable fetching models from remote sources. Maps to `OPENCODE_DISABLE_MODELS_FETCH`"
+        },
+        "opencode.disableMouse": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Disable mouse capture in the TUI. Maps to `OPENCODE_DISABLE_MOUSE`"
+        },
+        "opcode.enableExa": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Enable Exa web search tools. Maps to `OPENCODE_ENABLE_EXA`"
+        },
+        "opencode.experimental": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Enable all experimental features. Maps to `OPENCODE_EXPERIMENTAL`"
+        },
+        "opencode.experimental.planMode": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Enable experimental plan mode. Maps to `OPENCODE_EXPERIMENTAL_PLAN_MODE`"
+        },
+        "opencode.experimental.backgroundSubagents": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Enable background subagent tasks. Maps to `OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`"
+        },
+        "opencode.experimental.nativeLlm": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Enable native LLM request path. Maps to `OPENCODE_EXPERIMENTAL_NATIVE_LLM`"
+        },
+        "opencode.experimental.scout": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Enable Scout subagent. Maps to `OPENCODE_EXPERIMENTAL_SCOUT`"
+        },
+        "opencode.experimental.workspaces": {
+          "type": "boolean",
+          "default": null,
+          "markdownDescription": "Enable workspace support. Maps to `OPENCODE_EXPERIMENTAL_WORKSPACES`"
         }
-      ],
-      "panel": [
-        {
-          "id": "opencode-mcp",
-          "title": "MCP Servers",
-          "icon": "media/opencode-icon.png"
-        }
-      ]
-    },
-    "views": {
-      "opencode-walkthrough": [
-        {
-          "type": "tree",
-          "id": "opencode-walkthrough.overview",
-          "name": "OpenCode"
-        }
-      ],
-      "opencode-mcp": [
-        {
-          "type": "tree",
-          "id": "opencode-walkthrough.mcp",
-          "name": "MCP Servers"
-        }
-      ]
+      }
     },
     "commands": [
       {
@@ -315,57 +332,113 @@
         "title": "OpenCode: Show Actions"
       },
       {
+        "command": "opencode-walkthrough.showTips",
+        "title": "OpenCode: Tips & Tricks",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "opencode-walkthrough.showAgents",
+        "title": "OpenCode: Agents Overview",
+        "icon": "$(robot)"
+      },
+      {
+        "command": "opencode-walkthrough.showModels",
+        "title": "OpenCode: Models Overview",
+        "icon": "$(symbol-parameter)"
+      },
+      {
+        "command": "opencode-walkthrough.refreshAgents",
+        "title": "OpenCode: Refresh Agents",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "opencode-walkthrough.refreshMcp",
+        "title": "OpenCode: Refresh MCP",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "opencode-walkthrough.refreshSessions",
+        "title": "OpenCode: Refresh Sessions",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "opencode-walkthrough.refreshModels",
+        "title": "OpenCode: Refresh Models",
+        "icon": "$(refresh)"
+      },
+      {
         "command": "opencode-walkthrough.showCliHelp",
         "title": "OpenCode: CLI Help",
         "icon": "$(question)"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "opencode-walkthrough",
+          "title": "OpenCode",
+          "icon": "media/opencode-icon.png"
+        }
+      ],
+      "panel": [
+        {
+          "id": "opencode-mcp",
+          "title": "MCP Servers",
+          "icon": "media/opencode-icon.png"
+        }
+      ]
+    },
+    "views": {
+      "opencode-walkthrough": [
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.overview",
+          "name": "OpenCode"
+        },
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.agents",
+          "name": "Agents"
+        },
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.models",
+          "name": "Models"
+        }
+      ],
+      "opencode-mcp": [
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.mcp",
+          "name": "MCP Servers"
+        },
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.sessions",
+          "name": "Sessions"
+        }
+      ]
+    },
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Read Documentation](https://opencode.ai)\n\n---\n**Shortcuts**\n\n`$(zap)` Show Actions: `⌥⌘O`\n`$(play)` Inline: `⌥⌘I`\n`$(folder)` Project: `⌥⌘P`\n`$(terminal)` Interactive: `⌥⌘T`\n`$(question)` CLI Help: `⌥⌘H`\n`$(graph)` Stats: `⌥⌘S`"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Agents Overview](command:opencode-walkthrough.showAgents)\n[Models Overview](command:opencode-walkthrough.showModels)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Tips & Tricks](command:opencode-walkthrough.showTips)\n[Read Documentation](https://opencode.ai)\n"
+      },
+      {
+        "view": "opencode-walkthrough.agents",
+        "contents": "No agents found. Agents are custom configurations with specific prompts and permissions.\n\n[Create Agent](command:opencode-walkthrough.createAgent)\n[Agents Overview](command:opencode-walkthrough.showAgents)"
+      },
+      {
+        "view": "opencode-walkthrough.models",
+        "contents": "No models found. Configure a provider and authenticate first.\n\n[Auth Login](command:opencode-walkthrough.authLogin)\n[Models Overview](command:opencode-walkthrough.showModels)"
       },
       {
         "view": "opencode-walkthrough.mcp",
         "contents": "Manage Model Context Protocol servers for OpenCode.\n\n[Add MCP Server](command:opencode-walkthrough.addMcp)\n[List MCP Servers](command:opencode-walkthrough.listMcp)\n\n[Read MCP Docs](https://opencode.ai/docs/mcp-servers/)"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "opencode-walkthrough.showActions",
-        "key": "ctrl+alt+o",
-        "mac": "cmd+alt+o",
-        "when": "editorTextFocus"
       },
       {
-        "command": "opencode-walkthrough.runInline",
-        "key": "ctrl+alt+i",
-        "mac": "cmd+alt+i",
-        "when": "editorTextFocus"
-      },
-      {
-        "command": "opencode-walkthrough.runInteractive",
-        "key": "ctrl+alt+t",
-        "mac": "cmd+alt+t",
-        "when": "editorTextFocus"
-      },
-      {
-        "command": "opencode-walkthrough.showCliHelp",
-        "key": "ctrl+alt+h",
-        "mac": "cmd+alt+h",
-        "when": "editorTextFocus"
-      },
-      {
-        "command": "opencode-walkthrough.stats",
-        "key": "ctrl+alt+s",
-        "mac": "cmd+alt+s",
-        "when": "editorTextFocus"
-      },
-      {
-        "command": "opencode-walkthrough.runOnProject",
-        "key": "ctrl+alt+p",
-        "mac": "cmd+alt+p",
-        "when": "editorTextFocus"
+        "view": "opencode-walkthrough.sessions",
+        "contents": "No sessions yet. Run a prompt to create one.\n\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)"
       }
     ],
     "submenus": [
@@ -411,6 +484,21 @@
           "group": "navigation"
         },
         {
+          "command": "opencode-walkthrough.showAgents",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.showModels",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.showTips",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
           "command": "opencode-walkthrough.showCliHelp",
           "when": "view == opencode-walkthrough.overview",
           "group": "navigation"
@@ -421,6 +509,26 @@
           "group": "navigation"
         },
         {
+          "command": "opencode-walkthrough.refreshAgents",
+          "when": "view == opencode-walkthrough.agents",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.createAgent",
+          "when": "view == opencode-walkthrough.agents",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.refreshModels",
+          "when": "view == opencode-walkthrough.models",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.authLogin",
+          "when": "view == opencode-walkthrough.models",
+          "group": "navigation"
+        },
+        {
           "command": "opencode-walkthrough.addMcp",
           "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
@@ -428,6 +536,21 @@
         {
           "command": "opencode-walkthrough.listMcp",
           "when": "view == opencode-walkthrough.mcp",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.refreshMcp",
+          "when": "view == opencode-walkthrough.mcp",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.refreshSessions",
+          "when": "view == opencode-walkthrough.sessions",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.sessionList",
+          "when": "view == opencode-walkthrough.sessions",
           "group": "navigation"
         }
       ],
@@ -445,6 +568,15 @@
         }
       ],
       "opencode-walkthrough.helpSubmenu": [
+        {
+          "command": "opencode-walkthrough.showAgents"
+        },
+        {
+          "command": "opencode-walkthrough.showModels"
+        },
+        {
+          "command": "opencode-walkthrough.showTips"
+        },
         {
           "command": "opencode-walkthrough.showCliHelp"
         },
@@ -466,6 +598,12 @@
         },
         {
           "command": "opencode-walkthrough.listAgents"
+        },
+        {
+          "command": "opencode-walkthrough.refreshAgents"
+        },
+        {
+          "command": "opencode-walkthrough.refreshModels"
         },
         {
           "command": "opencode-walkthrough.authLogin"
@@ -517,9 +655,46 @@
         },
         {
           "command": "opencode-walkthrough.addMcp"
+        },
+        {
+          "command": "opencode-walkthrough.showAgents"
+        },
+        {
+          "command": "opencode-walkthrough.showModels"
+        },
+        {
+          "command": "opencode-walkthrough.showTips"
         }
       ]
     },
+    "snippets": [
+      {
+        "language": "shellscript",
+        "path": "./snippets/opencode.code-snippets"
+      },
+      {
+        "language": "markdown",
+        "path": "./snippets/opencode.code-snippets"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "opencode.json",
+        "url": "https://opencode.ai/config.json"
+      },
+      {
+        "fileMatch": "opencode.jsonc",
+        "url": "https://opencode.ai/config.json"
+      },
+      {
+        "fileMatch": "tui.json",
+        "url": "https://opencode.ai/tui.json"
+      },
+      {
+        "fileMatch": "tui.jsonc",
+        "url": "https://opencode.ai/tui.json"
+      }
+    ],
     "startEntries": [
       {
         "title": "Get Started with OpenCode",
@@ -533,7 +708,7 @@
         "id": "opencode.gettingStarted",
         "title": "Get Started with OpenCode",
         "description": "Install the CLI, run prompts, and start interactive sessions for software engineering tasks",
-  "icon": "media/opencode-icon.png",
+        "icon": "media/opencode-icon.png",
         "steps": [
           {
             "id": "opencode.install",

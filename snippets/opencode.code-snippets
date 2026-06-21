@@ -1,0 +1,320 @@
+{
+  "OpenCode - TUI": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc",
+    "body": "opencode",
+    "description": "Start the OpenCode TUI"
+  },
+  "OpenCode - TUI with project": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-project",
+    "body": "opencode ${1:project-path}",
+    "description": "Start OpenCode TUI in a specific project"
+  },
+  "OpenCode - Continue session": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-continue",
+    "body": "opencode --continue ${1:--session ${2:session-id}}",
+    "description": "Continue the last session"
+  },
+  "OpenCode - TUI with model": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-model",
+    "body": "opencode --model ${1:provider/model}",
+    "description": "Start TUI with a specific model"
+  },
+  "OpenCode - TUI with agent": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-agent",
+    "body": "opencode --agent ${1:agent-name}",
+    "description": "Start TUI with a specific agent"
+  },
+  "OpenCode - Run prompt": {
+    "scope": "shellscript,markdown",
+    "prefix": "ocr",
+    "body": "opencode run \"${1:your prompt}\"",
+    "description": "Run a one-shot prompt"
+  },
+  "OpenCode - Run with files": {
+    "scope": "shellscript,markdown",
+    "prefix": "ocr-file",
+    "body": "opencode run --file ${1:path/to/file} \"${2:prompt}\"",
+    "description": "Run a prompt with attached files"
+  },
+  "OpenCode - Run with model": {
+    "scope": "shellscript,markdown",
+    "prefix": "ocr-model",
+    "body": "opencode run --model ${1:provider/model} \"${2:prompt}\"",
+    "description": "Run a prompt with a specific model"
+  },
+  "OpenCode - Run and share": {
+    "scope": "shellscript,markdown",
+    "prefix": "ocr-share",
+    "body": "opencode run --share \"${1:prompt}\"",
+    "description": "Run a prompt and share the session"
+  },
+  "OpenCode - Run with agent": {
+    "scope": "shellscript,markdown",
+    "prefix": "ocr-agent",
+    "body": "opencode run --agent ${1:agent-name} \"${2:prompt}\"",
+    "description": "Run a prompt with a specific agent"
+  },
+  "OpenCode - Run attach to server": {
+    "scope": "shellscript,markdown",
+    "prefix": "ocr-attach",
+    "body": "opencode run --attach http://localhost:${1:4096} \"${2:prompt}\"",
+    "description": "Run a prompt attached to a running server"
+  },
+  "OpenCode - Run with JSON output": {
+    "scope": "shellscript,markdown",
+    "prefix": "ocr-json",
+    "body": "opencode run --format json \"${1:prompt}\"",
+    "description": "Run a prompt and output raw JSON events"
+  },
+  "OpenCode - Agent create": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-agent-create",
+    "body": "opencode agent create",
+    "description": "Create a new agent interactively"
+  },
+  "OpenCode - Agent create (non-interactive)": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-agent-create-ni",
+    "body": "opencode agent create --path ${1:./path} --description \"${2:agent description}\" --mode ${3|all,primary,subagent|} --permissions \"${4:bash,read,edit,glob,grep}\"",
+    "description": "Create an agent non-interactively"
+  },
+  "OpenCode - Agent list": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-agent-list",
+    "body": "opencode agent list",
+    "description": "List all available agents"
+  },
+  "OpenCode - Auth login": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-auth-login",
+    "body": "opencode auth login",
+    "description": "Log in to a provider"
+  },
+  "OpenCode - Auth login (specific provider)": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-auth-login-p",
+    "body": "opencode auth login --provider ${1:provider-id}",
+    "description": "Log in to a specific provider"
+  },
+  "OpenCode - Auth list": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-auth-list",
+    "body": "opencode auth ls",
+    "description": "List authenticated providers"
+  },
+  "OpenCode - Auth logout": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-auth-logout",
+    "body": "opencode auth logout",
+    "description": "Log out of a provider"
+  },
+  "OpenCode - MCP add": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-mcp-add",
+    "body": "opencode mcp add",
+    "description": "Add an MCP server"
+  },
+  "OpenCode - MCP list": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-mcp-list",
+    "body": "opencode mcp ls",
+    "description": "List MCP servers"
+  },
+  "OpenCode - MCP auth": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-mcp-auth",
+    "body": "opencode mcp auth ${1:server-name}",
+    "description": "Authenticate with an OAuth MCP server"
+  },
+  "OpenCode - MCP logout": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-mcp-logout",
+    "body": "opencode mcp logout ${1:server-name}",
+    "description": "Remove OAuth credentials for an MCP server"
+  },
+  "OpenCode - Models list": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-models",
+    "body": "opencode models",
+    "description": "List all available models"
+  },
+  "OpenCode - Models filter": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-models-filter",
+    "body": "opencode models ${1:provider-id}",
+    "description": "List models filtered by provider"
+  },
+  "OpenCode - Models refresh": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-models-refresh",
+    "body": "opencode models --refresh",
+    "description": "Refresh the models cache"
+  },
+  "OpenCode - Serve": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-serve",
+    "body": "opencode serve",
+    "description": "Start a headless server"
+  },
+  "OpenCode - Serve with port": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-serve-port",
+    "body": "opencode serve --port ${1:4096} --hostname ${2:0.0.0.0}",
+    "description": "Start a server on a specific port"
+  },
+  "OpenCode - Web": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-web",
+    "body": "opencode web",
+    "description": "Start the web interface"
+  },
+  "OpenCode - Web with port": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-web-port",
+    "body": "opencode web --port ${1:4096} --hostname ${2:0.0.0.0}",
+    "description": "Start web on a specific port"
+  },
+  "OpenCode - Attach": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-attach",
+    "body": "opencode attach http://${1:host}:${2:port}",
+    "description": "Attach TUI to a running server"
+  },
+  "OpenCode - Session list": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-session-list",
+    "body": "opencode session list",
+    "description": "List all sessions"
+  },
+  "OpenCode - Session delete": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-session-delete",
+    "body": "opencode session delete ${1:session-id}",
+    "description": "Delete a session"
+  },
+  "OpenCode - Stats": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-stats",
+    "body": "opencode stats",
+    "description": "Show token usage and cost stats"
+  },
+  "OpenCode - Stats days": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-stats-days",
+    "body": "opencode stats --days ${1:30}",
+    "description": "Show stats for the last N days"
+  },
+  "OpenCode - Stats by models": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-stats-models",
+    "body": "opencode stats --models",
+    "description": "Show model usage breakdown"
+  },
+  "OpenCode - Export session": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-export",
+    "body": "opencode export ${1:session-id}",
+    "description": "Export session data as JSON"
+  },
+  "OpenCode - Import session": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-import",
+    "body": "opencode import ${1:file-or-url}",
+    "description": "Import session data from file or share URL"
+  },
+  "OpenCode - GitHub install": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-gh-install",
+    "body": "opencode github install",
+    "description": "Install the GitHub agent"
+  },
+  "OpenCode - GitHub run": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-gh-run",
+    "body": "opencode github run",
+    "description": "Run the GitHub agent"
+  },
+  "OpenCode - PR review": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-pr",
+    "body": "opencode pr ${1:pr-number}",
+    "description": "Fetch and checkout a PR, then run OpenCode"
+  },
+  "OpenCode - Plugin install": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-plugin",
+    "body": "opencode plugin ${1:module-name}",
+    "description": "Install a plugin"
+  },
+  "OpenCode - Upgrade": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-upgrade",
+    "body": "opencode upgrade",
+    "description": "Upgrade OpenCode to latest"
+  },
+  "OpenCode - Upgrade specific": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-upgrade-v",
+    "body": "opencode upgrade ${1:v0.1.48}",
+    "description": "Upgrade to a specific version"
+  },
+  "OpenCode - Uninstall": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-uninstall",
+    "body": "opencode uninstall",
+    "description": "Uninstall OpenCode"
+  },
+  "OpenCode - Debug": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-debug",
+    "body": "opencode debug",
+    "description": "Debugging tools"
+  },
+  "OpenCode - ACP server": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-acp",
+    "body": "opencode acp",
+    "description": "Start an ACP server"
+  },
+  "OpenCode - DB query": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-db",
+    "body": "opencode db ${1:query}",
+    "description": "Database tools"
+  },
+  "OpenCode - DB path": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-db-path",
+    "body": "opencode db path",
+    "description": "Print the database path"
+  },
+  "OpenCode - Version": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-version",
+    "body": "opencode --version",
+    "description": "Print OpenCode version"
+  },
+  "OpenCode - Help": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-help",
+    "body": "opencode --help",
+    "description": "Show CLI help"
+  },
+  "OpenCode - Log level": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-log",
+    "body": "opencode --log-level ${1|DEBUG,INFO,WARN,ERROR|}",
+    "description": "Run with a specific log level"
+  },
+  "OpenCode - Pure mode": {
+    "scope": "shellscript,markdown",
+    "prefix": "oc-pure",
+    "body": "opencode --pure",
+    "description": "Run without external plugins"
+  }
+}
