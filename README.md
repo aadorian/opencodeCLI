@@ -349,6 +349,38 @@ opencode-vscode-walkthrough/
 - [Node.js](https://nodejs.org/) 18+
 - [OpenCode CLI](https://opencode.ai) (optional, for testing commands)
 
+### Configuration Settings
+
+This extension contributes OpenCode CLI settings that can be configured in **Settings** → **OpenCode**. Each maps to a CLI environment variable ([full list](https://opencode.ai/docs/cli/#environment-variables)) and is automatically exported when running commands.
+
+| Setting | Env Variable | Type |
+|---|---|---|
+| `opencode.configPath` | `OPENCODE_CONFIG` | string |
+| `opencode.configDir` | `OPENCODE_CONFIG_DIR` | string |
+| `opencode.tuiConfigPath` | `OPENCODE_TUI_CONFIG` | string |
+| `opencode.autoShare` | `OPENCODE_AUTO_SHARE` | boolean |
+| `opencode.modelsUrl` | `OPENCODE_MODELS_URL` | string |
+| `opencode.serverPassword` | `OPENCODE_SERVER_PASSWORD` | string |
+| `opencode.serverUsername` | `OPENCODE_SERVER_USERNAME` | string |
+| `opencode.logLevel` | `--log-level` flag | enum |
+| `opencode.disableAutoUpdate` | `OPENCODE_DISABLE_AUTOUPDATE` | boolean |
+| `opencode.disablePrune` | `OPENCODE_DISABLE_PRUNE` | boolean |
+| `opencode.disableTerminalTitle` | `OPENCODE_DISABLE_TERMINAL_TITLE` | boolean |
+| `opencode.disableDefaultPlugins` | `OPENCODE_DISABLE_DEFAULT_PLUGINS` | boolean |
+| `opencode.disableLspDownload` | `OPENCODE_DISABLE_LSP_DOWNLOAD` | boolean |
+| `opencode.disableAutoCompact` | `OPENCODE_DISABLE_AUTOCOMPACT` | boolean |
+| `opencode.disableClaudeCode` | `OPENCODE_DISABLE_CLAUDE_CODE` | boolean |
+| `opencode.disableModelsFetch` | `OPENCODE_DISABLE_MODELS_FETCH` | boolean |
+| `opcode.enableExa` | `OPENCODE_ENABLE_EXA` | boolean |
+| `opencode.experimental` | `OPENCODE_EXPERIMENTAL` | boolean |
+| `opencode.experimental.planMode` | `OPENCODE_EXPERIMENTAL_PLAN_MODE` | boolean |
+| `opencode.experimental.backgroundSubagents` | `OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS` | boolean |
+| `opencode.experimental.nativeLlm` | `OPENCODE_EXPERIMENTAL_NATIVE_LLM` | boolean |
+| `opencode.experimental.scout` | `OPENCODE_EXPERIMENTAL_SCOUT` | boolean |
+| `opencode.experimental.workspaces` | `OPENCODE_EXPERIMENTAL_WORKSPACES` | boolean |
+
+Settings are read when sending terminal commands and prepended as `export` statements.
+
 ### Environment Variables
 
 Copy `.env.example` to `.env` and configure your paths and tokens:
@@ -455,6 +487,8 @@ Get a token at https://open-vsx.org/user-settings/tokens
 
 | Tag | Highlights |
 |---|---|---|
+| `v0.17.0` | Configuration settings for all OpenCode CLI environment variables |
+| `v0.16.0` | Stats toolbar button in editor title and sidebar |
 | `v0.12.0` | Help menu integration, 9 new CLI commands, secondary sidebar view, 18 total commands |
 | `v0.11.1` | Add sudo to install command |
 | `v0.11.0` | Architectural README documenting all components |
