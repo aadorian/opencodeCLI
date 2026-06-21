@@ -90,47 +90,55 @@ function run(cmd, opts = {}) {
 
 function pushWiki() {
   prepareWikiFiles();
+  const homeContent = fs.readFileSync(path.join(wikiDir, 'Home.md'), 'utf8');
+  const harnessContent = fs.readFileSync(path.join(wikiDir, 'Building-the-OpenCode-Agent-Harness.md'), 'utf8');
 
-  if (fs.existsSync(path.join(wikiDir, '.git'))) {
-    fs.rmSync(path.join(wikiDir, '.git'), { recursive: true, force: true });
+  const workDir = path.join(root, '.wiki-push');
+  if (fs.existsSync(workDir)) {
+    fs.rmSync(workDir, { recursive: true, force: true });
   }
-
-  run('git init');
-  run('git checkout -b master');
-  run('git add .');
-  run('git commit -m "docs: sync wiki from docs/"');
-  run(`git remote add origin ${wikiRemote}`, { inherit: false });
+  fs.mkdirSync(workDir, { recursive: true });
 
   execSync('gh auth setup-git', { stdio: 'inherit' });
 
-  const result = spawnSync('git', ['push', '-u', 'origin', 'master'], {
-    cwd: wikiDir,
-    encoding: 'utf8',
-  });
+  const lsRemote = spawnSync('git', ['ls-remote', wikiRemote], { encoding: 'utf8' });
+  const wikiExists = lsRemote.status === 0 && lsRemote.stdout.trim().length > 0;
 
-  if (result.status !== 0) {
-    const err = `${result.stderr || ''}${result.stdout || ''}`;
-    if (/repository not found/i.test(err)) {
-      console.error('\nGitHub Wiki git repository is not provisioned yet.');
-      console.error('Create the first wiki page once, then re-run:\n');
-      console.error(`  1. Open ${WIKI_NEW_URL}`);
-      console.error('  2. Title: Home — paste content from .wiki-sync/Home.md — Save');
-      console.error('  3. npm run wiki:push\n');
-      console.error(`Prepared files are in ${wikiDir}`);
-      spawnSync('gh', ['browse', '/wiki/_new', '--repo', repo], { stdio: 'inherit' });
-      process.exit(1);
+  if (wikiExists) {
+    run(`git clone ${wikiRemote} .`, { cwd: workDir });
+  } else {
+    run('git init', { cwd: workDir });
+    run('git checkout -b master', { cwd: workDir });
+    run(`git remote add origin ${wikiRemote}`, { cwd: workDir, inherit: false });
+  }
+
+  fs.writeFileSync(path.join(workDir, 'Home.md'), homeContent);
+  fs.writeFileSync(path.join(workDir, 'Building-the-OpenCode-Agent-Harness.md'), harnessContent);
+
+  run('git add .', { cwd: workDir });
+  const diff = spawnSync('git', ['diff', '--staged', '--quiet'], { cwd: workDir });
+  if (diff.status === 0) {
+    console.log('Wiki already up to date.');
+  } else {
+    run('git commit -m "docs: sync wiki from docs/"', { cwd: workDir });
+    const result = spawnSync('git', ['push', 'origin', 'master'], {
+      cwd: workDir,
+      encoding: 'utf8',
+    });
+    if (result.status !== 0) {
+      const err = `${result.stderr || ''}${result.stdout || ''}`;
+      if (/repository not found/i.test(err)) {
+        console.error('\nGitHub Wiki git repository is not provisioned yet.');
+        console.error(`Create Home at ${WIKI_NEW_URL}, then re-run: npm run wiki:push\n`);
+        process.exit(1);
+      }
+      process.stderr.write(err);
+      process.exit(result.status || 1);
     }
-    process.stderr.write(err);
-    process.exit(result.status || 1);
   }
 
   console.log(`\nWiki published: ${WIKI_URL}`);
   console.log(`Article: ${WIKI_URL}/${wikiLink('Building the OpenCode Agent Harness')}`);
-  try {
-    require('./verify-wiki.js');
-  } catch {
-    /* verify exits process */
-  }
 }
 
 prepareWikiFiles();

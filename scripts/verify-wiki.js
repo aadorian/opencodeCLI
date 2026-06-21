@@ -1,38 +1,31 @@
 #!/usr/bin/env node
 'use strict';
 
-/**
- * Verify GitHub Wiki is provisioned and lists expected pages.
- * Exit 0 when Home + Building-the-OpenCode-Agent-Harness exist.
- */
-
-const { execSync } = require('child_process');
+const { execSync, spawnSync } = require('child_process');
 
 const REPO = 'aadorian/opencodeCLI';
 const WIKI_URL = `https://github.com/${REPO}/wiki`;
+const WIKI_REMOTE = `https://github.com/${REPO}.wiki.git`;
 const EXPECTED = ['Home', 'Building-the-OpenCode-Agent-Harness'];
 
-function ghJson(args) {
-  return JSON.parse(execSync(`gh api ${args}`, { encoding: 'utf8' }));
+function listRemoteFiles() {
+  const out = execSync(`git ls-remote --heads ${WIKI_REMOTE}`, { encoding: 'utf8' });
+  if (!out.trim()) return null;
+  const cloneDir = require('fs').mkdtempSync(require('path').join(require('os').tmpdir(), 'wiki-verify-'));
+  execSync(`git clone --depth 1 ${WIKI_REMOTE} .`, { cwd: cloneDir, stdio: 'pipe' });
+  const files = require('fs').readdirSync(cloneDir).filter(f => f.endsWith('.md'));
+  require('fs').rmSync(cloneDir, { recursive: true, force: true });
+  return files.map(f => f.replace(/\.md$/, ''));
 }
 
 function verify() {
-  let pages;
-  try {
-    pages = ghJson(`repos/${REPO}/wiki/pages`);
-  } catch (err) {
-    console.error('Wiki API unavailable (wiki not provisioned yet).');
-    console.error(`Create the first page at ${WIKI_URL}/_new then run: npm run wiki:push`);
+  const titles = listRemoteFiles();
+  if (!titles) {
+    console.error('Wiki git repository not found.');
     process.exit(1);
   }
 
-  if (!Array.isArray(pages) || pages.length === 0) {
-    console.error('Wiki exists but has no pages.');
-    process.exit(1);
-  }
-
-  const titles = pages.map(p => p.title);
-  console.log(`Wiki OK: ${pages.length} page(s) at ${WIKI_URL}`);
+  console.log(`Wiki OK: ${titles.length} page(s) at ${WIKI_URL}`);
   for (const title of titles) {
     console.log(`  - ${title}`);
   }
@@ -42,6 +35,12 @@ function verify() {
       console.error(`Missing expected wiki page: ${expected}`);
       process.exit(1);
     }
+  }
+
+  const homeCheck = spawnSync('curl', ['-sS', '-L', '-o', '/dev/null', '-w', '%{http_code}', `${WIKI_URL}/Home`], { encoding: 'utf8' });
+  if (homeCheck.stdout.trim() !== '200') {
+    console.error(`Wiki Home page returned HTTP ${homeCheck.stdout.trim()}`);
+    process.exit(1);
   }
 
   console.log('All expected wiki pages present.');
