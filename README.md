@@ -37,11 +37,12 @@ The extension is a plain JavaScript VS Code extension (no transpiler) that follo
 ```
 VS Code starts
   └─ Activation events trigger activate()
-       ├─ Register 9 commands (all push to context.subscriptions)
+       ├─ Register 18 commands (all push to context.subscriptions)
        ├─ Create 2 status bar items (OpenCode + Agents)
        └─ All commands use sendToTerminal() except:
             ├─ showWalkthrough → opens the walkthrough page
-            └─ showActions    → opens a quick-pick menu
+            ├─ showActions    → opens a quick-pick menu
+            └─ showCliHelp    → opens a CLI reference quick-pick
 ```
 
 ### sendToTerminal()
@@ -85,14 +86,23 @@ module.exports = { activate, deactivate };
 | Command | Handler | Terminal Command |
 |---|---|---|
 | `opencode-walkthrough.showWalkthrough` | Opens walkthrough via `workbench.action.openWalkthrough` | — |
-| `opencode-walkthrough.install` | `sendToTerminal` | `npm install -g opencode` |
+| `opencode-walkthrough.install` | `sendToTerminal` | `sudo npm install -g opencode` |
 | `opencode-walkthrough.runInline` | `sendToTerminal` | `opencode "write a hello world script..." > hello.py` |
 | `opencode-walkthrough.runInteractive` | `sendToTerminal` | `opencode` |
 | `opencode-walkthrough.createAgent` | `sendToTerminal` | `opencode agent create` |
 | `opencode-walkthrough.listAgents` | `sendToTerminal` | `opencode agent list` |
 | `opencode-walkthrough.addMcp` | `sendToTerminal` | `opencode mcp add` |
 | `opencode-walkthrough.listMcp` | `sendToTerminal` | `opencode mcp list` |
-| `opencode-walkthrough.showActions` | `vscode.window.showQuickPick` with 8 actions | — |
+| `opencode-walkthrough.showActions` | `vscode.window.showQuickPick` with 16 actions | — |
+| `opencode-walkthrough.showCliHelp` | `vscode.window.showQuickPick` with 14 CLI reference items | — |
+| `opencode-walkthrough.authLogin` | `sendToTerminal` | `opencode auth login` |
+| `opencode-walkthrough.authList` | `sendToTerminal` | `opencode auth ls` |
+| `opencode-walkthrough.listModels` | `sendToTerminal` | `opencode models` |
+| `opencode-walkthrough.sessionList` | `sendToTerminal` | `opencode session list` |
+| `opencode-walkthrough.stats` | `sendToTerminal` | `opencode stats` |
+| `opencode-walkthrough.upgrade` | `sendToTerminal` | `opencode upgrade` |
+| `opencode-walkthrough.serve` | `sendToTerminal` | `opencode serve` |
+| `opencode-walkthrough.web` | `sendToTerminal` | `opencode web` |
 
 ### Status Bar Items
 
@@ -101,9 +111,9 @@ module.exports = { activate, deactivate };
 | 100 | Left | `$(terminal) OpenCode` | OpenCode — Click to run an action | `opencode-walkthrough.showActions` |
 | 99 | Left | `$(robot) Agents` | OpenCode Agents — Click to list agents | `opencode-walkthrough.listAgents` |
 
-### Quick Pick Menu (`showActions`)
+### Quick Pick Menus
 
-Displays 8 items with product icons:
+**`showActions`** — 16 items:
 
 ```
 $(book) Show Walkthrough
@@ -111,10 +121,20 @@ $(cloud-download) Install CLI
 $(play) Run Inline Prompt
 $(terminal) Start Interactive
 $(robot) Create Agent
-$(robot) List Agents
+$(list-tree) List Agents
+$(key) Auth Login
+$(key) Auth List
 $(plug) Add MCP Server
 $(list-tree) List MCP Servers
+$(symbol-parameter) List Models
+$(list-tree) List Sessions
+$(graph) Stats
+$(server) Start Server
+$(globe) Start Web
+$(arrow-up) Upgrade CLI
 ```
+
+**`showCliHelp`** — 14 CLI reference items with command descriptions:
 
 ---
 
@@ -134,8 +154,18 @@ The extension activates lazily on any of these triggers (`package.json` `activat
 | `onCommand:opencode-walkthrough.createAgent` | Running Create Agent |
 | `onCommand:opencode-walkthrough.listAgents` | Running List Agents |
 | `onView:opencode-walkthrough.mcp` | Revealing the MCP panel view |
+| `onView:opencode-walkthrough.help` | Revealing the help view |
 | `onCommand:opencode-walkthrough.addMcp` | Running Add MCP Server |
 | `onCommand:opencode-walkthrough.listMcp` | Running List MCP Servers |
+| `onCommand:opencode-walkthrough.authLogin` | Running Auth Login |
+| `onCommand:opencode-walkthrough.authList` | Running Auth List |
+| `onCommand:opencode-walkthrough.listModels` | Running List Models |
+| `onCommand:opencode-walkthrough.sessionList` | Running List Sessions |
+| `onCommand:opencode-walkthrough.stats` | Running Stats |
+| `onCommand:opencode-walkthrough.upgrade` | Running Upgrade CLI |
+| `onCommand:opencode-walkthrough.serve` | Running Start Server |
+| `onCommand:opencode-walkthrough.web` | Running Start Web Interface |
+| `onCommand:opencode-walkthrough.showCliHelp` | Opening CLI Help quick pick |
 
 ---
 
@@ -164,7 +194,7 @@ Two view containers are contributed:
 
 ### Commands
 
-9 commands contributed with `$(product-icon)` references:
+18 commands contributed with `$(product-icon)` references:
 
 ```json
 {
@@ -174,9 +204,18 @@ Two view containers are contributed:
   "opencode-walkthrough.runInteractive":   "$(terminal)",
   "opencode-walkthrough.createAgent":      "$(robot)",
   "opencode-walkthrough.listAgents":       "$(list-tree)",
+  "opencode-walkthrough.authLogin":        "$(key)",
+  "opencode-walkthrough.authList":         "$(key)",
   "opencode-walkthrough.addMcp":           "$(plug)",
   "opencode-walkthrough.listMcp":          "$(list-tree)",
-  "opencode-walkthrough.showActions":      "(no icon)"
+  "opencode-walkthrough.listModels":       "$(symbol-parameter)",
+  "opencode-walkthrough.sessionList":      "$(list-tree)",
+  "opencode-walkthrough.stats":            "$(graph)",
+  "opencode-walkthrough.serve":            "$(server)",
+  "opencode-walkthrough.web":              "$(globe)",
+  "opencode-walkthrough.upgrade":          "$(arrow-up)",
+  "opencode-walkthrough.showActions":      "(no icon)",
+  "opencode-walkthrough.showCliHelp":      "$(question)"
 }
 ```
 
@@ -207,11 +246,17 @@ Manage Model Context Protocol servers for OpenCode.
 
 ### Menus
 
+**`menubar`** — Help menu bar integration:
+
+| Menu | Item |
+|---|---|
+| Help → **OpenCode CLI** (submenu) | CLI Help, Run Inline, Interactive, Create Agent, List Agents, Auth Login, Auth List, Add MCP, List MCP, List Models, List Sessions, Stats, Serve, Web, Upgrade |
+
 **`view/title`** — Toolbar buttons shown in view headers:
 
 | View | Buttons |
 |---|---|
-| `opencode-walkthrough.overview` | Show Walkthrough, Install CLI, Run Inline Prompt, Start Interactive, Create Agent |
+| `opencode-walkthrough.overview` | Show Walkthrough, Install CLI, Run Inline Prompt, Start Interactive, Create Agent, CLI Help |
 | `opencode-walkthrough.mcp` | Add MCP Server, List MCP Servers |
 
 **`explorer/context`** — Explorer right-click (only on folders):
@@ -219,7 +264,8 @@ Manage Model Context Protocol servers for OpenCode.
 
 ### Submenus
 
-**ID:** `opencode-walkthrough.submenu` — **Label:** "OpenCode"
+**ID:** `opencode-walkthrough.submenu` — **Label:** "OpenCode"  
+**ID:** `opencode-walkthrough.helpSubmenu` — **Label:** "OpenCode CLI" (shown in Help menu)
 
 Items when right-clicking a folder:
 
@@ -287,8 +333,8 @@ opencode-vscode-walkthrough/
 
 | File | Purpose |
 |---|---|
-| `extension.js` | Plain JS, 79 lines. Registers 9 commands + 2 status bar items. |
-| `package.json` | 290 lines. All contributions: views, menus, walkthrough, commands. |
+| `extension.js` | Plain JS. Registers 18 commands + 2 status bar items. |
+| `package.json` | Manifest with all contributions: views, menus, walkthrough, 18 commands, submenus. |
 | `.vscodeignore` | Excludes `.vscode-test/`, `test/`, SVG icons, etc. from VSIX. |
 | `.vscode-test.mjs` | ES module config for `@vscode/test-cli`. Uses `/tmp` for user-data-dir to avoid macOS socket path length limit. |
 
@@ -337,7 +383,7 @@ Uses `@vscode/test-cli` with `@vscode/test-electron`.
 | Test | Description |
 |---|---|
 | Extension is installed and activates | Verifies extension is found and active |
-| All commands are registered | Asserts all 9 expected commands exist |
+| All commands are registered | Asserts all 18 expected commands exist |
 | Commands can be executed | Runs `showWalkthrough` without error |
 | Status bar items are created | Verifies `createStatusBarItem` API availability |
 | Views are contributed | Verifies `createTreeView` API availability |
@@ -379,7 +425,10 @@ Token available at https://open-vsx.org/user-settings/tokens
 ## Release History
 
 | Tag | Highlights |
-|---|---|
+|---|---|---|
+| `v0.12.0` | Help menu integration, 9 new CLI commands, secondary sidebar view, 18 total commands |
+| `v0.11.1` | Add sudo to install command |
+| `v0.11.0` | Architectural README documenting all components |
 | `v0.10.0` | Comprehensive README |
 | `v0.9.0` | Replace SVG icon with PNG for marketplace |
 | `v0.8.0` | Integration test suite (7 tests) |

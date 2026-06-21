@@ -23,9 +23,18 @@ suite('Extension Test Suite', () => {
       'opencode-walkthrough.runInteractive',
       'opencode-walkthrough.createAgent',
       'opencode-walkthrough.listAgents',
+      'opencode-walkthrough.authLogin',
+      'opencode-walkthrough.authList',
       'opencode-walkthrough.addMcp',
       'opencode-walkthrough.listMcp',
+      'opencode-walkthrough.listModels',
+      'opencode-walkthrough.sessionList',
+      'opencode-walkthrough.stats',
+      'opencode-walkthrough.upgrade',
+      'opencode-walkthrough.serve',
+      'opencode-walkthrough.web',
       'opencode-walkthrough.showActions',
+      'opencode-walkthrough.showCliHelp',
     ];
     for (const cmd of expected) {
       assert.ok(commands.includes(cmd), `Command ${cmd} should be registered`);

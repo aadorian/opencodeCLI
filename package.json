@@ -12,7 +12,9 @@
     "walkthrough",
     "getting-started",
     "ai",
-    "cli"
+    "cli",
+    "help",
+    "commands"
   ],
   "galleryBanner": {
     "color": "#0a0a0a",
@@ -42,11 +44,21 @@
     "onWalkthrough:opencode.gettingStarted",
     "onView:opencode-walkthrough.overview",
     "onCommand:opencode-walkthrough.showActions",
+    "onCommand:opencode-walkthrough.showCliHelp",
     "onCommand:opencode-walkthrough.createAgent",
     "onCommand:opencode-walkthrough.listAgents",
     "onView:opencode-walkthrough.mcp",
+    "onView:opencode-walkthrough.help",
     "onCommand:opencode-walkthrough.addMcp",
-    "onCommand:opencode-walkthrough.listMcp"
+    "onCommand:opencode-walkthrough.listMcp",
+    "onCommand:opencode-walkthrough.authLogin",
+    "onCommand:opencode-walkthrough.authList",
+    "onCommand:opencode-walkthrough.listModels",
+    "onCommand:opencode-walkthrough.sessionList",
+    "onCommand:opencode-walkthrough.stats",
+    "onCommand:opencode-walkthrough.upgrade",
+    "onCommand:opencode-walkthrough.serve",
+    "onCommand:opencode-walkthrough.web"
   ],
   "scripts": {
     "test": "vscode-test"
@@ -117,6 +129,16 @@
         "icon": "$(list-tree)"
       },
       {
+        "command": "opencode-walkthrough.authLogin",
+        "title": "OpenCode: Auth Login",
+        "icon": "$(key)"
+      },
+      {
+        "command": "opencode-walkthrough.authList",
+        "title": "OpenCode: Auth List",
+        "icon": "$(key)"
+      },
+      {
         "command": "opencode-walkthrough.addMcp",
         "title": "OpenCode: Add MCP Server",
         "icon": "$(plug)"
@@ -127,18 +149,63 @@
         "icon": "$(list-tree)"
       },
       {
+        "command": "opencode-walkthrough.listModels",
+        "title": "OpenCode: List Models",
+        "icon": "$(symbol-parameter)"
+      },
+      {
+        "command": "opencode-walkthrough.sessionList",
+        "title": "OpenCode: List Sessions",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "opencode-walkthrough.stats",
+        "title": "OpenCode: Stats",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "opencode-walkthrough.serve",
+        "title": "OpenCode: Start Server",
+        "icon": "$(server)"
+      },
+      {
+        "command": "opencode-walkthrough.web",
+        "title": "OpenCode: Start Web Interface",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "opencode-walkthrough.upgrade",
+        "title": "OpenCode: Upgrade CLI",
+        "icon": "$(arrow-up)"
+      },
+      {
         "command": "opencode-walkthrough.showActions",
         "title": "OpenCode: Show Actions"
+      },
+      {
+        "command": "opencode-walkthrough.showCliHelp",
+        "title": "OpenCode: CLI Help",
+        "icon": "$(question)"
       }
     ],
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Read Documentation](https://opencode.ai)"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Read Documentation](https://opencode.ai)"
       },
       {
         "view": "opencode-walkthrough.mcp",
         "contents": "Manage Model Context Protocol servers for OpenCode.\n\n[Add MCP Server](command:opencode-walkthrough.addMcp)\n[List MCP Servers](command:opencode-walkthrough.listMcp)\n\n[Read MCP Docs](https://opencode.ai/docs/mcp-servers/)"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "opencode-walkthrough.submenu",
+        "label": "OpenCode"
+      },
+      {
+        "id": "opencode-walkthrough.helpSubmenu",
+        "label": "OpenCode CLI"
       }
     ],
     "menus": {
@@ -169,6 +236,11 @@
           "group": "navigation"
         },
         {
+          "command": "opencode-walkthrough.showCliHelp",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
           "command": "opencode-walkthrough.addMcp",
           "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
@@ -177,6 +249,63 @@
           "command": "opencode-walkthrough.listMcp",
           "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
+        }
+      ],
+      "menubar": [
+        {
+          "submenu": "opencode-walkthrough.helpSubmenu",
+          "group": "9_help"
+        }
+      ],
+      "opencode-walkthrough.helpSubmenu": [
+        {
+          "command": "opencode-walkthrough.showCliHelp"
+        },
+        {
+          "submenu": "opencode-walkthrough.submenu",
+          "group": "inline"
+        },
+        {
+          "command": "opencode-walkthrough.runInline"
+        },
+        {
+          "command": "opencode-walkthrough.runInteractive"
+        },
+        {
+          "command": "opencode-walkthrough.createAgent"
+        },
+        {
+          "command": "opencode-walkthrough.listAgents"
+        },
+        {
+          "command": "opencode-walkthrough.authLogin"
+        },
+        {
+          "command": "opencode-walkthrough.authList"
+        },
+        {
+          "command": "opencode-walkthrough.addMcp"
+        },
+        {
+          "command": "opencode-walkthrough.listMcp"
+        },
+        {
+          "command": "opencode-walkthrough.listModels"
+        },
+        {
+          "command": "opencode-walkthrough.sessionList"
+        },
+        {
+          "command": "opencode-walkthrough.stats"
+        },
+        {
+          "command": "opencode-walkthrough.serve"
+        },
+        {
+          "command": "opencode-walkthrough.web"
+        },
+        {
+          "command": "opencode-walkthrough.upgrade"
         }
       ],
       "explorer/context": [
@@ -201,12 +330,6 @@
         }
       ]
     },
-    "submenus": [
-      {
-        "id": "opencode-walkthrough.submenu",
-        "label": "OpenCode"
-      }
-    ],
     "startEntries": [
       {
         "title": "Get Started with OpenCode",
