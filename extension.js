@@ -232,7 +232,7 @@ class ModelsProvider {
       if (this.items.length === 0) {
         this.items.push(new ModelsTreeItem('No models found', 'Configure a provider and auth login', 'info', 'opencode-walkthrough.authLogin'));
       }
-      this.items.push(new ModelsTreeItem('$(sync) Refresh Models', '', 'refresh', 'opencode-walkthrough.listModels'));
+      this.items.push(new ModelsTreeItem('$(sync) Refresh Models', '', 'refresh', 'opencode-walkthrough.refreshModels'));
       this._onDidChangeTreeData.fire();
     });
   }
