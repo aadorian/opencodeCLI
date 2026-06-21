@@ -9,3 +9,6 @@ contact_links:
   - name: Agent Loop feature plan (OpenCode harness)
     url: https://github.com/aadorian/opencodeCLI/blob/master/.github/FEATURE_PLAN_opencode-agent-loop.md
     about: VS Code-style agent loop powered by OpenCode — phased roadmap
+  - name: Open Source Examples (Discussions)
+    url: https://github.com/aadorian/opencodeCLI/discussions/33
+    about: Share public repos, configs, and workflows using OpenCode Walkthrough

@@ -117,6 +117,7 @@
     "wiki:init": "node scripts/init-wiki-browser.js",
     "wiki:publish": "node scripts/wiki-publish.js",
     "wiki:verify": "node scripts/verify-wiki.js",
+    "discussions:sync": "node scripts/sync-discussions.js",
     "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
   },
   "contributes": {
