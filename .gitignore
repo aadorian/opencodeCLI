@@ -1,5 +1,6 @@
 node_modules/
 .vscode-test/
+.wiki-sync/
 *.vsix
 *.log
 .DS_Store

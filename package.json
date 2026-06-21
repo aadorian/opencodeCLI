@@ -112,6 +112,8 @@
     "test": "vscode-test",
     "validate": "node scripts/validate-manifest.js",
     "screenshots": "node scripts/render-screenshots.js",
+    "wiki": "node scripts/sync-wiki.js",
+    "wiki:push": "node scripts/sync-wiki.js --push",
     "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
   },
   "contributes": {

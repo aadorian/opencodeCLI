@@ -488,7 +488,7 @@ We use **GitHub Flow** with Conventional Commits, automated CI, and tag-based re
 | Ruleset definition | [.github/rulesets/master-protection.json](./.github/rulesets/master-protection.json) |
 | Good first issues | [Issue #17](https://github.com/aadorian/opencodeCLI/issues/17) |
 | Agent Loop feature plan | [.github/FEATURE_PLAN_opencode-agent-loop.md](./.github/FEATURE_PLAN_opencode-agent-loop.md) |
-| Building the agent harness (wiki) | [docs/building-opencode-agent-harness.md](./docs/building-opencode-agent-harness.md) |
+| Building the agent harness (wiki) | [GitHub Wiki](https://github.com/aadorian/opencodeCLI/wiki) · [docs/building-opencode-agent-harness.md](./docs/building-opencode-agent-harness.md) · sync: `npm run wiki:push` |
 
 ```bash
 git checkout -b feat/my-change
