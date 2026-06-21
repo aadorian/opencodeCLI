@@ -36,6 +36,132 @@
   "categories": [
     "Education"
   ],
+  "configuration": {
+    "title": "OpenCode",
+    "properties": {
+      "opencode.configPath": {
+        "type": "string",
+        "default": "",
+        "markdownDescription": "Path to the OpenCode config file. Maps to `OPENCODE_CONFIG`"
+      },
+      "opencode.configDir": {
+        "type": "string",
+        "default": "",
+        "markdownDescription": "Path to the OpenCode config directory. Maps to `OPENCODE_CONFIG_DIR`"
+      },
+      "opencode.tuiConfigPath": {
+        "type": "string",
+        "default": "",
+        "markdownDescription": "Path to the TUI config file. Maps to `OPENCODE_TUI_CONFIG`"
+      },
+      "opencode.autoShare": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Automatically share sessions. Maps to `OPENCODE_AUTO_SHARE`"
+      },
+      "opencode.modelsUrl": {
+        "type": "string",
+        "default": "",
+        "markdownDescription": "Custom URL for fetching models configuration. Maps to `OPENCODE_MODELS_URL`"
+      },
+      "opencode.serverPassword": {
+        "type": "string",
+        "default": "",
+        "markdownDescription": "Password for HTTP basic auth on `serve`/`web`. Maps to `OPENCODE_SERVER_PASSWORD`"
+      },
+      "opencode.serverUsername": {
+        "type": "string",
+        "default": "opencode",
+        "markdownDescription": "Username for HTTP basic auth. Maps to `OPENCODE_SERVER_USERNAME`"
+      },
+      "opencode.logLevel": {
+        "type": "string",
+        "default": "",
+        "enum": ["", "DEBUG", "INFO", "WARN", "ERROR"],
+        "markdownDescription": "Log level for the OpenCode CLI. Maps to `--log-level` flag"
+      },
+      "opencode.disableAutoUpdate": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable automatic update checks. Maps to `OPENCODE_DISABLE_AUTOUPDATE`"
+      },
+      "opencode.disablePrune": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable pruning of old data. Maps to `OPENCODE_DISABLE_PRUNE`"
+      },
+      "opencode.disableTerminalTitle": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable automatic terminal title updates. Maps to `OPENCODE_DISABLE_TERMINAL_TITLE`"
+      },
+      "opencode.disableDefaultPlugins": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable default plugins. Maps to `OPENCODE_DISABLE_DEFAULT_PLUGINS`"
+      },
+      "opencode.disableLspDownload": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable automatic LSP server downloads. Maps to `OPENCODE_DISABLE_LSP_DOWNLOAD`"
+      },
+      "opencode.disableAutoCompact": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable automatic context compaction. Maps to `OPENCODE_DISABLE_AUTOCOMPACT`"
+      },
+      "opencode.disableClaudeCode": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable reading from `.claude` (prompt + skills). Maps to `OPENCODE_DISABLE_CLAUDE_CODE`"
+      },
+      "opencode.disableModelsFetch": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable fetching models from remote sources. Maps to `OPENCODE_DISABLE_MODELS_FETCH`"
+      },
+      "opencode.disableMouse": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Disable mouse capture in the TUI. Maps to `OPENCODE_DISABLE_MOUSE`"
+      },
+      "opcode.enableExa": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Enable Exa web search tools. Maps to `OPENCODE_ENABLE_EXA`"
+      },
+      "opencode.experimental": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Enable all experimental features. Maps to `OPENCODE_EXPERIMENTAL`"
+      },
+      "opencode.experimental.planMode": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Enable experimental plan mode. Maps to `OPENCODE_EXPERIMENTAL_PLAN_MODE`"
+      },
+      "opencode.experimental.backgroundSubagents": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Enable background subagent tasks. Maps to `OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`"
+      },
+      "opencode.experimental.nativeLlm": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Enable native LLM request path. Maps to `OPENCODE_EXPERIMENTAL_NATIVE_LLM`"
+      },
+      "opencode.experimental.scout": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Enable Scout subagent. Maps to `OPENCODE_EXPERIMENTAL_SCOUT`"
+      },
+      "opencode.experimental.workspaces": {
+        "type": "boolean",
+        "default": null,
+        "markdownDescription": "Enable workspace support. Maps to `OPENCODE_EXPERIMENTAL_WORKSPACES`"
+      }
+    }
+  },
   "activationEvents": [
     "onCommand:opencode-walkthrough.showWalkthrough",
     "onCommand:opencode-walkthrough.install",
