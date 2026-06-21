@@ -105,6 +105,7 @@
   "main": "./extension.js",
   "scripts": {
     "test": "vscode-test",
+    "validate": "node scripts/validate-manifest.js",
     "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
   },
   "contributes": {
