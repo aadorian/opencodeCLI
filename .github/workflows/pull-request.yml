@@ -16,7 +16,7 @@ jobs:
       - name: Validate branch name
         uses: devskim/action-branch-name@v2
         with:
-          regex: '^(feat|fix|docs|ci|chore|refactor|test|build|perf|style|revert)/[a-z0-9./-]+$|^dependabot/.+$'
+          regex: '^(feat|fix|docs|ci|chore|refactor|test|build|perf|style|revert)/[a-z0-9._/-]+$|^dependabot/.+$'
           regex_syntax: perl
 
   semantic-title:

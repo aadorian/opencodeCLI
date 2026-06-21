@@ -1,0 +1,58 @@
+name: Sync Repository Ruleset
+
+on:
+  workflow_dispatch:
+    inputs:
+      enforcement:
+        description: 'Ruleset enforcement mode'
+        required: true
+        default: disabled
+        type: choice
+        options:
+          - disabled
+          - active
+          - evaluate
+      dry_run:
+        description: 'Print payload only (no API changes)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  administration: write
+  contents: read
+
+jobs:
+  sync-ruleset:
+    name: Apply master protection ruleset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Dry run
+        if: inputs.dry_run == true
+        run: node scripts/apply-ruleset.js --enforcement=${{ inputs.enforcement }} --dry-run
+
+      - name: Apply ruleset
+        if: inputs.dry_run != true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/apply-ruleset.js --enforcement=${{ inputs.enforcement }}
+
+      - name: Summary
+        if: inputs.dry_run != true
+        run: |
+          echo "### Ruleset applied" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Enforcement:** ${{ inputs.enforcement }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Target:** \`master\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Settings:** [Repository rules](https://github.com/${{ github.repository }}/settings/rules)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Use \`disabled\` to configure without blocking, then \`active\` to enforce." >> "$GITHUB_STEP_SUMMARY"
+          echo "Note: \`evaluate\` requires GitHub Enterprise." >> "$GITHUB_STEP_SUMMARY"

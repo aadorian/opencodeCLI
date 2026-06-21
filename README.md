@@ -438,7 +438,8 @@ We use **GitHub Flow** with Conventional Commits, automated CI, and tag-based re
 |-------|-------|
 | Full git workflow | [.github/GIT_WORKFLOW.md](./.github/GIT_WORKFLOW.md) |
 | Contributing | [CONTRIBUTING.md](./CONTRIBUTING.md) |
-| Branch protection | [.github/branch-protection.md](./.github/branch-protection.md) |
+| Branch protection (rulesets) | [.github/branch-protection.md](./.github/branch-protection.md) |
+| Ruleset definition | [.github/rulesets/master-protection.json](./.github/rulesets/master-protection.json) |
 | Good first issues | [Issue #17](https://github.com/aadorian/opencodeCLI/issues/17) |
 
 ```bash

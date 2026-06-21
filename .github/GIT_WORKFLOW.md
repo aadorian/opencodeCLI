@@ -167,10 +167,24 @@ git rebase upstream/master
 | Commit lint | `.github/workflows/commitlint.yml` | PR sync |
 | Release | `.github/workflows/release.yml` | push tag `v*` |
 | Stale bot | `.github/workflows/stale.yml` | daily schedule |
+| Ruleset sync | `.github/workflows/sync-ruleset.yml` | manual (maintainers) |
 | Dependabot | `.github/dependabot.yml` | weekly |
 | Auto-label PRs | `.github/labeler.yml` | PR sync |
 
-## Related docs
+## Branch protection (rulesets)
+
+`master` is protected via a **GitHub Repository Ruleset** defined in [`.github/rulesets/master-protection.json`](./.github/rulesets/master-protection.json).
+
+Maintainers apply or update it with:
+
+```bash
+node scripts/apply-ruleset.js --enforcement=disabled  # configure (no blocking)
+node scripts/apply-ruleset.js --enforcement=active      # enforce
+```
+
+Or run **Actions → Sync Repository Ruleset**. See [branch-protection.md](./branch-protection.md).
+
+---
 
 - [CONTRIBUTING.md](../CONTRIBUTING.md)
 - [Good first issues roadmap](https://github.com/aadorian/opencodeCLI/issues/17)
