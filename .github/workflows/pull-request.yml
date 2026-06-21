@@ -9,6 +9,16 @@ permissions:
   pull-requests: write
 
 jobs:
+  branch-name:
+    name: Branch naming convention
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        uses: devskim/action-branch-name@v2
+        with:
+          regex: '^(feat|fix|docs|ci|chore|refactor|test|build|perf|style|revert)/[a-z0-9./-]+$|^dependabot/.+$'
+          regex_syntax: perl
+
   semantic-title:
     name: Conventional PR title
     runs-on: ubuntu-latest
@@ -61,6 +71,9 @@ jobs:
             - [ ] Tested in Extension Development Host (**F5**)
             - [ ] Walkthrough content updated if applicable
             - [ ] PR title follows [Conventional Commits](https://www.conventionalcommits.org/)
+
+            ### Git workflow
+            See the [Git workflow guide](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/master/.github/GIT_WORKFLOW.md) for branching, commits, and releases.
 
             ### Good first issues
             New contributor? See the [good first issues roadmap](https://github.com/${context.repo.owner}/${context.repo.repo}/issues/17).`;

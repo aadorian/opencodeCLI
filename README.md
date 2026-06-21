@@ -22,6 +22,7 @@ A Visual Studio Code extension that provides an interactive walkthrough and quic
   - [Start Entries](#start-entries)
 - [Project Structure](#project-structure)
 - [Development](#development)
+- [Contributing & Git Workflow](#contributing--git-workflow)
 - [Testing](#testing)
 - [Publishing](#publishing)
 - [Release History](#release-history)
@@ -426,6 +427,28 @@ npx @vscode/vsce package
 ```
 
 Outputs `opencode-walkthrough-0.0.1.vsix`.
+
+---
+
+## Contributing & Git Workflow
+
+We use **GitHub Flow** with Conventional Commits, automated CI, and tag-based releases.
+
+| Topic | Guide |
+|-------|-------|
+| Full git workflow | [.github/GIT_WORKFLOW.md](./.github/GIT_WORKFLOW.md) |
+| Contributing | [CONTRIBUTING.md](./CONTRIBUTING.md) |
+| Branch protection | [.github/branch-protection.md](./.github/branch-protection.md) |
+| Good first issues | [Issue #17](https://github.com/aadorian/opencodeCLI/issues/17) |
+
+```bash
+git checkout -b feat/my-change
+npm run validate && npm test
+git commit -m "feat: describe change"
+gh pr create --title "feat: describe change"
+```
+
+Enable the commit template: `git config commit.template .gitmessage`
 
 ---
 

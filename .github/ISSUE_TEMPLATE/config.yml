@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Good first issues roadmap
+    url: https://github.com/aadorian/opencodeCLI/issues/17
+    about: Ordered list of beginner-friendly issues to extend the extension
+  - name: Git workflow guide
+    url: https://github.com/aadorian/opencodeCLI/blob/master/.github/GIT_WORKFLOW.md
+    about: Branching, commits, PRs, and releases

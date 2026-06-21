@@ -13,7 +13,8 @@ Closes #(issue)
 
 ## Checklist
 
-- [ ] CI checks pass (validate, tests, VSIX package)
+- [ ] Branch name follows convention (`feat/`, `fix/`, `docs/`, `ci/`, etc.) — see [Git workflow](.github/GIT_WORKFLOW.md)
+- [ ] CI checks pass (validate, tests, VSIX package, commit lint)
 - [ ] I have tested my changes in the Extension Development Host (**F5**)
 - [ ] I have updated the walkthrough content if needed
 - [ ] My PR title follows [Conventional Commits](https://www.conventionalcommits.org/) (e.g. `feat: add auth walkthrough step`)
