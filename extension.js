@@ -51,6 +51,15 @@ function sendToTerminal(text) {
   terminal.sendText(fullText);
 }
 
+function getGitBranch(folder) {
+  return new Promise(resolve => {
+    exec('git rev-parse --abbrev-ref HEAD', { cwd: folder }, (err, stdout) => {
+      if (err) return resolve(null);
+      resolve(stdout.trim());
+    });
+  });
+}
+
 function checkInstall() {
   return new Promise(resolve => {
     exec('opencode --version', (err, stdout) => {
@@ -162,6 +171,7 @@ function activate(context) {
       { label: '$(book) Show Walkthrough', command: 'opencode-walkthrough.showWalkthrough' },
       { label: '$(cloud-download) Install CLI', command: 'opencode-walkthrough.install' },
       { label: '$(play) Run Inline Prompt', command: 'opencode-walkthrough.runInline' },
+      { label: '$(folder) Run on Project Files', command: 'opencode-walkthrough.runOnProject' },
       { label: '$(terminal) Start Interactive', command: 'opencode-walkthrough.runInteractive' },
       { label: '$(robot) Create Agent', command: 'opencode-walkthrough.createAgent' },
       { label: '$(list-tree) List Agents', command: 'opencode-walkthrough.listAgents' },
@@ -186,6 +196,7 @@ function activate(context) {
     vscode.window.showQuickPick([
       { label: '$(terminal) opencode', description: 'Start the TUI', command: 'opencode-walkthrough.runInteractive' },
       { label: '$(play) opencode run', description: 'Run a prompt', command: 'opencode-walkthrough.runInline' },
+      { label: '$(folder) opencode run --file', description: 'Run on selected project files', command: 'opencode-walkthrough.runOnProject' },
       { label: '$(robot) opencode agent create', description: 'Create an agent', command: 'opencode-walkthrough.createAgent' },
       { label: '$(list-tree) opencode agent list', description: 'List agents', command: 'opencode-walkthrough.listAgents' },
       { label: '$(key) opencode auth login', description: 'Log in to a provider', command: 'opencode-walkthrough.authLogin' },
@@ -205,12 +216,56 @@ function activate(context) {
     });
   });
 
+  const runOnProjectCmd = vscode.commands.registerCommand('opencode-walkthrough.runOnProject', async () => {
+    const folders = vscode.workspace.workspaceFolders;
+    if (!folders || folders.length === 0) {
+      vscode.window.showErrorMessage('Open a workspace folder first.');
+      return;
+    }
+    const folder = folders.length === 1
+      ? folders[0]
+      : await vscode.window.showQuickPick(
+          folders.map(f => ({ label: f.name, description: f.uri.fsPath, folder: f })),
+          { placeHolder: 'Select a project' }
+        ).then(p => p?.folder);
+    if (!folder) return;
+
+    const branch = await getGitBranch(folder.uri.fsPath);
+    const branchLabel = branch ? ` $(git-branch) ${branch}` : '';
+
+    const uris = await vscode.window.showOpenDialog({
+      canSelectFiles: true,
+      canSelectFolders: false,
+      canSelectMany: true,
+      defaultUri: folder.uri,
+      openLabel: 'Select files for OpenCode',
+    });
+    if (!uris || uris.length === 0) return;
+
+    const prompt = await vscode.window.showInputBox({
+      placeHolder: 'What do you want OpenCode to do?',
+      prompt: `Running in ${folder.name}${branchLabel}`,
+      ignoreFocusOut: true,
+    });
+    if (!prompt) return;
+
+    const fileFlags = uris.map(u => `--file "${u.fsPath}"`).join(' ');
+    const term = vscode.window.createTerminal({ name: 'OpenCode', cwd: folder.uri.fsPath });
+    term.show();
+    const envPrefix = buildEnvExports();
+    const fullCmd = envPrefix.length > 0
+      ? envPrefix.join(' && ') + ` && opencode run ${fileFlags} "${prompt}"`
+      : `opencode run ${fileFlags} "${prompt}"`;
+    term.sendText(fullCmd);
+  });
+
   context.subscriptions.push(
     showWalkthrough, installCmd, runCmd, interactiveCmd,
     createAgentCmd, listAgentsCmd, addMcpCmd, listMcpCmd,
     authLoginCmd, authListCmd, modelsCmd, sessionListCmd,
     statsCmd, upgradeCmd, serveCmd, webCmd,
-    statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd
+    statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
+    runOnProjectCmd
   );
 }
 

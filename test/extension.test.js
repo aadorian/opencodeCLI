@@ -33,6 +33,7 @@ suite('Extension Test Suite', () => {
       'opencode-walkthrough.upgrade',
       'opencode-walkthrough.serve',
       'opencode-walkthrough.web',
+      'opencode-walkthrough.runOnProject',
       'opencode-walkthrough.showActions',
       'opencode-walkthrough.showCliHelp',
     ];

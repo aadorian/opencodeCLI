@@ -184,7 +184,8 @@
     "onCommand:opencode-walkthrough.stats",
     "onCommand:opencode-walkthrough.upgrade",
     "onCommand:opencode-walkthrough.serve",
-    "onCommand:opencode-walkthrough.web"
+    "onCommand:opencode-walkthrough.web",
+    "onCommand:opencode-walkthrough.runOnProject"
   ],
   "scripts": {
     "test": "vscode-test"
@@ -305,6 +306,11 @@
         "icon": "$(arrow-up)"
       },
       {
+        "command": "opencode-walkthrough.runOnProject",
+        "title": "OpenCode: Run on Project Files",
+        "icon": "$(folder)"
+      },
+      {
         "command": "opencode-walkthrough.showActions",
         "title": "OpenCode: Show Actions"
       },
@@ -317,7 +323,7 @@
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Read Documentation](https://opencode.ai)\n\n---\n**Shortcuts**\n\n`$(zap)` Show Actions: `⌥⌘O`\n`$(play)` Inline: `⌥⌘I`\n`$(terminal)` Interactive: `⌥⌘T`\n`$(question)` CLI Help: `⌥⌘H`\n`$(graph)` Stats: `⌥⌘S`"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Read Documentation](https://opencode.ai)\n\n---\n**Shortcuts**\n\n`$(zap)` Show Actions: `⌥⌘O`\n`$(play)` Inline: `⌥⌘I`\n`$(folder)` Project: `⌥⌘P`\n`$(terminal)` Interactive: `⌥⌘T`\n`$(question)` CLI Help: `⌥⌘H`\n`$(graph)` Stats: `⌥⌘S`"
       },
       {
         "view": "opencode-walkthrough.mcp",
@@ -354,6 +360,12 @@
         "key": "ctrl+alt+s",
         "mac": "cmd+alt+s",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "opencode-walkthrough.runOnProject",
+        "key": "ctrl+alt+p",
+        "mac": "cmd+alt+p",
+        "when": "editorTextFocus"
       }
     ],
     "submenus": [
@@ -380,6 +392,11 @@
         },
         {
           "command": "opencode-walkthrough.runInline",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.runOnProject",
           "when": "view == opencode-walkthrough.overview",
           "group": "navigation"
         },
@@ -437,6 +454,9 @@
         },
         {
           "command": "opencode-walkthrough.runInline"
+        },
+        {
+          "command": "opencode-walkthrough.runOnProject"
         },
         {
           "command": "opencode-walkthrough.runInteractive"
