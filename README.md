@@ -488,6 +488,7 @@ We use **GitHub Flow** with Conventional Commits, automated CI, and tag-based re
 | Ruleset definition | [.github/rulesets/master-protection.json](./.github/rulesets/master-protection.json) |
 | Good first issues | [Issue #17](https://github.com/aadorian/opencodeCLI/issues/17) |
 | Agent Loop feature plan | [.github/FEATURE_PLAN_opencode-agent-loop.md](./.github/FEATURE_PLAN_opencode-agent-loop.md) |
+| Building the agent harness (wiki) | [docs/building-opencode-agent-harness.md](./docs/building-opencode-agent-harness.md) |
 
 ```bash
 git checkout -b feat/my-change
@@ -506,7 +507,7 @@ Uses `@vscode/test-cli` with `@vscode/test-electron`.
 
 ### Test Suite
 
-7 tests in `test/extension.test.js`:
+7 tests in `test/extension.test.js` plus 8 harness unit tests in `test/harness.test.js` (17 total):
 
 | Test | Description |
 |---|---|
