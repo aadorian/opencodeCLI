@@ -6,3 +6,6 @@ contact_links:
   - name: Git workflow guide
     url: https://github.com/aadorian/opencodeCLI/blob/master/.github/GIT_WORKFLOW.md
     about: Branching, commits, PRs, and releases
+  - name: Agent Loop feature plan (OpenCode harness)
+    url: https://github.com/aadorian/opencodeCLI/blob/master/.github/FEATURE_PLAN_opencode-agent-loop.md
+    about: VS Code-style agent loop powered by OpenCode — phased roadmap

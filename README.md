@@ -487,6 +487,7 @@ We use **GitHub Flow** with Conventional Commits, automated CI, and tag-based re
 | Branch protection (rulesets) | [.github/branch-protection.md](./.github/branch-protection.md) |
 | Ruleset definition | [.github/rulesets/master-protection.json](./.github/rulesets/master-protection.json) |
 | Good first issues | [Issue #17](https://github.com/aadorian/opencodeCLI/issues/17) |
+| Agent Loop feature plan | [.github/FEATURE_PLAN_opencode-agent-loop.md](./.github/FEATURE_PLAN_opencode-agent-loop.md) |
 
 ```bash
 git checkout -b feat/my-change
