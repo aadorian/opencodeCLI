@@ -186,17 +186,17 @@ Depends on Phase 0 bug fixes (#1, #8, #14) and optionally Usage view (#37) for c
 
 ---
 
-## Release train (suggested)
+## Release train
 
-| Milestone | Scope | Target issues |
-| --- | --- | --- |
-| **v0.0.2** | Bug fixes | #1, #3–#5, #7, #11–#12, #14–#15, #16 |
-| **v0.1.0** | UX + **Usage/spend [#37](https://github.com/aadorian/opencodeCLI/issues/37)** | #2, #18–#19, #22–#23, #37 |
-| **v0.2.0** | Onboarding | #20–#21, #24–#26, #8 |
-| **v0.3.0** | Agent harness Phase 0–1 | #31 children |
-| **v1.0.0** | Stable harness + eval | #31 Phase 2–4 |
+| Milestone | Due | Scope | Issues |
+| --- | --- | --- | --- |
+| [**v0.0.2**](https://github.com/aadorian/opencodeCLI/milestone/1) | 2026-07-15 | Bug fixes | #1, #3–#5, #7, #11–#12, #14–#16 |
+| [**v0.1.0**](https://github.com/aadorian/opencodeCLI/milestone/2) | 2026-08-31 | UX + usage [#37](https://github.com/aadorian/opencodeCLI/issues/37) | #2, #6, #9–#10, #17–#19, #22–#23, #37 |
+| [**v0.2.0**](https://github.com/aadorian/opencodeCLI/milestone/3) | 2026-10-31 | Onboarding & sessions | #8, #20–#21, #24–#26 |
+| [**v0.3.0**](https://github.com/aadorian/opencodeCLI/milestone/4) | 2026-12-31 | Harness Phase 0–1 | #13, #27–#28, #31 |
+| [**v1.0.0**](https://github.com/aadorian/opencodeCLI/milestone/5) | 2027-06-30 | Harness GA | Epic #31 Phases 2–4 |
 
-Create milestones in **Issues → Milestones** and assign PRs as they merge.
+All open issues and PRs are assigned. Details: [MILESTONES.md](./MILESTONES.md).
 
 ---
 
@@ -214,6 +214,7 @@ Create milestones in **Issues → Milestones** and assign PRs as they merge.
 
 - [OpenCode CLI docs](https://opencode.ai/docs/cli/) — commands, flags, environment variables
 - [OpenCode stats command](https://opencode.ai/docs/cli/#stats) — token usage and cost statistics
+- [Extension milestones](./MILESTONES.md)
 - [Good first issues #17](https://github.com/aadorian/opencodeCLI/issues/17)
 - [Usage & spend in VS Code #37](https://github.com/aadorian/opencodeCLI/issues/37)
 - [Agent Loop epic #31](https://github.com/aadorian/opencodeCLI/issues/31)
