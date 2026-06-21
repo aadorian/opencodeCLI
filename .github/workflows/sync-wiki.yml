@@ -1,0 +1,49 @@
+name: Sync Wiki
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - ci/github-actions-collaboration
+    paths:
+      - 'docs/**'
+      - 'scripts/sync-wiki.js'
+      - '.github/workflows/sync-wiki.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare wiki files
+        run: node scripts/sync-wiki.js
+
+      - name: Push to GitHub Wiki
+        env:
+          WIKI_DIR: .wiki-sync
+        run: |
+          cd "$WIKI_DIR"
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b master
+          git add .
+          git commit -m "docs: sync wiki from docs/"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git"
+          git push -u origin master --force
+
+      - name: Verify wiki pages
+        run: |
+          pages=$(gh api "repos/${{ github.repository }}/wiki/pages" --jq 'length' || echo "0")
+          echo "Wiki page count: $pages"
+          if [ "$pages" = "0" ]; then
+            echo "::error::Wiki has no pages after sync"
+            exit 1
+          fi
+          gh api "repos/${{ github.repository }}/wiki/pages" --jq '.[].title'
