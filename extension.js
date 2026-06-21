@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const { exec } = require('child_process');
 
 function sendToTerminal(text) {
   const terminal = vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode');
@@ -6,13 +7,27 @@ function sendToTerminal(text) {
   terminal.sendText(text);
 }
 
+function checkInstall() {
+  return new Promise(resolve => {
+    exec('opencode --version', (err, stdout) => {
+      if (err) return resolve(null);
+      resolve(stdout.trim());
+    });
+  });
+}
+
 function activate(context) {
   const showWalkthrough = vscode.commands.registerCommand('opencode-walkthrough.showWalkthrough', () => {
     vscode.commands.executeCommand('workbench.action.openWalkthrough', 'aadorian.opencode-walkthrough#opencode.gettingStarted');
   });
 
-  const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', () => {
-    sendToTerminal('sudo npm install -g opencode');
+  const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', async () => {
+    const version = await checkInstall();
+    if (version) {
+      vscode.window.showInformationMessage(`OpenCode is already installed (${version})`);
+    } else {
+      sendToTerminal('sudo npm install -g opencode');
+    }
   });
 
   const runCmd = vscode.commands.registerCommand('opencode-walkthrough.runInline', () => {
