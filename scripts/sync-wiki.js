@@ -88,6 +88,26 @@ function run(cmd, opts = {}) {
   });
 }
 
+function wikiRemoteUrl() {
+  const token = process.env.WIKI_PUSH_TOKEN || process.env.GITHUB_TOKEN;
+  if (token) {
+    return `https://x-access-token:${token}@github.com/${repo}.wiki.git`;
+  }
+  return wikiRemote;
+}
+
+function setupGitAuth() {
+  const token = process.env.WIKI_PUSH_TOKEN || process.env.GITHUB_TOKEN;
+  if (token) {
+    execSync('git config --global user.name "github-actions[bot]"', { stdio: 'inherit' });
+    execSync('git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"', {
+      stdio: 'inherit',
+    });
+    return;
+  }
+  execSync('gh auth setup-git', { stdio: 'inherit' });
+}
+
 function pushWiki() {
   prepareWikiFiles();
   const homeContent = fs.readFileSync(path.join(wikiDir, 'Home.md'), 'utf8');
@@ -99,17 +119,18 @@ function pushWiki() {
   }
   fs.mkdirSync(workDir, { recursive: true });
 
-  execSync('gh auth setup-git', { stdio: 'inherit' });
+  setupGitAuth();
+  const remote = wikiRemoteUrl();
 
-  const lsRemote = spawnSync('git', ['ls-remote', wikiRemote], { encoding: 'utf8' });
+  const lsRemote = spawnSync('git', ['ls-remote', remote], { encoding: 'utf8' });
   const wikiExists = lsRemote.status === 0 && lsRemote.stdout.trim().length > 0;
 
   if (wikiExists) {
-    run(`git clone ${wikiRemote} .`, { cwd: workDir });
+    run(`git clone ${remote} .`, { cwd: workDir });
   } else {
     run('git init', { cwd: workDir });
     run('git checkout -b master', { cwd: workDir });
-    run(`git remote add origin ${wikiRemote}`, { cwd: workDir, inherit: false });
+    run(`git remote add origin ${remote}`, { cwd: workDir, inherit: false });
   }
 
   fs.writeFileSync(path.join(workDir, 'Home.md'), homeContent);

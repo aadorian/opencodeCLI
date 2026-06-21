@@ -8,6 +8,7 @@ on:
     paths:
       - 'docs/**'
       - 'scripts/sync-wiki.js'
+      - 'scripts/verify-wiki.js'
       - '.github/workflows/sync-wiki.yml'
 
 permissions:
@@ -20,24 +21,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare wiki files
-        run: node scripts/sync-wiki.js
-
-      - name: Push to GitHub Wiki
-        id: push
-        continue-on-error: true
+      - name: Push wiki pages
         env:
-          WIKI_DIR: .wiki-sync
-        run: |
-          cd "$WIKI_DIR"
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b master
-          git add .
-          git commit -m "docs: sync wiki from docs/"
-          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git"
-          git push -u origin master --force
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-wiki.js --push
 
       - name: Verify wiki pages
         run: node scripts/verify-wiki.js
