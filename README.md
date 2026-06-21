@@ -308,8 +308,9 @@ opencode-vscode-walkthrough/
 │   └── launch.json              # Debug configs: Run Extension + Extension Tests
 ├── .vscode-test.mjs             # Test runner config (mocha TDD, user-data-dir)
 ├── .vscodeignore                # Files excluded from VSIX packaging
-├── extension.js                 # Main extension entry point (79 lines)
-├── package.json                 # Manifest with all contributions (290 lines)
+├── .env.example                 # Environment variables template
+├── extension.js                 # Main extension entry point
+├── package.json                 # Manifest with all contributions
 ├── media/
 │   ├── opencode-icon.png        # PNG icon (128x128, for marketplace)
 │   ├── opencode-icon.svg        # SVG source (codicon-style, not packaged)
@@ -348,6 +349,20 @@ opencode-vscode-walkthrough/
 - [Node.js](https://nodejs.org/) 18+
 - [OpenCode CLI](https://opencode.ai) (optional, for testing commands)
 
+### Environment Variables
+
+Copy `.env.example` to `.env` and configure your paths and tokens:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description |
+|---|---|
+| `EXTENSION_PATH` | Absolute path to the extension directory |
+| `VSCE_PAT` | VS Code Marketplace PAT ([docs](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace)) |
+| `OVSX_PAT` | Open VSX Registry PAT ([open-vsx.org](https://open-vsx.org/user-settings/tokens)) |
+
 ### Setup
 
 ```bash
@@ -356,11 +371,21 @@ npm install
 
 ### Run Extension
 
+Using the path from your `.env`:
+
 ```bash
-code --extensionDevelopmentPath=.
+source .env && code --extensionDevelopmentPath="$EXTENSION_PATH"
 ```
 
-Or press `F5` in VS Code with the "Run Extension" launch config.
+Or directly:
+
+```bash
+code --extensionDevelopmentPath="/absolute/path/to/opencode-vscode-walkthrough"
+```
+
+You can also press `F5` in VS Code with the "Run Extension" launch config.
+
+For more on sideloading extensions, see the [VS Code extension marketplace docs](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace).
 
 ### Package
 
@@ -408,17 +433,21 @@ Use the "Extension Tests" launch config in `.vscode/launch.json`.
 
 ### VS Code Marketplace
 
+Publish using the token from your `.env` or pass it directly:
+
 ```bash
-npx @vscode/vsce publish -p <token>
+source .env && npx @vscode/vsce publish -p "$VSCE_PAT"
 ```
+
+See the [VS Code extension marketplace docs](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace) for token setup.
 
 ### Open VSX Registry
 
 ```bash
-npx ovsx publish opencode-walkthrough-0.0.1.vsix -p <token>
+source .env && npx ovsx publish opencode-walkthrough-0.0.1.vsix -p "$OVSX_PAT"
 ```
 
-Token available at https://open-vsx.org/user-settings/tokens
+Get a token at https://open-vsx.org/user-settings/tokens
 
 ---
 

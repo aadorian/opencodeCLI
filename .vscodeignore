@@ -2,6 +2,8 @@
 .gitignore
 .git/**
 .github/**
+.env
+.env.example
 node_modules/
 .vscode-test/
 *.vsix
