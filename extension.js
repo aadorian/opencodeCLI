@@ -634,7 +634,7 @@ function activate(context) {
   });
 
   const showWalkthrough = vscode.commands.registerCommand('opencode-walkthrough.showWalkthrough', () => {
-    vscode.commands.executeCommand('workbench.action.openWalkthrough', 'aadorian.opencode-walkthrough#opencode.gettingStarted');
+    vscode.commands.executeCommand('workbench.action.openWalkthrough', 'AlejandroAdorjan.opencode-walkthrough#opencode.gettingStarted');
   });
 
   const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', async () => {

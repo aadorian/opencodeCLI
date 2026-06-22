@@ -5,7 +5,7 @@ suite('Extension Test Suite', () => {
   let extension;
 
   suiteSetup(async () => {
-    extension = vscode.extensions.getExtension('aadorian.opencode-walkthrough');
+    extension = vscode.extensions.getExtension('AlejandroAdorjan.opencode-walkthrough');
     await extension?.activate();
   });
 
@@ -70,7 +70,7 @@ suite('Extension Test Suite', () => {
     const pkg = extension?.packageJSON;
     assert.ok(pkg, 'Extension should have a package.json');
     assert.equal(pkg.name, 'opencode-walkthrough');
-    assert.equal(pkg.publisher, 'aadorian');
+    assert.equal(pkg.publisher, 'AlejandroAdorjan');
     assert.ok(pkg.contributes?.commands?.length > 0, 'Should contribute commands');
     assert.ok(pkg.contributes?.viewsContainers, 'Should contribute view containers');
     assert.ok(pkg.contributes?.views, 'Should contribute views');
@@ -81,7 +81,7 @@ suite('Extension Test Suite', () => {
     await assert.doesNotReject(
       vscode.commands.executeCommand(
         'workbench.action.openWalkthrough',
-        'aadorian.opencode-walkthrough#opencode.gettingStarted'
+        'AlejandroAdorjan.opencode-walkthrough#opencode.gettingStarted'
       )
     );
   });

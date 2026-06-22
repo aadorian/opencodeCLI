@@ -6,6 +6,10 @@
 .env.example
 node_modules/
 .vscode-test/
+.vscode/**
+.wiki-browser-profile/**
+.wiki-push/**
+.wiki-sync/**
 *.vsix
 *.log
 media/.DS_Store
