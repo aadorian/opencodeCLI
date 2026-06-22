@@ -1,0 +1,80 @@
+name: Pull Request metadata
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  triage:
+    name: Assign, label, and link issue metadata
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply suggested PR metadata
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+            const title = pr.title || '';
+
+            const labels = new Set();
+
+            // Map Conventional Commit prefix → repo label
+            const prefixLabels = {
+              'fix': 'bug',
+              'feat': 'enhancement',
+              'docs': 'documentation',
+              'test': 'testing',
+              'ci': 'ci',
+            };
+            const prefix = title.split(':')[0]?.trim().toLowerCase();
+            if (prefixLabels[prefix]) {
+              labels.add(prefixLabels[prefix]);
+            }
+
+            // Mirror labels from linked issue (Closes/Fixes/Resolves #N)
+            const issueRefs = [...body.matchAll(/(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)/gi)];
+            for (const match of issueRefs) {
+              const issueNumber = parseInt(match[1], 10);
+              try {
+                const { data: issue } = await github.rest.issues.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                });
+                for (const label of issue.labels) {
+                  if (typeof label === 'object' && label.name) {
+                    labels.add(label.name);
+                  }
+                }
+              } catch (err) {
+                core.warning(`Could not read issue #${issueNumber}: ${err.message}`);
+              }
+            }
+
+            // Assign PR author (shows progress in sidebar)
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              assignees: [pr.user.login],
+            });
+
+            if (labels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: [...labels],
+              });
+            }
+
+            core.summary.addRaw(`Applied metadata to PR #${pr.number}:\n`);
+            core.summary.addRaw(`- **Assignee:** @${pr.user.login}\n`);
+            core.summary.addRaw(`- **Labels:** ${[...labels].join(', ') || '(none)'}\n`);
+            core.summary.addRaw(`- **Reviewers:** requested via CODEOWNERS\n`);
+            await core.summary.write();
