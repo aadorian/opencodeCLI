@@ -6,7 +6,12 @@ const { execSync, spawnSync } = require('child_process');
 const REPO = 'aadorian/opencodeCLI';
 const WIKI_URL = `https://github.com/${REPO}/wiki`;
 const WIKI_REMOTE = `https://github.com/${REPO}.wiki.git`;
-const EXPECTED = ['Home', 'Building-the-OpenCode-Agent-Harness'];
+const EXPECTED = [
+  'Home',
+  'Building-the-OpenCode-Agent-Harness',
+  'Practical-Workflow-Examples',
+  'Troubleshooting',
+];
 
 function listRemoteFiles() {
   const out = execSync(`git ls-remote --heads ${WIKI_REMOTE}`, { encoding: 'utf8' });
