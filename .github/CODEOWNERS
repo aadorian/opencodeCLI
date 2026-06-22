@@ -7,3 +7,6 @@
 # Extension core
 /extension.js @aadorian
 /package.json @aadorian
+/test/ @aadorian
+/docs/ @aadorian
+/walkthroughs/ @aadorian

@@ -39,6 +39,8 @@ git config commit.template .gitmessage
 3. Open the project in VS Code
 4. Press `F5` to launch the Extension Development Host
 
+See the full **[extension roadmap](.github/ROADMAP.md)** and the ordered checklist in [issue #17](https://github.com/aadorian/opencodeCLI/issues/17).
+
 ## Making Changes
 
 - Follow the existing code style
@@ -74,6 +76,28 @@ New contributor? Start with the [good first issues roadmap](https://github.com/a
 ## Releases
 
 Maintainers cut releases by tagging `v*` on `master`. See [Git workflow — Releases](./.github/GIT_WORKFLOW.md#releases).
+
+### PR sidebar metadata
+
+When you fix an issue or open a PR, do not leave the sidebar empty. Use **`Closes #N`** in the body and a Conventional Commit title so CI can fill most fields automatically.
+
+| Field | How it gets set |
+| --- | --- |
+| **Reviewers** | [CODEOWNERS](.github/CODEOWNERS) → review requested from `@aadorian` |
+| **Assignees** | PR author (automatic via [pull-request-metadata workflow](.github/workflows/pull-request-metadata.yml)) |
+| **Labels** | PR title prefix + linked issue labels + [path-based labeler](.github/labeler.yml) |
+| **Milestone** | Maintainer assigns when scheduling a release |
+| **Projects** | Optional — add to your GitHub Project board if you use one |
+
+Full guide: [.github/PR_METADATA.md](.github/PR_METADATA.md)
+
+Example for a bug fix PR:
+
+```bash
+gh pr create --title "fix: wire Models tree Refresh to refreshModels" --body "Closes #14"
+# After merge workflow runs: assignee + labels bug, good first issue
+gh pr edit <number> --add-reviewer aadorian --milestone "v0.0.2"  # milestone when it exists
+```
 
 ## Code of Conduct
 

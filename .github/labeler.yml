@@ -3,6 +3,7 @@ documentation:
       - any-glob-to-any-file:
           - '**/*.md'
           - 'walkthroughs/**'
+          - 'docs/**'
           - '.github/**'
 
 enhancement:
@@ -10,12 +11,14 @@ enhancement:
       - any-glob-to-any-file:
           - 'extension.js'
           - 'package.json'
+          - 'lib/**'
           - 'snippets/**'
 
 bug:
   - changed-files:
       - any-glob-to-any-file:
           - 'extension.js'
+          - 'lib/**'
 
 testing:
   - changed-files:
@@ -27,4 +30,4 @@ testing:
 ci:
   - changed-files:
       - any-glob-to-any-file:
-          - '.github/workflows/**'
+          - '.github/**'
