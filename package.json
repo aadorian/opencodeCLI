@@ -105,7 +105,8 @@
   "main": "./extension.js",
   "scripts": {
     "test": "vscode-test",
-    "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
+    "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\"",
+    "publish": "npx @vscode/vsce package --no-dependencies"
   },
   "contributes": {
     "configuration": {
