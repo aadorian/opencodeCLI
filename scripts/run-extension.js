@@ -2,7 +2,7 @@
 'use strict';
 
 const { execSync, spawn } = require('child_process');
-const { launchExtensionHost } = require('../lib/runExtension');
+const { formatEditorNotFoundMessage, launchExtensionHost } = require('../lib/runExtension');
 
 function editorOnPath(name) {
   try {
@@ -23,8 +23,7 @@ const result = launchExtensionHost({
 });
 
 if (!result.launched) {
-  console.error('Could not find cursor or code on PATH.');
-  console.error('Install Cursor/VS Code, or press F5 with the "Run Extension" launch config.');
+  console.error(formatEditorNotFoundMessage());
   process.exit(1);
 }
 
