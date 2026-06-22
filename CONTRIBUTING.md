@@ -39,6 +39,8 @@ git config commit.template .gitmessage
 3. Open the project in VS Code
 4. Press `F5` to launch the Extension Development Host
 
+See the full **[extension roadmap](.github/ROADMAP.md)** and the ordered checklist in [issue #17](https://github.com/aadorian/opencodeCLI/issues/17).
+
 ## Making Changes
 
 - Follow the existing code style
