@@ -501,7 +501,7 @@ Launch the Extension Development Host (opens a new Cursor/VS Code window with th
 npm run run
 ```
 
-This runs `scripts/run-extension.js`, which looks for `cursor` then `code` on your PATH and passes `--extensionDevelopmentPath` pointing at this repo. Override paths with environment variables:
+This runs `scripts/run-extension.js`, which looks for a supported IDE CLI on your PATH in this order: **`code`** (VS Code) → **`code-insiders`** (VS Code Insiders) → **`cursor`**. If none are found, it prints download links for each editor. Override paths with environment variables:
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
@@ -511,11 +511,7 @@ This runs `scripts/run-extension.js`, which looks for `cursor` then `code` on yo
 Alternatives:
 
 - Press **F5** in VS Code/Cursor with the **Run Extension** launch config (`.vscode/launch.json`).
-- CLI directly:
-
-  ```bash
-  cursor --extensionDevelopmentPath="/absolute/path/to/opencodeCLI" "/absolute/path/to/opencodeCLI"
-  ```
+- CLI directly (replace `code` with `code-insiders` or `cursor` as needed):
 
   ```bash
   code --extensionDevelopmentPath="/absolute/path/to/opencodeCLI" "/absolute/path/to/opencodeCLI"

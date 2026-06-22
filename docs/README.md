@@ -2,6 +2,7 @@
 
 | Article | Description |
 |---------|-------------|
+| [Installing OpenCode](./installation.md) | CLI install for all platforms, providers, `/init`, and extension setup ([opencode.ai/docs](https://opencode.ai/docs)) |
 | [Building the OpenCode Agent Harness](./building-opencode-agent-harness.md) | How we built a VS Code–native agent loop on top of the OpenCode CLI |
 | [Practical Workflow Examples](./practical-workflow-examples.md) | Step-by-step walkthroughs: plan → build handoff, agent chat, session resume, multi-agent flows |
 | [Troubleshooting & FAQ](./troubleshooting.md) | PATH, env vars, terminal shells, harness errors — diagnosis matrix |
