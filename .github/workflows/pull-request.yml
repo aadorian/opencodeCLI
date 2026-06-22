@@ -1,0 +1,105 @@
+name: Pull Request
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  branch-name:
+    name: Branch naming convention
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        shell: bash
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          pattern='^(feat|fix|docs|ci|chore|refactor|test|build|perf|style|revert)/[a-z0-9._/-]+$|^dependabot/.+$'
+          if [[ ! "$BRANCH" =~ $pattern ]]; then
+            echo "::error title=Invalid branch name::Branch '$BRANCH' must match type/description (e.g. feat/my-feature). See .github/GIT_WORKFLOW.md"
+            exit 1
+          fi
+          echo "Branch name OK: $BRANCH"
+
+  semantic-title:
+    name: Conventional PR title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            PR title subject must start with a lowercase letter (Conventional Commits).
+
+  review-guide:
+    name: Review collaboration guide
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - name: Post review instructions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## Thanks for your pull request! 🎉
+
+            CI will run extension tests and package a VSIX artifact you can download from the **Checks** tab.
+
+            ### Review locally (recommended)
+            1. Check out this branch: \`git fetch origin pull/${context.payload.pull_request.number}/head:pr-${context.payload.pull_request.number} && git checkout pr-${context.payload.pull_request.number}\`
+            2. Open the repo in VS Code and press **F5** to launch the Extension Development Host
+            3. Exercise your changes in the sidebar, commands, and walkthrough
+
+            ### Review in VS Code with GitHub Pull Requests
+            Install the [GitHub Pull Requests extension](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) to browse, comment, and validate this PR without leaving the editor — the same workflow described in [GitHub Pull Requests in VS Code](https://code.visualstudio.com/blogs/2018/09/10/introducing-github-pullrequests).
+
+            ### Checklist
+            - [ ] CI checks pass (validate, tests, VSIX package)
+            - [ ] Tested in Extension Development Host (**F5**)
+            - [ ] Walkthrough content updated if applicable
+            - [ ] PR title follows [Conventional Commits](https://www.conventionalcommits.org/)
+
+            ### Git workflow
+            See the [Git workflow guide](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/master/.github/GIT_WORKFLOW.md) for branching, commits, and releases.
+
+            ### Good first issues
+            New contributor? See the [good first issues roadmap](https://github.com/${context.repo.owner}/${context.repo.repo}/issues/17).`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body,
+            });
+
+  label:
+    name: Label PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Label based on changed files
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

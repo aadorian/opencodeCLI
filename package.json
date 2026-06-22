@@ -100,11 +100,24 @@
     "onCommand:opencode-walkthrough.refreshModels",
     "onView:opencode-walkthrough.agents",
     "onView:opencode-walkthrough.models",
-    "onView:opencode-walkthrough.sessions"
+    "onView:opencode-walkthrough.sessions",
+    "onView:opencode-walkthrough.agent",
+    "onCommand:opencode-walkthrough.startAgent",
+    "onCommand:opencode-walkthrough.cancelAgent",
+    "onCommand:opencode-walkthrough.openAgentPanel",
+    "onCommand:opencode-walkthrough.resumeSession"
   ],
   "main": "./extension.js",
   "scripts": {
     "test": "vscode-test",
+    "validate": "node scripts/validate-manifest.js",
+    "screenshots": "node scripts/render-screenshots.js",
+    "wiki": "node scripts/sync-wiki.js",
+    "wiki:push": "node scripts/sync-wiki.js --push",
+    "wiki:init": "node scripts/init-wiki-browser.js",
+    "wiki:publish": "node scripts/wiki-publish.js",
+    "wiki:verify": "node scripts/verify-wiki.js",
+    "discussions:sync": "node scripts/sync-discussions.js",
     "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
   },
   "contributes": {
@@ -238,6 +251,73 @@
           "type": "boolean",
           "default": null,
           "markdownDescription": "Enable workspace support. Maps to `OPENCODE_EXPERIMENTAL_WORKSPACES`"
+        },
+        "opencode.harness.maxRounds": {
+          "type": "number",
+          "default": 25,
+          "minimum": 1,
+          "maximum": 100,
+          "markdownDescription": "Maximum agent loop rounds per user turn before stopping."
+        },
+        "opencode.harness.serverUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:4096",
+          "markdownDescription": "Local URL for `opencode serve` when using the agent harness."
+        },
+        "opencode.harness.autoStartServer": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Automatically start `opencode serve` when running the agent harness."
+        },
+        "opencode.harness.toolConfirmation": {
+          "type": "string",
+          "default": "smart",
+          "enum": [
+            "always",
+            "smart",
+            "never"
+          ],
+          "markdownDescription": "When to confirm destructive tool calls from the agent harness."
+        },
+        "opencode.harness.customInstructions": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Custom instructions injected into every harness-initiated session."
+        },
+        "opencode.harness.context.includeWorkspace": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Include workspace folder paths in harness context."
+        },
+        "opencode.harness.context.includeOpenEditors": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Include open editor tabs in harness context."
+        },
+        "opencode.harness.context.includeActiveFile": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Include active file metadata in harness context."
+        },
+        "opencode.harness.context.includeSelection": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Include active editor selection in harness context."
+        },
+        "opencode.harness.context.includeDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Include workspace diagnostics in harness context."
+        },
+        "opencode.harness.context.includeGit": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Include git branch and dirty files in harness context."
+        },
+        "opencode.harness.context.includeFileContents": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Include full active file contents in harness context (privacy-sensitive)."
         }
       }
     },
@@ -370,6 +450,26 @@
         "command": "opencode-walkthrough.showCliHelp",
         "title": "OpenCode: CLI Help",
         "icon": "$(question)"
+      },
+      {
+        "command": "opencode-walkthrough.startAgent",
+        "title": "OpenCode: Start Agent Session",
+        "icon": "$(hubot)"
+      },
+      {
+        "command": "opencode-walkthrough.cancelAgent",
+        "title": "OpenCode: Cancel Agent",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "opencode-walkthrough.openAgentPanel",
+        "title": "OpenCode: Open Agent Panel",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "opencode-walkthrough.resumeSession",
+        "title": "OpenCode: Resume Session",
+        "icon": "$(history)"
       }
     ],
     "viewsContainers": {
@@ -404,6 +504,11 @@
           "type": "tree",
           "id": "opencode-walkthrough.models",
           "name": "Models"
+        },
+        {
+          "type": "webview",
+          "id": "opencode-walkthrough.agent",
+          "name": "Agent"
         }
       ],
       "opencode-mcp": [
@@ -422,7 +527,7 @@
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Agents Overview](command:opencode-walkthrough.showAgents)\n[Models Overview](command:opencode-walkthrough.showModels)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Tips & Tricks](command:opencode-walkthrough.showTips)\n[Read Documentation](https://opencode.ai)\n"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Agents Overview](command:opencode-walkthrough.showAgents)\n[Models Overview](command:opencode-walkthrough.showModels)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Tips & Tricks](command:opencode-walkthrough.showTips)\n[Read Documentation](https://opencode.ai)\n"
       },
       {
         "view": "opencode-walkthrough.agents",
@@ -438,7 +543,11 @@
       },
       {
         "view": "opencode-walkthrough.sessions",
-        "contents": "No sessions yet. Run a prompt to create one.\n\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)"
+        "contents": "No sessions yet. Run a prompt to create one.\n\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)"
+      },
+      {
+        "view": "opencode-walkthrough.agent",
+        "contents": "Chat with OpenCode from VS Code using the agent harness.\n\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Open TUI](command:opencode-walkthrough.runInteractive)"
       }
     ],
     "submenus": [
@@ -476,6 +585,16 @@
         {
           "command": "opencode-walkthrough.runInteractive",
           "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.startAgent",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.cancelAgent",
+          "when": "view == opencode-walkthrough.agent",
           "group": "navigation"
         },
         {
@@ -594,6 +713,15 @@
           "command": "opencode-walkthrough.runInteractive"
         },
         {
+          "command": "opencode-walkthrough.startAgent"
+        },
+        {
+          "command": "opencode-walkthrough.openAgentPanel"
+        },
+        {
+          "command": "opencode-walkthrough.cancelAgent"
+        },
+        {
           "command": "opencode-walkthrough.createAgent"
         },
         {
@@ -649,6 +777,9 @@
         },
         {
           "command": "opencode-walkthrough.runInteractive"
+        },
+        {
+          "command": "opencode-walkthrough.startAgent"
         },
         {
           "command": "opencode-walkthrough.createAgent"
@@ -773,6 +904,7 @@
   "devDependencies": {
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^3.0.0",
+    "playwright": "^1.61.0",
     "sharp": "^0.35.2"
   }
 }
