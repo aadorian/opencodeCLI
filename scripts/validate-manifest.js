@@ -25,6 +25,25 @@ function assertExists(relativePath, label) {
 assertExists('extension.js', 'entry point');
 assertExists('media/opencode-icon.png', 'extension icon');
 
+for (const [key, schema] of Object.entries(pkg.contributes?.configuration?.properties ?? {})) {
+  if (key.startsWith('opcode.')) {
+    error(`Setting key must use opencode.* prefix, not opcode.*: ${key}`);
+  }
+  if (schema.type === 'boolean' && schema.default === null) {
+    error(`Boolean setting must omit default or use true/false, not null: ${key}`);
+  }
+}
+
+const viewIds = new Set(Object.values(pkg.contributes?.views ?? {}).flat().map((view) => view.id));
+for (const event of pkg.activationEvents ?? []) {
+  if (event.startsWith('onView:')) {
+    const viewId = event.slice('onView:'.length);
+    if (!viewIds.has(viewId)) {
+      error(`Activation event references unknown view: ${event}`);
+    }
+  }
+}
+
 const commands = pkg.contributes?.commands ?? [];
 if (commands.length === 0) {
   error('No commands contributed in package.json');

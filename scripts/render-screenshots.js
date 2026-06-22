@@ -359,7 +359,7 @@ const screens = {
       <h1>OpenCode Tips & Tricks</h1>
       <p class="subtitle">Use these tips to be productive with the OpenCode CLI.</p>
       <div class="details"><summary>Getting Started</summary>
-        <ul><li>Install globally: <code>npm install -g opencode</code></li><li>Verify: <code>opencode --version</code></li></ul>
+        <ul><li>Install: <code>curl -fsSL https://opencode.ai/install | bash</code></li><li>Or npm: <code>npm install -g opencode-ai</code></li><li>Verify: <code>opencode --version</code></li></ul>
       </div>
       <div class="details"><summary>Keyboard Shortcuts</summary>
         <ul><li><code>⌘⌥O</code> — Show Actions</li><li><code>⌘⌥P</code> — Run on Project Files</li><li><code>⌘⌥T</code> — Start Interactive</li></ul>

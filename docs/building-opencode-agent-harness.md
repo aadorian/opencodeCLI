@@ -312,7 +312,7 @@ Press **F5** to launch the Extension Development Host.
 
 ### Prerequisites
 
-1. Install the OpenCode CLI: `npm install -g opencode` (or follow [opencode.ai](https://opencode.ai))
+1. Install the OpenCode CLI: `curl -fsSL https://opencode.ai/install | bash` or `npm install -g opencode-ai` (see [opencode.ai/docs](https://opencode.ai/docs))
 2. Authenticate: `opencode auth login`
 3. Open a **trusted** workspace folder
 

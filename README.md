@@ -2,44 +2,83 @@
 
 A Visual Studio Code extension that provides an interactive walkthrough and quick actions for [OpenCode](https://opencode.ai), an AI-assisted CLI for software engineering tasks.
 
-**Publisher:** `AlejandroAdorjan` | **License:** SEE LICENSE IN LICENSE | **Pricing:** Free
+**Publisher:** `AlejandroAdorjan` | **License:** SEE LICENSE IN LICENSE | **Pricing:** Free  
+**Website:** [aadorian.github.io/opencodeCLI](https://aadorian.github.io/opencodeCLI/) · **Install:** [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=AlejandroAdorjan.opencode-walkthrough)
+
+Browse screenshots, install steps, and documentation on the **[project website](https://aadorian.github.io/opencodeCLI/)**.
 
 ---
 
 ## Screenshots
 
+Each image below matches the extension UI in VS Code — sidebar links, toolbar buttons, quick picks, and panel actions as shipped in v0.0.2.
+
 ### Activity bar & sidebar overview
-Quick links to install, run prompts, create agents, and open docs from the **OpenCode** sidebar.
+
+Open the **OpenCode** activity bar view for one-click access to walkthrough, CLI, and overview panels.
+
+**Welcome links shown:**
+
+- Show Walkthrough · Install CLI · Run Inline Prompt · Run on Project Files
+- Start Interactive Session · Start Agent Session · Create Agent
+- Agents Overview · Models Overview · CLI Help · Tips & Tricks · Read Documentation
+
+**Status bar:** `$(zap) OpenCode` (Show Actions) · `$(hubot) Agents` (List Agents)
 
 ![OpenCode sidebar overview with welcome actions](media/screenshots/sidebar-overview.png)
 
 ### Agents & models tree views
-Browse custom agents and provider models live from the CLI in the sidebar.
+
+Live data from `opencode agent list` and `opencode models` in the sidebar.
+
+**Agents view:** `code-reviewer` (subagent), `test-writer` (primary), **Create New Agent**  
+**Models view:** provider groups (e.g. anthropic → claude-sonnet-4, claude-haiku-4), refresh toolbar
 
 ![Agents and Models tree views](media/screenshots/sidebar-trees.png)
 
 ### MCP servers & sessions panel
-Manage MCP servers and review recent sessions from the bottom panel.
+
+Bottom panel container **MCP Servers** with two tabs.
+
+**MCP Servers tab:** listed servers (e.g. filesystem, github) · **Add MCP Server**  
+**Sessions tab:** recent sessions · refresh toolbar · empty-state links to Run Inline Prompt / Start Agent Session / Start Interactive Session
 
 ![MCP Servers and Sessions panel](media/screenshots/panel-mcp-sessions.png)
 
 ### Show Actions quick pick
-Access every OpenCode command from the status bar or `⌘⌥O`.
+
+Open from the status bar (`⌘⌥O` on macOS) or command **OpenCode: Show Actions**.
+
+**Quick pick entries (partial list shown in UI):**
+
+- Show Walkthrough · Tips & Tricks · Run Inline Prompt · Run on Project Files
+- Start Interactive · Create Agent · Stats
+
+Full menu also includes Install CLI, Agents/Models overview, Auth Login/List, MCP add/list, List Models/Sessions, Start Server, Start Web, and Upgrade CLI.
 
 ![OpenCode Show Actions quick pick menu](media/screenshots/quick-pick.png)
 
 ### Getting Started walkthrough
-Step-by-step onboarding for install, prompts, interactive mode, and agents.
+
+Built-in walkthrough **Get Started with OpenCode** (`opencode.gettingStarted`).
+
+**Steps:** Install OpenCode · Run a Prompt · Start Interactive Mode · Create an Agent · Tips & Best Practices
 
 ![Get Started with OpenCode walkthrough](media/screenshots/walkthrough.png)
 
 ### Tips & Tricks webview
-In-editor reference for shortcuts, CLI commands, and best practices.
+
+In-editor reference panel opened via **OpenCode: Tips & Tricks**.
+
+**Sections shown:** Getting Started (`curl -fsSL https://opencode.ai/install | bash`) · Keyboard Shortcuts (`⌘⌥O`, `⌘⌥P`, `⌘⌥T`) · Agents & MCP (`opencode agent create`, `opencode mcp add`)
 
 ![OpenCode Tips and Tricks webview panel](media/screenshots/tips-webview.png)
 
 ### Run on Project Files
-Select workspace files, enter a prompt, and run OpenCode in the integrated terminal.
+
+Command **OpenCode: Run on Project Files** (`⌘⌥P`) — pick workspace files, enter a prompt, run in the integrated terminal.
+
+**Dialog:** branch context (e.g. `main`) · file count · prompt input (e.g. “Refactor these files to use async/await”)
 
 ![Run on Project Files prompt dialog](media/screenshots/run-on-project.png)
 
@@ -127,8 +166,8 @@ module.exports = { activate, deactivate };
 | Command | Handler | Terminal Command |
 |---|---|---|
 | `opencode-walkthrough.showWalkthrough` | Opens walkthrough via `workbench.action.openWalkthrough` | — |
-| `opencode-walkthrough.install` | `sendToTerminal` | `sudo npm install -g opencode` |
-| `opencode-walkthrough.runInline` | `sendToTerminal` | `opencode "write a hello world script..." > hello.py` |
+| `opencode-walkthrough.install` | `sendToTerminal` | `curl -fsSL https://opencode.ai/install \| bash` (or `npm install -g opencode-ai` on Windows) |
+| `opencode-walkthrough.runInline` | input box + terminal | `opencode run "your prompt"` |
 | `opencode-walkthrough.runInteractive` | `sendToTerminal` | `opencode` |
 | `opencode-walkthrough.createAgent` | `sendToTerminal` | `opencode agent create` |
 | `opencode-walkthrough.listAgents` | `sendToTerminal` | `opencode agent list` |
@@ -195,7 +234,6 @@ The extension activates lazily on any of these triggers (`package.json` `activat
 | `onCommand:opencode-walkthrough.createAgent` | Running Create Agent |
 | `onCommand:opencode-walkthrough.listAgents` | Running List Agents |
 | `onView:opencode-walkthrough.mcp` | Revealing the MCP panel view |
-| `onView:opencode-walkthrough.help` | Revealing the help view |
 | `onCommand:opencode-walkthrough.addMcp` | Running Add MCP Server |
 | `onCommand:opencode-walkthrough.listMcp` | Running List MCP Servers |
 | `onCommand:opencode-walkthrough.authLogin` | Running Auth Login |
@@ -269,9 +307,16 @@ OpenCode is a CLI for AI-assisted software engineering tasks.
 [Show Walkthrough](command:opencode-walkthrough.showWalkthrough)
 [Install CLI](command:opencode-walkthrough.install)
 [Run Inline Prompt](command:opencode-walkthrough.runInline)
+[Run on Project Files](command:opencode-walkthrough.runOnProject)
 [Start Interactive Session](command:opencode-walkthrough.runInteractive)
+[Start Agent Session](command:opencode-walkthrough.startAgent)
 [Create Agent](command:opencode-walkthrough.createAgent)
 
+[Agents Overview](command:opencode-walkthrough.showAgents)
+[Models Overview](command:opencode-walkthrough.showModels)
+
+[CLI Help](command:opencode-walkthrough.showCliHelp)
+[Tips & Tricks](command:opencode-walkthrough.showTips)
 [Read Documentation](https://opencode.ai)
 ```
 
@@ -418,7 +463,7 @@ This extension contributes OpenCode CLI settings that can be configured in **Set
 | `opencode.disableAutoCompact` | `OPENCODE_DISABLE_AUTOCOMPACT` | boolean |
 | `opencode.disableClaudeCode` | `OPENCODE_DISABLE_CLAUDE_CODE` | boolean |
 | `opencode.disableModelsFetch` | `OPENCODE_DISABLE_MODELS_FETCH` | boolean |
-| `opcode.enableExa` | `OPENCODE_ENABLE_EXA` | boolean |
+| `opencode.enableExa` | `OPENCODE_ENABLE_EXA` | boolean |
 | `opencode.experimental` | `OPENCODE_EXPERIMENTAL` | boolean |
 | `opencode.experimental.planMode` | `OPENCODE_EXPERIMENTAL_PLAN_MODE` | boolean |
 | `opencode.experimental.backgroundSubagents` | `OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS` | boolean |

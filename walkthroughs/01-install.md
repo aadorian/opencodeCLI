@@ -1,17 +1,23 @@
 ![Install OpenCode in the terminal](../media/walkthrough/install.svg)
 
-OpenCode is a CLI tool that helps with software engineering tasks.
+OpenCode is an open source AI coding agent. Install it from [opencode.ai](https://opencode.ai).
 
-**Install globally via npm:**
+**Recommended install script:**
 
 ```bash
-npm install -g opencode
+curl -fsSL https://opencode.ai/install | bash
 ```
 
-**Tip:** Use `npx opencode` to run without installing.
+**Or install with npm:**
+
+```bash
+npm install -g opencode-ai
+```
 
 **Verify installation:**
 
 ```bash
 opencode --version
 ```
+
+See the full install guide at [opencode.ai/docs](https://opencode.ai/docs).

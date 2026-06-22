@@ -1,25 +1,19 @@
 # Changelog
 
-## [0.0.2] - 2026-06-21
+## 0.0.3
 
-### Added
-- Tree views for Agents, Models, MCP servers, and Sessions
-- Agents and Models overview webview panels
-- Run on Project Files command with file picker
-- OpenCode configuration settings mapped to CLI environment variables
-- Shell and markdown IntelliSense snippets
-- Stats, serve, web, upgrade, and auth CLI commands in the command palette
-- Explorer and sidebar integration for common OpenCode workflows
+- Align install and setup with [opencode.ai](https://opencode.ai) (install script, `opencode-ai` npm package)
+- Fix Run Inline Prompt to prompt for input and run `opencode run`
+- Add Configure Providers walkthrough step with auth login
+- Register documented keyboard shortcuts (`⌘⌥O/I/P/T/H/S`)
+- Point install fallbacks to opencode.ai docs instead of GitHub
 
-### Fixed
-- Packaging excludes local wiki and test artifacts from the VSIX
+## 0.0.2
 
-## [0.0.1] - 2024-06-20
+- Marketplace release under publisher `AlejandroAdorjan`
+- Agent loop harness, sidebar views, and session resume
+- Models tree refresh command
 
-### Added
-- 4-step Getting Started walkthrough for OpenCode
-  - Install OpenCode
-  - Run inline prompts
-  - Interactive sessions
-  - Tips and best practices
-- Command palette integration ("OpenCode: Show Walkthrough")
+## 0.0.1
+
+- Initial OpenCode Walkthrough extension with 5-step getting started walkthrough

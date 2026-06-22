@@ -5,7 +5,7 @@
   <circle cx="36" cy="32" r="4" fill="var(--vscode-editorWarning-foreground)"/>
   <circle cx="48" cy="32" r="4" fill="var(--vscode-debugIcon-startForeground)"/>
   <text x="70" y="37" font-size="10" fill="var(--vscode-titleBar-activeForeground)" font-family="monospace" opacity="0.7">bash</text>
-  <text x="24" y="65" font-size="10" fill="var(--vscode-textLink-foreground)" font-family="monospace">$ curl -fsSL opencode.ai/install | bash</text>
-  <text x="24" y="82" font-size="11" fill="var(--vscode-editor-foreground)" font-family="monospace">+ opencode-ai@latest</text>
-  <text x="24" y="95" font-size="11" fill="var(--vscode-debugIcon-startForeground)" font-family="monospace">added 1 package</text>
+  <text x="24" y="65" font-size="11" fill="var(--vscode-textLink-foreground)" font-family="monospace">$ opencode auth login</text>
+  <text x="24" y="82" font-size="11" fill="var(--vscode-editor-foreground)" font-family="monospace">Provider connected</text>
+  <text x="24" y="95" font-size="11" fill="var(--vscode-debugIcon-startForeground)" font-family="monospace">Ready to run prompts</text>
 </svg>

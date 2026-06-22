@@ -1,7 +1,7 @@
 {
   "name": "opencode-walkthrough",
   "displayName": "OpenCode Walkthrough",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "AlejandroAdorjan",
   "author": {
     "name": "Alejandro Adorjan",
@@ -79,7 +79,6 @@
     "onCommand:opencode-walkthrough.createAgent",
     "onCommand:opencode-walkthrough.listAgents",
     "onView:opencode-walkthrough.mcp",
-    "onView:opencode-walkthrough.help",
     "onCommand:opencode-walkthrough.addMcp",
     "onCommand:opencode-walkthrough.listMcp",
     "onCommand:opencode-walkthrough.authLogin",
@@ -143,7 +142,6 @@
         },
         "opencode.autoShare": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Automatically share sessions. Maps to `OPENCODE_AUTO_SHARE`"
         },
         "opencode.modelsUrl": {
@@ -175,82 +173,62 @@
         },
         "opencode.disableAutoUpdate": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable automatic update checks. Maps to `OPENCODE_DISABLE_AUTOUPDATE`"
         },
         "opencode.disablePrune": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable pruning of old data. Maps to `OPENCODE_DISABLE_PRUNE`"
         },
         "opencode.disableTerminalTitle": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable automatic terminal title updates. Maps to `OPENCODE_DISABLE_TERMINAL_TITLE`"
         },
         "opencode.disableDefaultPlugins": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable default plugins. Maps to `OPENCODE_DISABLE_DEFAULT_PLUGINS`"
         },
         "opencode.disableLspDownload": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable automatic LSP server downloads. Maps to `OPENCODE_DISABLE_LSP_DOWNLOAD`"
         },
         "opencode.disableAutoCompact": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable automatic context compaction. Maps to `OPENCODE_DISABLE_AUTOCOMPACT`"
         },
         "opencode.disableClaudeCode": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable reading from `.claude` (prompt + skills). Maps to `OPENCODE_DISABLE_CLAUDE_CODE`"
         },
         "opencode.disableModelsFetch": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable fetching models from remote sources. Maps to `OPENCODE_DISABLE_MODELS_FETCH`"
         },
         "opencode.disableMouse": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Disable mouse capture in the TUI. Maps to `OPENCODE_DISABLE_MOUSE`"
-        },
-        "opcode.enableExa": {
-          "type": "boolean",
-          "default": null,
-          "markdownDescription": "Enable Exa web search tools. Maps to `OPENCODE_ENABLE_EXA`"
         },
         "opencode.experimental": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Enable all experimental features. Maps to `OPENCODE_EXPERIMENTAL`"
         },
         "opencode.experimental.planMode": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Enable experimental plan mode. Maps to `OPENCODE_EXPERIMENTAL_PLAN_MODE`"
         },
         "opencode.experimental.backgroundSubagents": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Enable background subagent tasks. Maps to `OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`"
         },
         "opencode.experimental.nativeLlm": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Enable native LLM request path. Maps to `OPENCODE_EXPERIMENTAL_NATIVE_LLM`"
         },
         "opencode.experimental.scout": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Enable Scout subagent. Maps to `OPENCODE_EXPERIMENTAL_SCOUT`"
         },
         "opencode.experimental.workspaces": {
           "type": "boolean",
-          "default": null,
           "markdownDescription": "Enable workspace support. Maps to `OPENCODE_EXPERIMENTAL_WORKSPACES`"
         },
         "opencode.harness.maxRounds": {
@@ -319,6 +297,10 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "Include full active file contents in harness context (privacy-sensitive)."
+        },
+        "opencode.enableExa": {
+          "type": "boolean",
+          "markdownDescription": "Enable Exa web search tools. Maps to `OPENCODE_ENABLE_EXA`"
         }
       }
     },
@@ -809,6 +791,38 @@
         "path": "./snippets/opencode.code-snippets"
       }
     ],
+    "keybindings": [
+      {
+        "command": "opencode-walkthrough.showActions",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o"
+      },
+      {
+        "command": "opencode-walkthrough.runInline",
+        "key": "ctrl+alt+i",
+        "mac": "cmd+alt+i"
+      },
+      {
+        "command": "opencode-walkthrough.runOnProject",
+        "key": "ctrl+alt+p",
+        "mac": "cmd+alt+p"
+      },
+      {
+        "command": "opencode-walkthrough.runInteractive",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t"
+      },
+      {
+        "command": "opencode-walkthrough.showCliHelp",
+        "key": "ctrl+alt+h",
+        "mac": "cmd+alt+h"
+      },
+      {
+        "command": "opencode-walkthrough.stats",
+        "key": "ctrl+alt+s",
+        "mac": "cmd+alt+s"
+      }
+    ],
     "jsonValidation": [
       {
         "fileMatch": "opencode.json",
@@ -845,12 +859,24 @@
           {
             "id": "opencode.install",
             "title": "Install OpenCode",
-            "description": "OpenCode is a CLI for software engineering tasks. Install it globally with npm, then confirm with `opencode --version`.\n[Install OpenCode](command:opencode-walkthrough.install)",
+            "description": "OpenCode is an open source AI coding agent. Install it from [opencode.ai](https://opencode.ai) with the install script or npm, then confirm with `opencode --version`.\n[Install OpenCode](command:opencode-walkthrough.install)\n[Read install docs](https://opencode.ai/docs)",
             "media": {
               "markdown": "walkthroughs/01-install.md"
             },
             "completionEvents": [
               "onCommand:opencode-walkthrough.install"
+            ]
+          },
+          {
+            "id": "opencode.auth",
+            "title": "Configure Providers",
+            "description": "Connect an LLM provider before running prompts. Log in with `opencode auth login` or use `/connect` in the TUI.\n[Auth Login](command:opencode-walkthrough.authLogin)\n[Read docs](https://opencode.ai/docs)",
+            "media": {
+              "markdown": "walkthroughs/02-auth.md"
+            },
+            "completionEvents": [
+              "onCommand:opencode-walkthrough.authLogin",
+              "onLink:https://opencode.ai/docs"
             ]
           },
           {

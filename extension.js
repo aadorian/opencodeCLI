@@ -2,6 +2,7 @@ const vscode = require('vscode');
 const { exec } = require('child_process');
 const { buildEnvExports } = require('./lib/env');
 const { checkInstall, getGitBranch } = require('./lib/cli');
+const { getInstallTerminalCommand, promptInstallIfMissing } = require('./lib/install');
 const { checkHealth } = require('./lib/health');
 const { listSessions } = require('./lib/sessions');
 const { ServerManager } = require('./lib/server');
@@ -192,7 +193,7 @@ function getTipsHtml() {
     {
       title: 'Getting Started',
       items: [
-        'Install OpenCode globally: `sudo npm install -g opencode`',
+        'Install OpenCode: `curl -fsSL https://opencode.ai/install | bash` or `npm install -g opencode-ai`',
         'Verify your install: `opencode --version`',
         'Run `opencode` without arguments to start the interactive TUI',
         'Pass a prompt directly: `opencode run "write a sorting function"`',
@@ -613,6 +614,7 @@ function activate(context) {
   const getConfig = () => vscode.workspace.getConfiguration();
   const outputChannel = vscode.window.createOutputChannel('OpenCode Agent');
   const log = msg => outputChannel.appendLine(msg);
+  const gettingStartedWalkthroughId = `${context.extension.id}#opencode.gettingStarted`;
 
   const serverManager = new ServerManager(getConfig);
   const toolRegistry = new ToolRegistry(getConfig, { log });
@@ -634,7 +636,7 @@ function activate(context) {
   });
 
   const showWalkthrough = vscode.commands.registerCommand('opencode-walkthrough.showWalkthrough', () => {
-    vscode.commands.executeCommand('workbench.action.openWalkthrough', 'AlejandroAdorjan.opencode-walkthrough#opencode.gettingStarted');
+    vscode.commands.executeCommand('workbench.action.openWalkthrough', gettingStartedWalkthroughId);
   });
 
   const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', async () => {
@@ -642,27 +644,20 @@ function activate(context) {
     if (version) {
       vscode.window.showInformationMessage(`OpenCode is already installed (${version})`);
     } else {
-      sendToTerminal('sudo npm install -g opencode');
+      sendToTerminal(getInstallTerminalCommand());
     }
   });
 
+  const ensureInstalled = () => promptInstallIfMissing(vscode, {
+    checkInstall,
+    sendToTerminal,
+    executeCommand: cmd => vscode.commands.executeCommand(cmd),
+  });
+
   const runCmd = vscode.commands.registerCommand('opencode-walkthrough.runInline', async () => {
-    const version = await checkInstall();
-    if (!version) {
-      sendToTerminal('echo "OpenCode is not installed. Install it with:" && echo "  sudo npm install -g opencode" && echo "Or visit: https://github.com/anomalyco/opencode"');
-      const action = await vscode.window.showWarningMessage(
-        'OpenCode is not installed. Install it from GitHub.',
-        'Open GitHub',
-        'Install'
-      );
-      if (action === 'Open GitHub') {
-        vscode.env.openExternal(vscode.Uri.parse('https://github.com/anomalyco/opencode'));
-      } else if (action === 'Install') {
-        vscode.commands.executeCommand('opencode-walkthrough.install');
-      }
+    if (!(await ensureInstalled())) {
       return;
     }
-
     const prompt = await vscode.window.showInputBox({
       placeHolder: 'What do you want OpenCode to do?',
       prompt: 'Run an inline prompt via opencode run',
@@ -684,11 +679,17 @@ function activate(context) {
     term.sendText(fullCmd);
   });
 
-  const interactiveCmd = vscode.commands.registerCommand('opencode-walkthrough.runInteractive', () => {
+  const interactiveCmd = vscode.commands.registerCommand('opencode-walkthrough.runInteractive', async () => {
+    if (!(await ensureInstalled())) {
+      return;
+    }
     sendToTerminal('opencode');
   });
 
-  const createAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.createAgent', () => {
+  const createAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.createAgent', async () => {
+    if (!(await ensureInstalled())) {
+      return;
+    }
     sendToTerminal('opencode agent create');
   });
 
@@ -704,7 +705,10 @@ function activate(context) {
     sendToTerminal('opencode mcp list');
   });
 
-  const authLoginCmd = vscode.commands.registerCommand('opencode-walkthrough.authLogin', () => {
+  const authLoginCmd = vscode.commands.registerCommand('opencode-walkthrough.authLogin', async () => {
+    if (!(await ensureInstalled())) {
+      return;
+    }
     sendToTerminal('opencode auth login');
   });
 
@@ -833,6 +837,9 @@ function activate(context) {
   });
 
   const runOnProjectCmd = vscode.commands.registerCommand('opencode-walkthrough.runOnProject', async () => {
+    if (!(await ensureInstalled())) {
+      return;
+    }
     const folders = vscode.workspace.workspaceFolders;
     if (!folders || folders.length === 0) {
       vscode.window.showErrorMessage('Open a workspace folder first.');

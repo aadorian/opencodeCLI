@@ -78,10 +78,11 @@ suite('Extension Test Suite', () => {
   });
 
   test('Walkthrough step can be opened', async () => {
+    const walkthroughId = `${extension.id}#opencode.gettingStarted`;
     await assert.doesNotReject(
       vscode.commands.executeCommand(
         'workbench.action.openWalkthrough',
-        'AlejandroAdorjan.opencode-walkthrough#opencode.gettingStarted'
+        walkthroughId
       )
     );
   });

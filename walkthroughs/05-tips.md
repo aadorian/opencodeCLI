@@ -10,11 +10,13 @@ Include the language, framework, and expected behavior in your prompts. The more
 
 ### Iterate
 
-Refine results with follow-up prompts:
+In interactive mode, refine results with follow-up prompts:
 
 ```bash
-opencode "now add error handling to that function"
+opencode
 ```
+
+Then ask follow-ups in the same session, or use `opencode run` for one-shot tasks.
 
 ### Check the docs
 

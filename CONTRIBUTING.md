@@ -41,6 +41,10 @@ git config commit.template .gitmessage
 
 See the full **[extension roadmap](.github/ROADMAP.md)** and the ordered checklist in [issue #17](https://github.com/aadorian/opencodeCLI/issues/17).
 
+## GitHub Copilot agents
+
+Custom agents for this repo live in [`.github/agents/`](.github/agents/). Browse and assign them at **[github.com/aadorian/opencodeCLI/agents](https://github.com/aadorian/opencodeCLI/agents)**. Shared instructions: [`AGENTS.md`](./AGENTS.md) and [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
+
 ## Making Changes
 
 - Follow the existing code style
