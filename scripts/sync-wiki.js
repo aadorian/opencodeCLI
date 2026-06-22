@@ -23,11 +23,33 @@ const REPO_BASE = `https://github.com/${repo}/blob/master`;
 const WIKI_URL = `https://github.com/${repo}/wiki`;
 const WIKI_NEW_URL = `https://github.com/${repo}/wiki/_new`;
 
+/** @type {{ src: string, wikiFile: string, title: string, description: string }[]} */
+const WIKI_ARTICLES = [
+  {
+    src: 'docs/building-opencode-agent-harness.md',
+    wikiFile: 'Building-the-OpenCode-Agent-Harness.md',
+    title: 'Building the OpenCode Agent Harness',
+    description: 'How we built a VS Code–native agent loop on top of the OpenCode CLI',
+  },
+  {
+    src: 'docs/practical-workflow-examples.md',
+    wikiFile: 'Practical-Workflow-Examples.md',
+    title: 'Practical Workflow Examples',
+    description: 'Step-by-step walkthroughs: plan → build handoff, agent chat, session resume',
+  },
+  {
+    src: 'docs/troubleshooting.md',
+    wikiFile: 'Troubleshooting.md',
+    title: 'Troubleshooting',
+    description: 'PATH, env vars, terminal shells, harness errors — diagnosis matrix',
+  },
+];
+
 function wikiLink(title) {
   return title.replace(/ /g, '-');
 }
 
-function adaptHarnessContent(content) {
+function adaptWikiContent(content) {
   return content
     .replace(
       /\(\.\.\/\.github\/FEATURE_PLAN_opencode-agent-loop\.md\)/g,
@@ -36,6 +58,22 @@ function adaptHarnessContent(content) {
     .replace(
       /\(\.\.\/\.github\/GIT_WORKFLOW\.md\)/g,
       `(${REPO_BASE}/.github/GIT_WORKFLOW.md)`
+    )
+    .replace(
+      /\(\.\.\/README\.md([^)]*)\)/g,
+      (_, fragment) => `(${REPO_BASE}/README.md${fragment})`
+    )
+    .replace(
+      /\(\.\/building-opencode-agent-harness\.md\)/g,
+      `(${wikiLink('Building the OpenCode Agent Harness')})`
+    )
+    .replace(
+      /\(\.\/practical-workflow-examples\.md\)/g,
+      `(${wikiLink('Practical Workflow Examples')})`
+    )
+    .replace(
+      /\(\.\/troubleshooting\.md\)/g,
+      `(${wikiLink('Troubleshooting')})`
     )
     .replace(
       /\(\.\.\/lib\/([^)]+)\)/g,
@@ -48,13 +86,17 @@ function adaptHarnessContent(content) {
 }
 
 function writeHome() {
+  const rows = WIKI_ARTICLES.map(
+    (a) => `| [${a.title}](${wikiLink(a.title)}) | ${a.description} |`
+  ).join('\n');
+
   return `# OpenCode Walkthrough — Wiki
 
 Documentation for the [OpenCode Walkthrough](https://github.com/${repo}) VS Code extension.
 
 | Article | Description |
 |---------|-------------|
-| [Building the OpenCode Agent Harness](${wikiLink('Building the OpenCode Agent Harness')}) | How we built a VS Code–native agent loop on top of the OpenCode CLI |
+${rows}
 | [Agent Loop feature plan](${REPO_BASE}/.github/FEATURE_PLAN_opencode-agent-loop.md) | Phased roadmap and architecture |
 | [Git workflow](${REPO_BASE}/.github/GIT_WORKFLOW.md) | Branching, commits, and CI for contributors |
 | [Repository README](${REPO_BASE}/README.md) | Install, commands, settings, testing |
@@ -66,17 +108,17 @@ _Synced from \`docs/\` via \`npm run wiki:push\`._
 }
 
 function prepareWikiFiles() {
-  const harnessSrc = fs.readFileSync(
-    path.join(root, 'docs/building-opencode-agent-harness.md'),
-    'utf8'
-  );
-
   fs.mkdirSync(wikiDir, { recursive: true });
   fs.writeFileSync(path.join(wikiDir, 'Home.md'), writeHome());
-  fs.writeFileSync(
-    path.join(wikiDir, 'Building-the-OpenCode-Agent-Harness.md'),
-    adaptHarnessContent(harnessSrc)
-  );
+
+  for (const article of WIKI_ARTICLES) {
+    const srcPath = path.join(root, article.src);
+    const content = fs.readFileSync(srcPath, 'utf8');
+    fs.writeFileSync(
+      path.join(wikiDir, article.wikiFile),
+      adaptWikiContent(content)
+    );
+  }
 }
 
 function run(cmd, opts = {}) {
@@ -110,8 +152,6 @@ function setupGitAuth() {
 
 function pushWiki() {
   prepareWikiFiles();
-  const homeContent = fs.readFileSync(path.join(wikiDir, 'Home.md'), 'utf8');
-  const harnessContent = fs.readFileSync(path.join(wikiDir, 'Building-the-OpenCode-Agent-Harness.md'), 'utf8');
 
   const workDir = path.join(root, '.wiki-push');
   if (fs.existsSync(workDir)) {
@@ -133,8 +173,13 @@ function pushWiki() {
     run(`git remote add origin ${remote}`, { cwd: workDir, inherit: false });
   }
 
-  fs.writeFileSync(path.join(workDir, 'Home.md'), homeContent);
-  fs.writeFileSync(path.join(workDir, 'Building-the-OpenCode-Agent-Harness.md'), harnessContent);
+  fs.writeFileSync(path.join(workDir, 'Home.md'), fs.readFileSync(path.join(wikiDir, 'Home.md'), 'utf8'));
+  for (const article of WIKI_ARTICLES) {
+    fs.writeFileSync(
+      path.join(workDir, article.wikiFile),
+      fs.readFileSync(path.join(wikiDir, article.wikiFile), 'utf8')
+    );
+  }
 
   run('git add .', { cwd: workDir });
   const diff = spawnSync('git', ['diff', '--staged', '--quiet'], { cwd: workDir });
@@ -159,7 +204,9 @@ function pushWiki() {
   }
 
   console.log(`\nWiki published: ${WIKI_URL}`);
-  console.log(`Article: ${WIKI_URL}/${wikiLink('Building the OpenCode Agent Harness')}`);
+  for (const article of WIKI_ARTICLES) {
+    console.log(`Article: ${WIKI_URL}/${wikiLink(article.title)}`);
+  }
 }
 
 prepareWikiFiles();

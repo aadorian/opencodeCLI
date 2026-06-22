@@ -156,8 +156,8 @@
         },
         "opencode.serverUsername": {
           "type": "string",
-          "default": "opencode",
-          "markdownDescription": "Username for HTTP basic auth. Maps to `OPENCODE_SERVER_USERNAME`"
+          "default": "",
+          "markdownDescription": "Username for HTTP basic auth. Maps to `OPENCODE_SERVER_USERNAME`. Leave empty to use the CLI default (`opencode`)."
         },
         "opencode.logLevel": {
           "type": "string",
@@ -859,7 +859,7 @@
           {
             "id": "opencode.install",
             "title": "Install OpenCode",
-            "description": "OpenCode is an open source AI coding agent. Install it from [opencode.ai](https://opencode.ai) with the install script or npm, then confirm with `opencode --version`.\n[Install OpenCode](command:opencode-walkthrough.install)\n[Read install docs](https://opencode.ai/docs)",
+            "description": "OpenCode is an open source AI coding agent. On Windows use `npm install -g opencode-ai` (no `sudo`). On macOS/Linux use the install script or npm, then confirm with `opencode --version`.\n[Install OpenCode](command:opencode-walkthrough.install)\n[Read install docs](https://opencode.ai/docs)",
             "media": {
               "markdown": "walkthroughs/01-install.md"
             },

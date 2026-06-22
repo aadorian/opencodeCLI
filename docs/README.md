@@ -3,6 +3,8 @@
 | Article | Description |
 |---------|-------------|
 | [Building the OpenCode Agent Harness](./building-opencode-agent-harness.md) | How we built a VS Code–native agent loop on top of the OpenCode CLI |
+| [Practical Workflow Examples](./practical-workflow-examples.md) | Step-by-step walkthroughs: plan → build handoff, agent chat, session resume, multi-agent flows |
+| [Troubleshooting & FAQ](./troubleshooting.md) | PATH, env vars, terminal shells, harness errors — diagnosis matrix |
 | [Agent Loop feature plan](../.github/FEATURE_PLAN_opencode-agent-loop.md) | Phased roadmap and architecture (internal planning doc) |
 | [Git workflow](../.github/GIT_WORKFLOW.md) | Branching, commits, and CI for contributors |
 | [Open Source Examples](./discussions/open-source-examples.md) | [Discussion hub](https://github.com/aadorian/opencodeCLI/discussions/33) — structured forms in [`.github/DISCUSSION_TEMPLATE/`](../.github/DISCUSSION_TEMPLATE/) |

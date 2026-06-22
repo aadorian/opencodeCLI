@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 const { exec } = require('child_process');
-const { buildEnvExports } = require('./lib/env');
+const { buildTerminalCommand } = require('./lib/env');
 const { checkInstall, getGitBranch } = require('./lib/cli');
 const { getInstallTerminalCommand, promptInstallIfMissing } = require('./lib/install');
 const { checkHealth } = require('./lib/health');
@@ -11,11 +11,10 @@ const { AgentLoop } = require('./lib/agentLoop');
 const { AgentPanelProvider } = require('./lib/agentPanel');
 
 function sendToTerminal(text) {
-  const prefix = buildEnvExports(() => vscode.workspace.getConfiguration());
+  const getConfig = () => vscode.workspace.getConfiguration();
   const terminal = vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode');
   terminal.show();
-  const fullText = prefix.length > 0 ? prefix.join(' && ') + ' && ' + text : text;
-  terminal.sendText(fullText);
+  terminal.sendText(buildTerminalCommand(getConfig, text));
 }
 
 class AgentTreeItem extends vscode.TreeItem {
@@ -671,12 +670,9 @@ function activate(context) {
       ? vscode.window.createTerminal({ name: 'OpenCode', cwd })
       : (vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode'));
     term.show();
-    const envPrefix = buildEnvExports(() => vscode.workspace.getConfiguration());
+    const getConfig = () => vscode.workspace.getConfiguration();
     const escaped = prompt.replace(/"/g, '\\"');
-    const fullCmd = envPrefix.length > 0
-      ? envPrefix.join(' && ') + ` && opencode run "${escaped}"`
-      : `opencode run "${escaped}"`;
-    term.sendText(fullCmd);
+    term.sendText(buildTerminalCommand(getConfig, `opencode run "${escaped}"`));
   });
 
   const interactiveCmd = vscode.commands.registerCommand('opencode-walkthrough.runInteractive', async () => {
@@ -875,11 +871,8 @@ function activate(context) {
     const fileFlags = uris.map(u => `--file "${u.fsPath}"`).join(' ');
     const term = vscode.window.createTerminal({ name: 'OpenCode', cwd: folder.uri.fsPath });
     term.show();
-    const envPrefix = buildEnvExports(() => vscode.workspace.getConfiguration());
-    const fullCmd = envPrefix.length > 0
-      ? envPrefix.join(' && ') + ` && opencode run ${fileFlags} "${prompt}"`
-      : `opencode run ${fileFlags} "${prompt}"`;
-    term.sendText(fullCmd);
+    const getConfig = () => vscode.workspace.getConfiguration();
+    term.sendText(buildTerminalCommand(getConfig, `opencode run ${fileFlags} "${prompt}"`));
   });
 
   const agentsProvider = new AgentsProvider();

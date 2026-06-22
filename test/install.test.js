@@ -8,6 +8,7 @@ const {
   OPENCODE_DOCS_URL,
   getInstallTerminalCommand,
   getInstallHelpText,
+  getMissingInstallTerminalCommand,
 } = require('../lib/install');
 
 test('uses opencode.ai install script on unix', () => {
@@ -23,6 +24,8 @@ test('uses npm package on windows', () => {
   Object.defineProperty(process, 'platform', { value: 'win32' });
   assert.equal(getInstallTerminalCommand(), NPM_INSTALL);
   assert.match(getInstallHelpText(), /opencode-ai/);
+  assert.match(getInstallHelpText(), /no sudo required/);
+  assert.match(getMissingInstallTerminalCommand(), /Write-Host/);
   Object.defineProperty(process, 'platform', { value: original });
 });
 
