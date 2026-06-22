@@ -1,0 +1,30 @@
+name: Sync Wiki
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+      - 'scripts/sync-wiki.js'
+      - 'scripts/verify-wiki.js'
+      - '.github/workflows/sync-wiki.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Push wiki pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-wiki.js --push
+
+      - name: Verify wiki pages
+        run: node scripts/verify-wiki.js

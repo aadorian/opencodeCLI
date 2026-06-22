@@ -1,5 +1,8 @@
 node_modules/
 .vscode-test/
+.wiki-sync/
+.wiki-push/
+.wiki-browser-profile/
 *.vsix
 *.log
 .DS_Store

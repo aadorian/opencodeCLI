@@ -1,0 +1,19 @@
+name: Commitlint
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  commitlint:
+    name: Conventional commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR commits
+        uses: wagoid/commitlint-github-action@v6
+        with:
+          configFile: .github/commitlint.config.mjs
