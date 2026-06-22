@@ -1,0 +1,11 @@
+# <type>: <subject>  (max 72 characters)
+# |<----  Using a Maximum Of 72 Characters  ---->|
+#
+# Types: feat | fix | docs | style | refactor | perf | test | build | ci | chore | revert
+#
+# Example: feat: add walkthrough step for authentication
+#
+# Body: explain WHY (not what — the diff shows what)
+#
+# Footer:
+# Closes #123
