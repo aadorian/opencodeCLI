@@ -1,0 +1,30 @@
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'walkthroughs/**'
+          - '.github/**'
+
+enhancement:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'extension.js'
+          - 'package.json'
+          - 'snippets/**'
+
+bug:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'extension.js'
+
+testing:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'test/**'
+          - '.vscode-test.mjs'
+          - 'scripts/**'
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/workflows/**'

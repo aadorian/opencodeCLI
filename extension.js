@@ -1,72 +1,20 @@
 const vscode = require('vscode');
 const { exec } = require('child_process');
-
-const ENV_MAP = {
-  'opencode.configPath': 'OPENCODE_CONFIG',
-  'opencode.configDir': 'OPENCODE_CONFIG_DIR',
-  'opencode.tuiConfigPath': 'OPENCODE_TUI_CONFIG',
-  'opencode.autoShare': 'OPENCODE_AUTO_SHARE',
-  'opencode.modelsUrl': 'OPENCODE_MODELS_URL',
-  'opencode.serverPassword': 'OPENCODE_SERVER_PASSWORD',
-  'opencode.serverUsername': 'OPENCODE_SERVER_USERNAME',
-  'opencode.disableAutoUpdate': 'OPENCODE_DISABLE_AUTOUPDATE',
-  'opencode.disablePrune': 'OPENCODE_DISABLE_PRUNE',
-  'opencode.disableTerminalTitle': 'OPENCODE_DISABLE_TERMINAL_TITLE',
-  'opencode.disableDefaultPlugins': 'OPENCODE_DISABLE_DEFAULT_PLUGINS',
-  'opencode.disableLspDownload': 'OPENCODE_DISABLE_LSP_DOWNLOAD',
-  'opencode.disableAutoCompact': 'OPENCODE_DISABLE_AUTOCOMPACT',
-  'opencode.disableClaudeCode': 'OPENCODE_DISABLE_CLAUDE_CODE',
-  'opencode.disableModelsFetch': 'OPENCODE_DISABLE_MODELS_FETCH',
-  'opencode.disableMouse': 'OPENCODE_DISABLE_MOUSE',
-  'opcode.enableExa': 'OPENCODE_ENABLE_EXA',
-  'opencode.experimental': 'OPENCODE_EXPERIMENTAL',
-  'opencode.experimental.planMode': 'OPENCODE_EXPERIMENTAL_PLAN_MODE',
-  'opencode.experimental.backgroundSubagents': 'OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS',
-  'opencode.experimental.nativeLlm': 'OPENCODE_EXPERIMENTAL_NATIVE_LLM',
-  'opencode.experimental.scout': 'OPENCODE_EXPERIMENTAL_SCOUT',
-  'opencode.experimental.workspaces': 'OPENCODE_EXPERIMENTAL_WORKSPACES',
-};
-
-function buildEnvExports() {
-  const config = vscode.workspace.getConfiguration();
-  const exports = [];
-  for (const [key, envVar] of Object.entries(ENV_MAP)) {
-    const value = config.get(key);
-    if (value !== undefined && value !== null && value !== '') {
-      if (typeof value === 'boolean') {
-        exports.push(`export ${envVar}=${value ? 'true' : 'false'}`);
-      } else {
-        exports.push(`export ${envVar}="${value}"`);
-      }
-    }
-  }
-  return exports;
-}
+const { buildEnvExports } = require('./lib/env');
+const { checkInstall, getGitBranch } = require('./lib/cli');
+const { checkHealth } = require('./lib/health');
+const { listSessions } = require('./lib/sessions');
+const { ServerManager } = require('./lib/server');
+const { ToolRegistry } = require('./lib/tools');
+const { AgentLoop } = require('./lib/agentLoop');
+const { AgentPanelProvider } = require('./lib/agentPanel');
 
 function sendToTerminal(text) {
-  const prefix = buildEnvExports();
+  const prefix = buildEnvExports(() => vscode.workspace.getConfiguration());
   const terminal = vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode');
   terminal.show();
   const fullText = prefix.length > 0 ? prefix.join(' && ') + ' && ' + text : text;
   terminal.sendText(fullText);
-}
-
-function getGitBranch(folder) {
-  return new Promise(resolve => {
-    exec('git rev-parse --abbrev-ref HEAD', { cwd: folder }, (err, stdout) => {
-      if (err) return resolve(null);
-      resolve(stdout.trim());
-    });
-  });
-}
-
-function checkInstall() {
-  return new Promise(resolve => {
-    exec('opencode --version', (err, stdout) => {
-      if (err) return resolve(null);
-      resolve(stdout.trim());
-    });
-  });
 }
 
 class AgentTreeItem extends vscode.TreeItem {
@@ -125,7 +73,7 @@ class McpProvider {
   }
 
   refresh() {
-    exec('opencode mcp ls 2>/dev/null || true', (err, stdout) => {
+    exec('opencode mcp list 2>/dev/null || true', (err, stdout) => {
       this.items = [];
       if (!err && stdout) {
         for (const line of stdout.trim().split('\n')) {
@@ -151,7 +99,7 @@ class SessionTreeItem extends vscode.TreeItem {
     this.description = description;
     this.iconPath = new vscode.ThemeIcon(icon);
     this.sessionId = id;
-    this.command = { command: cmd, title: '', arguments: [] };
+    this.command = { command: cmd, title: '', arguments: id ? [id] : [] };
     this.contextValue = 'session';
   }
 }
@@ -164,24 +112,16 @@ class SessionsProvider {
   }
 
   refresh() {
-    exec('opencode session list --format json 2>/dev/null || opencode session list 2>/dev/null || true', (err, stdout) => {
+    listSessions().then(sessions => {
       this.items = [];
-      if (!err && stdout) {
-        try {
-          const sessions = JSON.parse(stdout);
-          for (const s of sessions.slice(0, 20)) {
-            const label = s.title || s.id || 'Untitled';
-            const desc = s.model || `Session ${s.id ? s.id.slice(0, 8) : ''}`;
-            this.items.push(new SessionTreeItem(label, desc, 'list-tree', s.id, 'opencode-walkthrough.sessionList'));
-          }
-        } catch {
-          for (const line of stdout.trim().split('\n').filter(l => l.trim())) {
-            this.items.push(new SessionTreeItem(line.trim(), '', 'list-tree', '', 'opencode-walkthrough.sessionList'));
-          }
-        }
+      for (const s of sessions.slice(0, 20)) {
+        const label = s.title || s.id || 'Untitled';
+        const desc = s.model || (s.id ? `Session ${s.id.slice(0, 8)}` : '');
+        const cmd = s.id ? 'opencode-walkthrough.resumeSession' : 'opencode-walkthrough.sessionList';
+        this.items.push(new SessionTreeItem(label, desc, 'history', s.id, cmd));
       }
       if (this.items.length === 0) {
-        this.items.push(new SessionTreeItem('No sessions yet', 'Run a prompt to start one', 'info', 'opencode-walkthrough.runInline'));
+        this.items.push(new SessionTreeItem('No sessions yet', 'Run a prompt to start one', 'info', '', 'opencode-walkthrough.runInline'));
       }
       this._onDidChangeTreeData.fire();
     });
@@ -670,6 +610,29 @@ function getModelsHtml() {
 }
 
 function activate(context) {
+  const getConfig = () => vscode.workspace.getConfiguration();
+  const outputChannel = vscode.window.createOutputChannel('OpenCode Agent');
+  const log = msg => outputChannel.appendLine(msg);
+
+  const serverManager = new ServerManager(getConfig);
+  const toolRegistry = new ToolRegistry(getConfig, { log });
+  const agentLoop = new AgentLoop({
+    vscode,
+    getConfig,
+    serverManager,
+    toolRegistry,
+    options: { log },
+  });
+  const agentPanelProvider = new AgentPanelProvider(agentLoop, checkHealth);
+
+  checkHealth().then(health => {
+    if (!health.installed) {
+      vscode.window.setStatusBarMessage('OpenCode: CLI not installed', 5000);
+    } else if (!health.ready) {
+      vscode.window.setStatusBarMessage(health.message, 5000);
+    }
+  });
+
   const showWalkthrough = vscode.commands.registerCommand('opencode-walkthrough.showWalkthrough', () => {
     vscode.commands.executeCommand('workbench.action.openWalkthrough', 'aadorian.opencode-walkthrough#opencode.gettingStarted');
   });
@@ -685,9 +648,7 @@ function activate(context) {
 
   const runCmd = vscode.commands.registerCommand('opencode-walkthrough.runInline', async () => {
     const version = await checkInstall();
-    if (version) {
-      sendToTerminal(`echo "OpenCode ${version}" && opencode --version && echo "\\n--- Configured Providers ---" && opencode auth ls && echo "\\n--- Available Models ---" && opencode models`);
-    } else {
+    if (!version) {
       sendToTerminal('echo "OpenCode is not installed. Install it with:" && echo "  sudo npm install -g opencode" && echo "Or visit: https://github.com/anomalyco/opencode"');
       const action = await vscode.window.showWarningMessage(
         'OpenCode is not installed. Install it from GitHub.',
@@ -699,7 +660,28 @@ function activate(context) {
       } else if (action === 'Install') {
         vscode.commands.executeCommand('opencode-walkthrough.install');
       }
+      return;
     }
+
+    const prompt = await vscode.window.showInputBox({
+      placeHolder: 'What do you want OpenCode to do?',
+      prompt: 'Run an inline prompt via opencode run',
+      ignoreFocusOut: true,
+    });
+    if (!prompt) return;
+
+    const folders = vscode.workspace.workspaceFolders;
+    const cwd = folders?.[0]?.uri.fsPath;
+    const term = cwd
+      ? vscode.window.createTerminal({ name: 'OpenCode', cwd })
+      : (vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode'));
+    term.show();
+    const envPrefix = buildEnvExports(() => vscode.workspace.getConfiguration());
+    const escaped = prompt.replace(/"/g, '\\"');
+    const fullCmd = envPrefix.length > 0
+      ? envPrefix.join(' && ') + ` && opencode run "${escaped}"`
+      : `opencode run "${escaped}"`;
+    term.sendText(fullCmd);
   });
 
   const interactiveCmd = vscode.commands.registerCommand('opencode-walkthrough.runInteractive', () => {
@@ -772,6 +754,7 @@ function activate(context) {
       { label: '$(lightbulb) Tips & Tricks', command: 'opencode-walkthrough.showTips' },
       { label: '$(cloud-download) Install CLI', command: 'opencode-walkthrough.install' },
       { label: '$(play) Run Inline Prompt', command: 'opencode-walkthrough.runInline' },
+      { label: '$(hubot) Start Agent Session', command: 'opencode-walkthrough.startAgent' },
       { label: '$(folder) Run on Project Files', command: 'opencode-walkthrough.runOnProject' },
       { label: '$(terminal) Start Interactive', command: 'opencode-walkthrough.runInteractive' },
       { label: '$(robot) Agents Overview', command: 'opencode-walkthrough.showAgents' },
@@ -885,7 +868,7 @@ function activate(context) {
     const fileFlags = uris.map(u => `--file "${u.fsPath}"`).join(' ');
     const term = vscode.window.createTerminal({ name: 'OpenCode', cwd: folder.uri.fsPath });
     term.show();
-    const envPrefix = buildEnvExports();
+    const envPrefix = buildEnvExports(() => vscode.workspace.getConfiguration());
     const fullCmd = envPrefix.length > 0
       ? envPrefix.join(' && ') + ` && opencode run ${fileFlags} "${prompt}"`
       : `opencode run ${fileFlags} "${prompt}"`;
@@ -907,6 +890,50 @@ function activate(context) {
   const refreshSessionsCmd = vscode.commands.registerCommand('opencode-walkthrough.refreshSessions', () => sessionsProvider.refresh());
   const refreshModelsCmd = vscode.commands.registerCommand('opencode-walkthrough.refreshModels', () => modelsProvider.refresh());
 
+  const startAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.startAgent', async () => {
+    await vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
+    const health = await checkHealth();
+    if (!health.installed) {
+      vscode.window.showWarningMessage('OpenCode CLI is not installed.');
+      return;
+    }
+    const prompt = await vscode.window.showInputBox({
+      placeHolder: 'What should the agent do?',
+      prompt: 'Start an agent session',
+      ignoreFocusOut: true,
+    });
+    if (prompt) {
+      await agentPanelProvider.sendMessage(prompt);
+    }
+  });
+
+  const cancelAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.cancelAgent', () => {
+    agentLoop.cancel();
+    vscode.window.showInformationMessage('Agent session cancelled.');
+  });
+
+  const openAgentPanelCmd = vscode.commands.registerCommand('opencode-walkthrough.openAgentPanel', () => {
+    vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
+  });
+
+  const resumeSessionCmd = vscode.commands.registerCommand('opencode-walkthrough.resumeSession', async (sessionId) => {
+    if (!sessionId) {
+      vscode.commands.executeCommand('opencode-walkthrough.sessionList');
+      return;
+    }
+    await vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
+    const prompt = await vscode.window.showInputBox({
+      placeHolder: 'Continue this session…',
+      prompt: `Resume session ${sessionId.slice(0, 8)}`,
+      ignoreFocusOut: true,
+    });
+    if (!prompt) return;
+    agentLoop.sessionId = sessionId;
+    await agentPanelProvider.sendMessage(prompt);
+  });
+
+  const webviewRegistration = vscode.window.registerWebviewViewProvider('opencode-walkthrough.agent', agentPanelProvider);
+
   agentsProvider.refresh();
   mcpProvider.refresh();
   sessionsProvider.refresh();
@@ -920,7 +947,9 @@ function activate(context) {
     statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, mcpProvider, sessionsProvider, modelsProvider,
-    refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd
+    refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
+    startAgentCmd, cancelAgentCmd, openAgentPanelCmd, resumeSessionCmd,
+    webviewRegistration, agentPanelProvider, agentLoop, outputChannel
   );
 }
 
