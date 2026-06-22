@@ -1,10 +1,12 @@
-# Default reviewers for all changes (GitHub auto-requests review on PRs).
+# Default owners for all files
 * @aadorian
 
-# Area owners (optional — narrows review for focused changes)
+# GitHub configuration and workflows
+/.github/ @aadorian
+
+# Extension core
 /extension.js @aadorian
 /package.json @aadorian
 /test/ @aadorian
-/.github/ @aadorian
 /docs/ @aadorian
 /walkthroughs/ @aadorian

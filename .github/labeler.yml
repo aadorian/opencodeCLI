@@ -4,6 +4,7 @@ documentation:
           - '**/*.md'
           - 'walkthroughs/**'
           - 'docs/**'
+          - '.github/**'
 
 enhancement:
   - changed-files:
@@ -23,6 +24,8 @@ testing:
   - changed-files:
       - any-glob-to-any-file:
           - 'test/**'
+          - '.vscode-test.mjs'
+          - 'scripts/**'
 
 ci:
   - changed-files:
