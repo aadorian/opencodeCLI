@@ -7,6 +7,12 @@
 | [Git workflow](../.github/GIT_WORKFLOW.md) | Branching, commits, and CI for contributors |
 | [Open Source Examples](./discussions/open-source-examples.md) | [Discussion hub](https://github.com/aadorian/opencodeCLI/discussions/33) — structured forms in [`.github/DISCUSSION_TEMPLATE/`](../.github/DISCUSSION_TEMPLATE/) |
 
+### GitHub Pages site
+
+Static project site (screenshots, install links, docs index): **[docs/pages/](./pages/)** — deployed from branch `docs/github-pages` via [`.github/workflows/pages.yml`](../.github/workflows/pages.yml).
+
+Live URL after merge and first deploy: **https://aadorian.github.io/opencodeCLI/**
+
 ### Publish to GitHub Wiki
 
 GitHub provisions the wiki git repository only after the **first page is saved in the browser**.
