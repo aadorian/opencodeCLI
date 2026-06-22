@@ -108,6 +108,7 @@
   ],
   "main": "./extension.js",
   "scripts": {
+    "run": "node scripts/run-extension.js",
     "test": "vscode-test",
     "validate": "node scripts/validate-manifest.js",
     "screenshots": "node scripts/render-screenshots.js",

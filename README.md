@@ -495,19 +495,31 @@ npm install
 
 ### Run Extension
 
-Using the path from your `.env`:
+Launch the Extension Development Host (opens a new Cursor/VS Code window with this extension loaded):
 
 ```bash
-source .env && code --extensionDevelopmentPath="$EXTENSION_PATH"
+npm run run
 ```
 
-Or directly:
+This runs `scripts/run-extension.js`, which looks for `cursor` then `code` on your PATH and passes `--extensionDevelopmentPath` pointing at this repo. Override paths with environment variables:
 
-```bash
-code --extensionDevelopmentPath="/absolute/path/to/opencode-vscode-walkthrough"
-```
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `EXTENSION_PATH` | Repository root | Directory containing `package.json` |
+| `WORKSPACE_FOLDER` | Same as extension path | Folder opened in the dev host |
 
-You can also press `F5` in VS Code with the "Run Extension" launch config.
+Alternatives:
+
+- Press **F5** in VS Code/Cursor with the **Run Extension** launch config (`.vscode/launch.json`).
+- CLI directly:
+
+  ```bash
+  cursor --extensionDevelopmentPath="/absolute/path/to/opencodeCLI" "/absolute/path/to/opencodeCLI"
+  ```
+
+  ```bash
+  code --extensionDevelopmentPath="/absolute/path/to/opencodeCLI" "/absolute/path/to/opencodeCLI"
+  ```
 
 For more on sideloading extensions, see the [VS Code extension marketplace docs](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace).
 
