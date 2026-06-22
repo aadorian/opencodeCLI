@@ -82,12 +82,22 @@ jobs:
         run: npm ci
 
       - name: Package extension
-        run: npx @vscode/vsce package --no-dependencies
+        run: npx @vscode/vsce@3 package --no-dependencies
+
+      - name: Verify VSIX artifact name
+        run: |
+          VSIX="opencode-walkthrough-$(node -p "require('./package.json').version").vsix"
+          if [ ! -f "$VSIX" ]; then
+            echo "::error::Expected VSIX not found: $VSIX"
+            ls -la *.vsix || true
+            exit 1
+          fi
+          echo "Packaged $VSIX"
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v4
         with:
           name: opencode-walkthrough-vsix
-          path: "*.vsix"
+          path: "opencode-walkthrough-*.vsix"
           retention-days: 14
           if-no-files-found: error

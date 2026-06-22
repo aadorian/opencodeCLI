@@ -118,7 +118,7 @@ git config commit.template .gitmessage
 
 | Check | Workflow |
 |-------|----------|
-| Validate manifest | `ci.yml` |
+| Validate manifest + publish prerequisites | `ci.yml` |
 | Extension tests (Ubuntu + macOS) | `ci.yml` |
 | Package VSIX | `ci.yml` |
 | Conventional PR title | `pull-request.yml` |

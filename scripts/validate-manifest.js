@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { validatePublishPrerequisites } = require('../lib/publishCicd');
 
 const root = path.join(__dirname, '..');
 const pkgPath = path.join(root, 'package.json');
@@ -84,6 +85,10 @@ for (const view of views) {
   if (view.type === 'webview' && !registeredWebviews.has(view.id)) {
     console.warn(`validate-manifest: warning — webview "${view.id}" has no known provider in extension.js`);
   }
+}
+
+for (const message of validatePublishPrerequisites(pkg, fs, root)) {
+  error(message);
 }
 
 if (failed) {

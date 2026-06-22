@@ -588,6 +588,8 @@ Use the "Extension Tests" launch config in `.vscode/launch.json`.
 
 ## Publishing
 
+See the wiki article **[Publishing & CI/CD](https://github.com/aadorian/opencodeCLI/wiki/Publishing-and-CI-CD)** and [docs/publishing-cicd.md](./docs/publishing-cicd.md) for the full pipeline (validate → test → package → tag release → Marketplace).
+
 ### VS Code Marketplace
 
 Publish using the token from your `.env` or pass it directly:

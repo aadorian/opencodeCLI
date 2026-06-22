@@ -32,6 +32,12 @@ const WIKI_ARTICLES = [
     description: 'CLI install for all platforms, providers, /init, and extension setup',
   },
   {
+    src: 'docs/publishing-cicd.md',
+    wikiFile: 'Publishing-and-CI-CD.md',
+    title: 'Publishing and CI/CD',
+    description: 'VSIX packaging, Marketplace release pipeline, secrets, and vsce best practices',
+  },
+  {
     src: 'docs/building-opencode-agent-harness.md',
     wikiFile: 'Building-the-OpenCode-Agent-Harness.md',
     title: 'Building the OpenCode Agent Harness',
@@ -76,6 +82,10 @@ function adaptWikiContent(content) {
     .replace(
       /\(\.\/installation\.md\)/g,
       `(${wikiLink('Installation')})`
+    )
+    .replace(
+      /\(\.\/publishing-cicd\.md\)/g,
+      `(${wikiLink('Publishing and CI/CD')})`
     )
     .replace(
       /\(\.\/practical-workflow-examples\.md\)/g,
