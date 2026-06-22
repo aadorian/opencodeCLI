@@ -26,6 +26,12 @@ const WIKI_NEW_URL = `https://github.com/${repo}/wiki/_new`;
 /** @type {{ src: string, wikiFile: string, title: string, description: string }[]} */
 const WIKI_ARTICLES = [
   {
+    src: 'docs/installation.md',
+    wikiFile: 'Installation.md',
+    title: 'Installation',
+    description: 'CLI install for all platforms, providers, /init, and extension setup',
+  },
+  {
     src: 'docs/building-opencode-agent-harness.md',
     wikiFile: 'Building-the-OpenCode-Agent-Harness.md',
     title: 'Building the OpenCode Agent Harness',
@@ -66,6 +72,10 @@ function adaptWikiContent(content) {
     .replace(
       /\(\.\/building-opencode-agent-harness\.md\)/g,
       `(${wikiLink('Building the OpenCode Agent Harness')})`
+    )
+    .replace(
+      /\(\.\/installation\.md\)/g,
+      `(${wikiLink('Installation')})`
     )
     .replace(
       /\(\.\/practical-workflow-examples\.md\)/g,

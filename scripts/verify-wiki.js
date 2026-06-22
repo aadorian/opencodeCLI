@@ -8,6 +8,7 @@ const WIKI_URL = `https://github.com/${REPO}/wiki`;
 const WIKI_REMOTE = `https://github.com/${REPO}.wiki.git`;
 const EXPECTED = [
   'Home',
+  'Installation',
   'Building-the-OpenCode-Agent-Harness',
   'Practical-Workflow-Examples',
   'Troubleshooting',
