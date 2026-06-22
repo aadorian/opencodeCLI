@@ -36,6 +36,10 @@ suite('Extension Test Suite', () => {
       'opencode-walkthrough.runOnProject',
       'opencode-walkthrough.showActions',
       'opencode-walkthrough.showCliHelp',
+      'opencode-walkthrough.startAgent',
+      'opencode-walkthrough.cancelAgent',
+      'opencode-walkthrough.openAgentPanel',
+      'opencode-walkthrough.resumeSession',
     ];
     for (const cmd of expected) {
       assert.ok(commands.includes(cmd), `Command ${cmd} should be registered`);
@@ -80,5 +84,20 @@ suite('Extension Test Suite', () => {
         'AlejandroAdorjan.opencode-walkthrough#opencode.gettingStarted'
       )
     );
+  });
+
+  test('Harness settings are contributed', () => {
+    const pkg = extension?.packageJSON;
+    const props = pkg.contributes?.configuration?.properties ?? {};
+    assert.ok(props['opencode.harness.maxRounds'], 'Should contribute harness maxRounds');
+    assert.ok(props['opencode.harness.customInstructions'], 'Should contribute customInstructions');
+  });
+
+  test('Agent webview view is contributed', () => {
+    const pkg = extension?.packageJSON;
+    const views = Object.values(pkg.contributes?.views ?? {}).flat();
+    const agentView = views.find(v => v.id === 'opencode-walkthrough.agent');
+    assert.ok(agentView, 'Agent webview should be contributed');
+    assert.equal(agentView.type, 'webview');
   });
 });

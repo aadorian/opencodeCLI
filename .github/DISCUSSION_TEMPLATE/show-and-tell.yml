@@ -1,0 +1,45 @@
+title: "[Example] "
+labels: ["example", "open-source"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share a **public repo, gist, or workflow** that uses OpenCode Walkthrough in open source.
+        See the [Open Source Examples hub](https://github.com/aadorian/opencodeCLI/discussions/33) for templates and curated links.
+  - type: input
+    id: repo-link
+    attributes:
+      label: Repository or gist URL
+      description: Link to the open source project or config gist
+      placeholder: https://github.com/you/your-repo
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: What does this example demonstrate?
+      description: One or two sentences — e.g. “MCP + agent loop for doc updates on every PR”
+    validations:
+      required: true
+  - type: textarea
+    id: opencode-features
+    attributes:
+      label: OpenCode / extension features used
+      description: Commands, agents, MCP servers, walkthrough steps, harness settings, etc.
+      placeholder: |
+        - Run on Project Files
+        - opencode serve + Agent sidebar
+        - Custom agent in opencode.json
+    validations:
+      required: true
+  - type: textarea
+    id: config-snippet
+    attributes:
+      label: Config snippet (optional)
+      description: Paste relevant opencode.json, VS Code settings, or shell one-liner
+      render: json
+  - type: textarea
+    id: lesson-learned
+    attributes:
+      label: One thing you learned
+      description: What worked, what didn't, or what you'd change next time
