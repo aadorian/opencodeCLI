@@ -2,7 +2,7 @@
 
 A Visual Studio Code extension that provides an interactive walkthrough and quick actions for [OpenCode](https://opencode.ai), an AI-assisted CLI for software engineering tasks.
 
-**Publisher:** `aadorian` | **License:** SEE LICENSE IN LICENSE | **Pricing:** Free
+**Publisher:** `AlejandroAdorjan` | **License:** SEE LICENSE IN LICENSE | **Pricing:** Free
 
 ---
 

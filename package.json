@@ -1,8 +1,8 @@
 {
   "name": "opencode-walkthrough",
   "displayName": "OpenCode Walkthrough",
-  "version": "0.0.1",
-  "publisher": "aadorian",
+  "version": "0.0.2",
+  "publisher": "AlejandroAdorjan",
   "author": {
     "name": "Alejandro Adorjan",
     "email": "aadorjan@users.noreply.github.com",
@@ -118,7 +118,8 @@
     "wiki:publish": "node scripts/wiki-publish.js",
     "wiki:verify": "node scripts/verify-wiki.js",
     "discussions:sync": "node scripts/sync-discussions.js",
-    "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\""
+    "vscode:prepublish": "node -e \"console.log('opencode-walkthrough: ready')\"",
+    "publish": "npx @vscode/vsce package --no-dependencies"
   },
   "contributes": {
     "configuration": {
