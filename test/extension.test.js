@@ -15,36 +15,21 @@ suite('Extension Test Suite', () => {
   });
 
   test('All commands are registered', async () => {
-    const commands = await vscode.commands.getCommands(true);
-    const expected = [
-      'opencode-walkthrough.showWalkthrough',
-      'opencode-walkthrough.install',
-      'opencode-walkthrough.runInline',
-      'opencode-walkthrough.runInteractive',
-      'opencode-walkthrough.createAgent',
-      'opencode-walkthrough.listAgents',
-      'opencode-walkthrough.authLogin',
-      'opencode-walkthrough.authList',
-      'opencode-walkthrough.addMcp',
-      'opencode-walkthrough.listMcp',
-      'opencode-walkthrough.listModels',
-      'opencode-walkthrough.sessionList',
-      'opencode-walkthrough.stats',
-      'opencode-walkthrough.upgrade',
-      'opencode-walkthrough.serve',
-      'opencode-walkthrough.web',
-      'opencode-walkthrough.runOnProject',
-      'opencode-walkthrough.showActions',
-      'opencode-walkthrough.showCliHelp',
-      'opencode-walkthrough.startAgent',
-      'opencode-walkthrough.cancelAgent',
-      'opencode-walkthrough.openAgentPanel',
-      'opencode-walkthrough.resumeSession',
-    ];
-    for (const cmd of expected) {
-      assert.ok(commands.includes(cmd), `Command ${cmd} should be registered`);
-    }
-  });
+  const commands = await vscode.commands.getCommands(true);
+
+  const pkg = extension?.packageJSON;
+
+  const expected = pkg.contributes.commands.map(
+    command => command.command
+  );
+
+  for (const cmd of expected) {
+    assert.ok(
+      commands.includes(cmd),
+      `Command ${cmd} should be registered`
+    );
+  }
+});
 
   test('Commands can be executed without error', async () => {
     await assert.doesNotReject(
@@ -101,4 +86,30 @@ suite('Extension Test Suite', () => {
     assert.ok(agentView, 'Agent webview should be contributed');
     assert.equal(agentView.type, 'webview');
   });
+  test('Overview commands execute without error', async () => {
+  await assert.doesNotReject(
+    vscode.commands.executeCommand('opencode-walkthrough.showTips')
+  );
+
+  await assert.doesNotReject(
+    vscode.commands.executeCommand('opencode-walkthrough.showAgents')
+  );
+
+  await assert.doesNotReject(
+    vscode.commands.executeCommand('opencode-walkthrough.showModels')
+  );
+});
+
+test('Walkthrough has expected step count', () => {
+  const pkg = extension?.packageJSON;
+
+  const walkthrough = pkg.contributes.walkthroughs.find(
+    w => w.id === 'opencode.gettingStarted'
+  );
+
+  assert.ok(walkthrough);
+  assert.equal(walkthrough.steps.length, 6);
+});
+
+
 });
