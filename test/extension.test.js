@@ -15,21 +15,14 @@ suite('Extension Test Suite', () => {
   });
 
   test('All commands are registered', async () => {
-  const commands = await vscode.commands.getCommands(true);
+    const commands = await vscode.commands.getCommands(true);
+    const pkg = extension?.packageJSON;
+    const expected = pkg.contributes.commands.map(command => command.command);
 
-  const pkg = extension?.packageJSON;
-
-  const expected = pkg.contributes.commands.map(
-    command => command.command
-  );
-
-  for (const cmd of expected) {
-    assert.ok(
-      commands.includes(cmd),
-      `Command ${cmd} should be registered`
-    );
-  }
-});
+    for (const cmd of expected) {
+      assert.ok(commands.includes(cmd), `Command ${cmd} should be registered`);
+    }
+  });
 
   test('Commands can be executed without error', async () => {
     await assert.doesNotReject(
@@ -87,29 +80,24 @@ suite('Extension Test Suite', () => {
     assert.equal(agentView.type, 'webview');
   });
   test('Overview commands execute without error', async () => {
-  await assert.doesNotReject(
-    vscode.commands.executeCommand('opencode-walkthrough.showTips')
-  );
+    await assert.doesNotReject(
+      vscode.commands.executeCommand('opencode-walkthrough.showTips')
+    );
+    await assert.doesNotReject(
+      vscode.commands.executeCommand('opencode-walkthrough.showAgents')
+    );
+    await assert.doesNotReject(
+      vscode.commands.executeCommand('opencode-walkthrough.showModels')
+    );
+  });
 
-  await assert.doesNotReject(
-    vscode.commands.executeCommand('opencode-walkthrough.showAgents')
-  );
+  test('Walkthrough has expected step count', () => {
+    const pkg = extension?.packageJSON;
+    const walkthrough = pkg.contributes.walkthroughs.find(
+      w => w.id === 'opencode.gettingStarted'
+    );
 
-  await assert.doesNotReject(
-    vscode.commands.executeCommand('opencode-walkthrough.showModels')
-  );
-});
-
-test('Walkthrough has expected step count', () => {
-  const pkg = extension?.packageJSON;
-
-  const walkthrough = pkg.contributes.walkthroughs.find(
-    w => w.id === 'opencode.gettingStarted'
-  );
-
-  assert.ok(walkthrough);
-  assert.equal(walkthrough.steps.length, 6);
-});
-
-
+    assert.ok(walkthrough);
+    assert.equal(walkthrough.steps.length, 6);
+  });
 });
