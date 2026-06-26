@@ -32,6 +32,8 @@ Enable the commit message template locally:
 git config commit.template .gitmessage
 ```
 
+Contributors are credited in [CONTRIBUTORS.md](./CONTRIBUTORS.md).
+
 ## Getting Started
 
 1. Fork the repository

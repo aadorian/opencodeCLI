@@ -647,6 +647,10 @@ None. Report at [GitHub Issues](https://github.com/aadorian/opencodeCLI/issues).
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
+## Contributors
+
+Thanks to everyone who contributes to this project. See [CONTRIBUTORS.md](./CONTRIBUTORS.md) for credits.
+
 ## License
 
 [MIT](./LICENSE)
