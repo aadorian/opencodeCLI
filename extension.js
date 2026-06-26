@@ -28,14 +28,15 @@ class AgentTreeItem extends vscode.TreeItem {
 }
 
 class AgentsProvider {
-  constructor() {
+  constructor(runListAgents = (callback) => exec('opencode agent list 2>/dev/null || true', callback)) {
     this._onDidChangeTreeData = new vscode.EventEmitter();
     this.onDidChangeTreeData = this._onDidChangeTreeData.event;
     this.items = [];
+    this.runListAgents = runListAgents;
   }
 
   refresh() {
-    exec('opencode agent list 2>/dev/null || true', (err, stdout) => {
+    this.runListAgents((err, stdout) => {
       this.items = [];
       if (!err && stdout) {
         for (const line of stdout.trim().split('\n')) {
@@ -957,5 +958,7 @@ function deactivate() {}
 
 module.exports = {
   activate,
-  deactivate
+  deactivate,
+  AgentsProvider,
+  AgentTreeItem
 };
