@@ -1,5 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
+const { AgentsProvider } = require('../extension');
 
 suite('Extension Test Suite', () => {
   let extension;
@@ -99,5 +100,16 @@ suite('Extension Test Suite', () => {
 
     assert.ok(walkthrough);
     assert.equal(walkthrough.steps.length, 6);
+  });
+
+  test('Agents empty-state CTA opens create-agent flow', async () => {
+    const provider = new AgentsProvider((callback) => callback(null, ''));
+
+    provider.refresh();
+    const items = await provider.getChildren();
+
+    assert.equal(items[0].label, 'No agents found');
+    assert.equal(items[0].description, 'Create one to get started');
+    assert.equal(items[0].command.command, 'opencode-walkthrough.createAgent');
   });
 });
