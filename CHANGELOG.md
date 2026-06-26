@@ -8,6 +8,7 @@
 - Register documented keyboard shortcuts (`⌘⌥O/I/P/T/H/S`)
 - Point install fallbacks to opencode.ai docs instead of GitHub
 - Add manifest-synced integration tests for extension commands (thanks [@JhansiOruganti-43](https://github.com/JhansiOruganti-43), [#53](https://github.com/aadorian/opencodeCLI/pull/53))
+- Add agents empty-state regression test ensuring Create Agent CTA (thanks [@kingrubic](https://github.com/kingrubic), [#52](https://github.com/aadorian/opencodeCLI/pull/52))
 
 ## 0.0.2
 

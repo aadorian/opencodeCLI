@@ -11,5 +11,6 @@ Thank you to everyone who helps improve OpenCode Walkthrough.
 | Contributor | Contribution |
 | --- | --- |
 | [Jhansi Oruganti](https://github.com/JhansiOruganti-43) | Integration tests for extension commands ([#53](https://github.com/aadorian/opencodeCLI/pull/53), closes [#27](https://github.com/aadorian/opencodeCLI/issues/27)) |
+| [kingrubic](https://github.com/kingrubic) | Agents empty-state regression test ([#52](https://github.com/aadorian/opencodeCLI/pull/52), fixes [#12](https://github.com/aadorian/opencodeCLI/issues/12)) |
 
 Want to appear here? Open a pull request — see [CONTRIBUTING.md](./CONTRIBUTING.md).
