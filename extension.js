@@ -693,8 +693,12 @@ function activate(context) {
       : (vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode'));
     term.show();
     const getConfig = () => vscode.workspace.getConfiguration();
-    const escaped = prompt.replace(/"/g, '\\"');
-    term.sendText(buildTerminalCommand(getConfig, `opencode run "${escaped}"`));
+    // Single-quote on Unix to prevent shell expansion of $vars, backticks, etc.
+    // On Windows, double-quote with escaped double-quotes.
+    const shellQuote = (str) => process.platform === 'win32'
+      ? '"' + str.replace(/"/g, '\\"') + '"'
+      : "'" + str.replace(/'/g, "'\\''") + "'";
+    term.sendText(buildTerminalCommand(getConfig, `opencode run ${shellQuote(prompt)}`));
   });
 
   const interactiveCmd = vscode.commands.registerCommand('opencode-walkthrough.runInteractive', async () => {
@@ -813,6 +817,23 @@ function activate(context) {
     sendToTerminal('opencode mcp remove');
   });
 
+  const uninstallCmd = vscode.commands.registerCommand('opencode-walkthrough.uninstall', async () => {
+    const version = await checkInstall();
+    if (!version) {
+      vscode.window.showInformationMessage('OpenCode is not installed.');
+      return;
+    }
+    const choice = await vscode.window.showWarningMessage(
+      `Uninstall OpenCode ${version} from your system?`,
+      { modal: true },
+      'Uninstall Everything',
+      'Keep Config & Data',
+    );
+    if (!choice) return;
+    const flags = choice === 'Keep Config & Data' ? ' --keep-config --keep-data' : '';
+    sendToTerminal(`opencode uninstall${flags}`);
+  });
+
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.text = '$(terminal) OpenCode';
   statusBarItem.tooltip = 'OpenCode — Click to run an action';
@@ -852,6 +873,7 @@ function activate(context) {
       { label: '$(server) Start Server', command: 'opencode-walkthrough.serve' },
       { label: '$(globe) Start Web', command: 'opencode-walkthrough.web' },
       { label: '$(arrow-up) Upgrade CLI', command: 'opencode-walkthrough.upgrade' },
+      { label: '$(trash) Uninstall OpenCode', command: 'opencode-walkthrough.uninstall' },
     ]).then(selected => {
       if (selected) {
         vscode.commands.executeCommand(selected.command);
@@ -881,6 +903,7 @@ function activate(context) {
       { label: '$(server) opencode serve', description: 'Start a headless server', command: 'opencode-walkthrough.serve' },
       { label: '$(globe) opencode web', description: 'Start web interface', command: 'opencode-walkthrough.web' },
       { label: '$(arrow-up) opencode upgrade', description: 'Upgrade the CLI', command: 'opencode-walkthrough.upgrade' },
+      { label: '$(trash) opencode uninstall', description: 'Uninstall OpenCode from your system', command: 'opencode-walkthrough.uninstall' },
     ]).then(selected => {
       if (selected) {
         vscode.commands.executeCommand(selected.command);
@@ -1030,7 +1053,7 @@ function activate(context) {
     createAgentCmd, listAgentsCmd, addMcpCmd, listMcpCmd,
     authLoginCmd, authListCmd, authLogoutCmd, modelsCmd, sessionListCmd,
     statsCmd, upgradeCmd, serveCmd, webCmd,
-    versionCmd, checkHealthCmd, mcpRemoveCmd,
+    versionCmd, checkHealthCmd, mcpRemoveCmd, uninstallCmd,
     statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, mcpProvider, sessionsProvider, modelsProvider,

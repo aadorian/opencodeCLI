@@ -108,7 +108,8 @@
     "onCommand:opencode-walkthrough.version",
     "onCommand:opencode-walkthrough.checkHealth",
     "onCommand:opencode-walkthrough.authLogout",
-    "onCommand:opencode-walkthrough.mcpRemove"
+    "onCommand:opencode-walkthrough.mcpRemove",
+    "onCommand:opencode-walkthrough.uninstall"
   ],
   "main": "./extension.js",
   "scripts": {
@@ -478,6 +479,11 @@
         "command": "opencode-walkthrough.mcpRemove",
         "title": "OpenCode: Remove MCP Server",
         "icon": "$(trash)"
+      },
+      {
+        "command": "opencode-walkthrough.uninstall",
+        "title": "OpenCode: Uninstall OpenCode",
+        "icon": "$(trash)"
       }
     ],
     "viewsContainers": {
@@ -800,6 +806,9 @@
         },
         {
           "command": "opencode-walkthrough.upgrade"
+        },
+        {
+          "command": "opencode-walkthrough.uninstall"
         }
       ],
       "explorer/context": [
