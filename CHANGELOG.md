@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.5
+
+- Add custom OpenCode agent definition with docs
+- Redesign agent chat panel with Copilot-style welcome UI
+- Add agent/model selectors and context file support to panel
+- Add run-inline-dialog promo screenshot and screenshots CI job
+- Fix shell escaping in run inline prompt and add uninstall command
+- Fix error detection in auth ls health check output
+- Fix missing uninstall walkthrough step and update test assertion
+
 ## 0.0.4
 
 - Add full install flow with platform-specific method picker (curl script, Homebrew on macOS, npm)
