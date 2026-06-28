@@ -987,6 +987,17 @@
               "onView:terminal",
               "onLink:https://opencode.ai"
             ]
+          },
+          {
+            "id": "opencode.uninstall",
+            "title": "Remove OpenCode",
+            "description": "Uninstall OpenCode from your system. You can keep your config and data, or remove everything.\n[Remove OpenCode](command:opencode-walkthrough.uninstall)",
+            "media": {
+              "markdown": "walkthroughs/06-uninstall.md"
+            },
+            "completionEvents": [
+              "onCommand:opencode-walkthrough.uninstall"
+            ]
           }
         ]
       }
