@@ -2,7 +2,7 @@ const vscode = require('vscode');
 const { exec } = require('child_process');
 const { buildTerminalCommand } = require('./lib/env');
 const { checkInstall, getGitBranch } = require('./lib/cli');
-const { getInstallTerminalCommand, promptInstallIfMissing } = require('./lib/install');
+const { getInstallTerminalCommand, getInstallOptions, promptInstallIfMissing } = require('./lib/install');
 const { checkHealth } = require('./lib/health');
 const { listSessions } = require('./lib/sessions');
 const { ServerManager } = require('./lib/server');
@@ -642,9 +642,30 @@ function activate(context) {
   const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', async () => {
     const version = await checkInstall();
     if (version) {
-      vscode.window.showInformationMessage(`OpenCode is already installed (${version})`);
-    } else {
-      sendToTerminal(getInstallTerminalCommand());
+      const action = await vscode.window.showInformationMessage(
+        `OpenCode ${version} is installed.`,
+        'Upgrade',
+        'Check Health'
+      );
+      if (action === 'Upgrade') {
+        sendToTerminal('opencode upgrade');
+      } else if (action === 'Check Health') {
+        vscode.commands.executeCommand('opencode-walkthrough.checkHealth');
+      }
+      return;
+    }
+    const options = getInstallOptions();
+    if (options.length === 1) {
+      sendToTerminal(options[0].command);
+      return;
+    }
+    const selected = await vscode.window.showQuickPick(
+      options.map(o => ({ label: o.label, description: o.description })),
+      { placeHolder: 'Choose install method for OpenCode' }
+    );
+    if (selected) {
+      const option = options.find(o => o.label === selected.label);
+      if (option) sendToTerminal(option.command);
     }
   });
 
@@ -737,6 +758,61 @@ function activate(context) {
     sendToTerminal('opencode web');
   });
 
+  const versionCmd = vscode.commands.registerCommand('opencode-walkthrough.version', async () => {
+    const version = await checkInstall();
+    if (version) {
+      vscode.window.showInformationMessage(`OpenCode version: ${version}`);
+    } else {
+      const action = await vscode.window.showWarningMessage(
+        'OpenCode is not installed.',
+        'Install'
+      );
+      if (action === 'Install') {
+        vscode.commands.executeCommand('opencode-walkthrough.install');
+      }
+    }
+  });
+
+  const checkHealthCmd = vscode.commands.registerCommand('opencode-walkthrough.checkHealth', async () => {
+    const health = await checkHealth();
+    if (!health.installed) {
+      const action = await vscode.window.showWarningMessage(
+        'OpenCode is not installed.',
+        'Install'
+      );
+      if (action === 'Install') {
+        vscode.commands.executeCommand('opencode-walkthrough.install');
+      }
+    } else if (!health.ready) {
+      const action = await vscode.window.showWarningMessage(
+        `${health.message}`,
+        'Auth Login',
+        'Auth List'
+      );
+      if (action === 'Auth Login') {
+        sendToTerminal('opencode auth login');
+      } else if (action === 'Auth List') {
+        sendToTerminal('opencode auth ls');
+      }
+    } else {
+      vscode.window.showInformationMessage(`${health.message}`);
+    }
+  });
+
+  const authLogoutCmd = vscode.commands.registerCommand('opencode-walkthrough.authLogout', async () => {
+    if (!(await ensureInstalled())) {
+      return;
+    }
+    sendToTerminal('opencode auth logout');
+  });
+
+  const mcpRemoveCmd = vscode.commands.registerCommand('opencode-walkthrough.mcpRemove', async () => {
+    if (!(await ensureInstalled())) {
+      return;
+    }
+    sendToTerminal('opencode mcp remove');
+  });
+
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
   statusBarItem.text = '$(terminal) OpenCode';
   statusBarItem.tooltip = 'OpenCode — Click to run an action';
@@ -754,6 +830,8 @@ function activate(context) {
       { label: '$(book) Show Walkthrough', command: 'opencode-walkthrough.showWalkthrough' },
       { label: '$(lightbulb) Tips & Tricks', command: 'opencode-walkthrough.showTips' },
       { label: '$(cloud-download) Install CLI', command: 'opencode-walkthrough.install' },
+      { label: '$(versions) Check Version', command: 'opencode-walkthrough.version' },
+      { label: '$(heart) Check Health', command: 'opencode-walkthrough.checkHealth' },
       { label: '$(play) Run Inline Prompt', command: 'opencode-walkthrough.runInline' },
       { label: '$(hubot) Start Agent Session', command: 'opencode-walkthrough.startAgent' },
       { label: '$(folder) Run on Project Files', command: 'opencode-walkthrough.runOnProject' },
@@ -764,8 +842,10 @@ function activate(context) {
       { label: '$(list-tree) List Agents', command: 'opencode-walkthrough.listAgents' },
       { label: '$(key) Auth Login', command: 'opencode-walkthrough.authLogin' },
       { label: '$(key) Auth List', command: 'opencode-walkthrough.authList' },
+      { label: '$(key) Auth Logout', command: 'opencode-walkthrough.authLogout' },
       { label: '$(plug) Add MCP Server', command: 'opencode-walkthrough.addMcp' },
       { label: '$(list-tree) List MCP Servers', command: 'opencode-walkthrough.listMcp' },
+      { label: '$(trash) Remove MCP Server', command: 'opencode-walkthrough.mcpRemove' },
       { label: '$(symbol-parameter) List Models', command: 'opencode-walkthrough.listModels' },
       { label: '$(list-tree) List Sessions', command: 'opencode-walkthrough.sessionList' },
       { label: '$(graph) Stats', command: 'opencode-walkthrough.stats' },
@@ -781,6 +861,9 @@ function activate(context) {
 
   const showCliHelpCmd = vscode.commands.registerCommand('opencode-walkthrough.showCliHelp', () => {
     vscode.window.showQuickPick([
+      { label: '$(cloud-download) opencode install', description: 'Install or upgrade OpenCode CLI', command: 'opencode-walkthrough.install' },
+      { label: '$(versions) opencode --version', description: 'Show installed version', command: 'opencode-walkthrough.version' },
+      { label: '$(heart) opencode health', description: 'Check health and auth status', command: 'opencode-walkthrough.checkHealth' },
       { label: '$(terminal) opencode', description: 'Start the TUI', command: 'opencode-walkthrough.runInteractive' },
       { label: '$(play) opencode run', description: 'Run a prompt', command: 'opencode-walkthrough.runInline' },
       { label: '$(folder) opencode run --file', description: 'Run on selected project files', command: 'opencode-walkthrough.runOnProject' },
@@ -788,8 +871,10 @@ function activate(context) {
       { label: '$(list-tree) opencode agent list', description: 'List agents', command: 'opencode-walkthrough.listAgents' },
       { label: '$(key) opencode auth login', description: 'Log in to a provider', command: 'opencode-walkthrough.authLogin' },
       { label: '$(key) opencode auth list', description: 'List authenticated providers', command: 'opencode-walkthrough.authList' },
+      { label: '$(key) opencode auth logout', description: 'Log out from a provider', command: 'opencode-walkthrough.authLogout' },
       { label: '$(plug) opencode mcp add', description: 'Add an MCP server', command: 'opencode-walkthrough.addMcp' },
       { label: '$(list-tree) opencode mcp list', description: 'List MCP servers', command: 'opencode-walkthrough.listMcp' },
+      { label: '$(trash) opencode mcp remove', description: 'Remove an MCP server', command: 'opencode-walkthrough.mcpRemove' },
       { label: '$(symbol-parameter) opencode models', description: 'List available models', command: 'opencode-walkthrough.listModels' },
       { label: '$(list-tree) opencode session list', description: 'List sessions', command: 'opencode-walkthrough.sessionList' },
       { label: '$(graph) opencode stats', description: 'Token usage and costs', command: 'opencode-walkthrough.stats' },
@@ -943,8 +1028,9 @@ function activate(context) {
   context.subscriptions.push(
     showWalkthrough, installCmd, runCmd, interactiveCmd,
     createAgentCmd, listAgentsCmd, addMcpCmd, listMcpCmd,
-    authLoginCmd, authListCmd, modelsCmd, sessionListCmd,
+    authLoginCmd, authListCmd, authLogoutCmd, modelsCmd, sessionListCmd,
     statsCmd, upgradeCmd, serveCmd, webCmd,
+    versionCmd, checkHealthCmd, mcpRemoveCmd,
     statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, mcpProvider, sessionsProvider, modelsProvider,

@@ -1,7 +1,7 @@
 {
   "name": "opencode-walkthrough",
   "displayName": "OpenCode Walkthrough",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "AlejandroAdorjan",
   "author": {
     "name": "Alejandro Adorjan",
@@ -104,7 +104,11 @@
     "onCommand:opencode-walkthrough.startAgent",
     "onCommand:opencode-walkthrough.cancelAgent",
     "onCommand:opencode-walkthrough.openAgentPanel",
-    "onCommand:opencode-walkthrough.resumeSession"
+    "onCommand:opencode-walkthrough.resumeSession",
+    "onCommand:opencode-walkthrough.version",
+    "onCommand:opencode-walkthrough.checkHealth",
+    "onCommand:opencode-walkthrough.authLogout",
+    "onCommand:opencode-walkthrough.mcpRemove"
   ],
   "main": "./extension.js",
   "scripts": {
@@ -454,6 +458,26 @@
         "command": "opencode-walkthrough.resumeSession",
         "title": "OpenCode: Resume Session",
         "icon": "$(history)"
+      },
+      {
+        "command": "opencode-walkthrough.version",
+        "title": "OpenCode: Check Version",
+        "icon": "$(versions)"
+      },
+      {
+        "command": "opencode-walkthrough.checkHealth",
+        "title": "OpenCode: Check Health",
+        "icon": "$(heart)"
+      },
+      {
+        "command": "opencode-walkthrough.authLogout",
+        "title": "OpenCode: Auth Logout",
+        "icon": "$(key)"
+      },
+      {
+        "command": "opencode-walkthrough.mcpRemove",
+        "title": "OpenCode: Remove MCP Server",
+        "icon": "$(trash)"
       }
     ],
     "viewsContainers": {
@@ -511,7 +535,7 @@
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Agents Overview](command:opencode-walkthrough.showAgents)\n[Models Overview](command:opencode-walkthrough.showModels)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Tips & Tricks](command:opencode-walkthrough.showTips)\n[Read Documentation](https://opencode.ai)\n"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Check Version](command:opencode-walkthrough.version)\n[Check Health](command:opencode-walkthrough.checkHealth)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Auth Login](command:opencode-walkthrough.authLogin)\n[Auth Logout](command:opencode-walkthrough.authLogout)\n\n[Agents Overview](command:opencode-walkthrough.showAgents)\n[Models Overview](command:opencode-walkthrough.showModels)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Tips & Tricks](command:opencode-walkthrough.showTips)\n[Read Documentation](https://opencode.ai)\n"
       },
       {
         "view": "opencode-walkthrough.agents",
@@ -523,7 +547,7 @@
       },
       {
         "view": "opencode-walkthrough.mcp",
-        "contents": "Manage Model Context Protocol servers for OpenCode.\n\n[Add MCP Server](command:opencode-walkthrough.addMcp)\n[List MCP Servers](command:opencode-walkthrough.listMcp)\n\n[Read MCP Docs](https://opencode.ai/docs/mcp-servers/)"
+        "contents": "Manage Model Context Protocol servers for OpenCode.\n\n[Add MCP Server](command:opencode-walkthrough.addMcp)\n[List MCP Servers](command:opencode-walkthrough.listMcp)\n[Remove MCP Server](command:opencode-walkthrough.mcpRemove)\n\n[Read MCP Docs](https://opencode.ai/docs/mcp-servers/)"
       },
       {
         "view": "opencode-walkthrough.sessions",
@@ -553,6 +577,16 @@
         },
         {
           "command": "opencode-walkthrough.install",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.checkHealth",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.version",
           "when": "view == opencode-walkthrough.overview",
           "group": "navigation"
         },
@@ -642,6 +676,11 @@
           "group": "navigation"
         },
         {
+          "command": "opencode-walkthrough.mcpRemove",
+          "when": "view == opencode-walkthrough.mcp",
+          "group": "navigation"
+        },
+        {
           "command": "opencode-walkthrough.refreshMcp",
           "when": "view == opencode-walkthrough.mcp",
           "group": "navigation"
@@ -671,6 +710,15 @@
         }
       ],
       "opencode-walkthrough.helpSubmenu": [
+        {
+          "command": "opencode-walkthrough.install"
+        },
+        {
+          "command": "opencode-walkthrough.version"
+        },
+        {
+          "command": "opencode-walkthrough.checkHealth"
+        },
         {
           "command": "opencode-walkthrough.showAgents"
         },
@@ -724,10 +772,16 @@
           "command": "opencode-walkthrough.authList"
         },
         {
+          "command": "opencode-walkthrough.authLogout"
+        },
+        {
           "command": "opencode-walkthrough.addMcp"
         },
         {
           "command": "opencode-walkthrough.listMcp"
+        },
+        {
+          "command": "opencode-walkthrough.mcpRemove"
         },
         {
           "command": "opencode-walkthrough.listModels"
@@ -860,7 +914,7 @@
           {
             "id": "opencode.install",
             "title": "Install OpenCode",
-            "description": "OpenCode is an open source AI coding agent. On Windows use `npm install -g opencode-ai` (no `sudo`). On macOS/Linux use the install script or npm, then confirm with `opencode --version`.\n[Install OpenCode](command:opencode-walkthrough.install)\n[Read install docs](https://opencode.ai/docs)",
+            "description": "OpenCode is an open source AI coding agent. On macOS/Linux: `curl -fsSL https://opencode.ai/install | bash` or `brew install opencode`. On Windows: `npm install -g opencode-ai`. Confirm with `opencode --version`.\n[Install OpenCode](command:opencode-walkthrough.install)\n[Check Version](command:opencode-walkthrough.version)\n[Read install docs](https://opencode.ai/docs)",
             "media": {
               "markdown": "walkthroughs/01-install.md"
             },
