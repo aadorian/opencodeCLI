@@ -74,6 +74,14 @@ In-editor reference panel opened via **OpenCode: Tips & Tricks**.
 
 ![OpenCode Tips and Tricks webview panel](media/screenshots/tips-webview.png)
 
+### Run Inline Prompt dialog
+
+Command **OpenCode: Run Inline Prompt** (`⌘⌥I`) — opens a session dialog where you describe what you want to build, pick a model, and run the prompt directly from VS Code.
+
+**Dialog:** workspace context (e.g. `opencodeCLI`) · model selector (e.g. `claude-sonnet-4`) · prompt text area · agent mode · worktree / branch info
+
+![Run Inline Prompt new-session dialog](media/screenshots/run-inline-dialog.png)
+
 ### Run on Project Files
 
 Command **OpenCode: Run on Project Files** (`⌘⌥P`) — pick workspace files, enter a prompt, run in the integrated terminal.

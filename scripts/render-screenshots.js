@@ -381,6 +381,121 @@ const screens = {
       </div>
     </div>
   </div></body></html>`,
+
+  'run-inline-dialog': `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+  ${baseStyles}
+  .dialog-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #1e1e1e;
+  }
+  .inline-dialog {
+    width: 680px;
+    background: #252526;
+    border: 1px solid #454545;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+    overflow: hidden;
+  }
+  .dialog-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px 12px;
+    font-size: 13px;
+    color: #cccccc;
+    border-bottom: 1px solid #3a3a3a;
+  }
+  .dialog-title .breadcrumb { color: #858585; }
+  .dialog-title .breadcrumb span { color: #cccccc; font-weight: 500; }
+  .dialog-title .provider-badge {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1e1e1e;
+    border: 1px solid #454545;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #cccccc;
+  }
+  .dialog-textarea {
+    padding: 18px 18px 12px;
+    min-height: 80px;
+    color: #858585;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .dialog-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid #3a3a3a;
+    font-size: 12px;
+    color: #858585;
+  }
+  .footer-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    border: 1px solid #454545;
+    background: transparent;
+    color: #cccccc;
+    font-size: 12px;
+    cursor: default;
+  }
+  .footer-btn .icon { font-size: 14px; opacity: 0.8; }
+  .footer-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #858585;
+    font-size: 12px;
+  }
+  .footer-right span { display: flex; align-items: center; gap: 4px; }
+  .submit-btn {
+    width: 24px; height: 24px;
+    background: #0e639c;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    margin-left: 4px;
+  }
+  </style></head><body>
+  <div class="dialog-wrapper">
+    <div class="inline-dialog">
+      <div class="dialog-title">
+        <span class="breadcrumb">New session in <span>opencodeCLI</span> with</span>
+        <div class="provider-badge">
+          <span>🤖</span>
+          <span>claude-sonnet-4</span>
+          <span style="color:#858585">▾</span>
+        </div>
+      </div>
+      <div class="dialog-textarea">Describe what you want to build…</div>
+      <div class="dialog-footer">
+        <div class="footer-btn"><span class="icon">＋</span></div>
+        <div class="footer-btn"><span class="icon">⊙</span> Agent</div>
+        <div class="footer-btn">Auto</div>
+        <div class="footer-right">
+          <span>⊘ Default Approvals</span>
+          <span>⎇ Worktree</span>
+          <span>⑂ master</span>
+          <div class="submit-btn">↵</div>
+        </div>
+      </div>
+    </div>
+  </div></body></html>`,
 };
 
 async function main() {
