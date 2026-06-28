@@ -189,6 +189,7 @@ class ModelsProvider {
 }
 
 function getTipsHtml() {
+  const shortcuts = getShortcutHints(process.platform);
   const tips = [
     {
       title: 'Getting Started',
@@ -277,23 +278,25 @@ function getTipsHtml() {
     },
     {
       title: 'Keyboard Shortcuts',
-      items: [
-        '`⌘⌥O` — Show Actions quick pick',
-        '`⌘⌥I` — Run Inline Prompt',
-        '`⌘⌥P` — Run on Project Files',
-        '`⌘⌥T` — Start Interactive Session',
-        '`⌘⌥H` — CLI Help',
-        '`⌘⌥S` — Stats',
-      ],
+      html: `
+        <table>
+          <thead>
+            <tr><th>Action</th><th>${shortcuts.platformLabel}</th></tr>
+          </thead>
+          <tbody>
+            ${shortcuts.rows.map(row => `<tr><td>${row.action}</td><td><code>${row.shortcut}</code></td></tr>`).join('\n            ')}
+          </tbody>
+        </table>
+      `,
     },
   ];
 
   const sections = tips.map(s => `
     <details open>
       <summary><strong>${s.title}</strong></summary>
-      <ul>
+      ${s.html ?? `<ul>
         ${s.items.map(i => `<li>${i}</li>`).join('\n        ')}
-      </ul>
+      </ul>`}
     </details>
   `).join('\n    ');
 
@@ -357,6 +360,20 @@ function getTipsHtml() {
       padding: 1px 6px;
       border-radius: 3px;
     }
+    table {
+      border-collapse: collapse;
+      margin-top: 8px;
+      width: 100%;
+    }
+    th, td {
+      border-bottom: 1px solid var(--vscode-panel-border);
+      padding: 6px 8px;
+      text-align: left;
+    }
+    th {
+      color: var(--vscode-descriptionForeground);
+      font-weight: 600;
+    }
     strong {
       color: var(--vscode-editor-foreground);
     }
@@ -379,6 +396,28 @@ function getTipsHtml() {
   </p>
 </body>
 </html>`;
+}
+
+function getShortcutHints(platform = process.platform) {
+  const isMac = platform === 'darwin';
+  const modifier = isMac ? '⌘⌥' : 'Ctrl+Alt+';
+  const platformLabel = isMac ? 'macOS' : 'Windows/Linux';
+  const actions = [
+    ['Show Actions quick pick', 'O'],
+    ['Run Inline Prompt', 'I'],
+    ['Run on Project Files', 'P'],
+    ['Start Interactive Session', 'T'],
+    ['CLI Help', 'H'],
+    ['Stats', 'S'],
+  ];
+
+  return {
+    platformLabel,
+    rows: actions.map(([action, key]) => ({
+      action,
+      shortcut: `${modifier}${key}`,
+    })),
+  };
 }
 
 function getAgentsHtml() {
@@ -1069,5 +1108,6 @@ module.exports = {
   activate,
   deactivate,
   AgentsProvider,
-  AgentTreeItem
+  AgentTreeItem,
+  getShortcutHints
 };

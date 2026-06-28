@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { AgentsProvider } = require('../extension');
+const { AgentsProvider, getShortcutHints } = require('../extension');
 
 suite('Extension Test Suite', () => {
   let extension;
@@ -80,6 +80,24 @@ suite('Extension Test Suite', () => {
     assert.ok(agentView, 'Agent webview should be contributed');
     assert.equal(agentView.type, 'webview');
   });
+
+  test('Tips shortcut hints match the current platform family', () => {
+    assert.deepEqual(getShortcutHints('darwin'), {
+      platformLabel: 'macOS',
+      rows: [
+        { action: 'Show Actions quick pick', shortcut: '⌘⌥O' },
+        { action: 'Run Inline Prompt', shortcut: '⌘⌥I' },
+        { action: 'Run on Project Files', shortcut: '⌘⌥P' },
+        { action: 'Start Interactive Session', shortcut: '⌘⌥T' },
+        { action: 'CLI Help', shortcut: '⌘⌥H' },
+        { action: 'Stats', shortcut: '⌘⌥S' },
+      ],
+    });
+
+    assert.equal(getShortcutHints('win32').platformLabel, 'Windows/Linux');
+    assert.equal(getShortcutHints('linux').rows[0].shortcut, 'Ctrl+Alt+O');
+  });
+
   test('Overview commands execute without error', async () => {
     await assert.doesNotReject(
       vscode.commands.executeCommand('opencode-walkthrough.showTips')
