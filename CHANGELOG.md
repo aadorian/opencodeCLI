@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.0.4
+
+- Add full install flow with platform-specific method picker (curl script, Homebrew on macOS, npm)
+- Enhance Install CLI command: shows upgrade/health-check options when already installed
+- Remove sudo references from all install help text and commands
+- Add `Check Version` command (`opencode --version`)
+- Add `Check Health` command — surfaces auth status and actionable prompts
+- Add `Auth Logout` command (`opencode auth logout`)
+- Add `Remove MCP Server` command (`opencode mcp remove`)
+- Add all new commands to Actions quick pick, CLI Help picker, view menus, and Help submenu
+- Update install walkthrough with Homebrew section and auth next-steps
+- Expand install tests: Homebrew constant, `getInstallOptions()` on all platforms
+
 ## 0.0.3
 
 - Align install and setup with [opencode.ai](https://opencode.ai) (install script, `opencode-ai` npm package)
