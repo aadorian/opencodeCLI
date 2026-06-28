@@ -40,3 +40,5 @@ OpenCode runs in the integrated terminal via `sendToTerminal()` with env vars fr
 ## Custom agents
 
 Specialized GitHub Copilot agents live in [.github/agents/](.github/agents/). Browse them at [github.com/aadorian/opencodeCLI/agents](https://github.com/aadorian/opencodeCLI/agents).
+
+- `opencode_custom`: Generates and maintains custom OpenCode agents, CLI workflows, and VS Code extension integrations for the OpenCode Walkthrough repo.

@@ -1,5 +1,6 @@
 node_modules/
 .vscode-test/
+.opencode/
 .wiki-sync/
 .wiki-push/
 .wiki-browser-profile/

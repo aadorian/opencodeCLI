@@ -6,6 +6,7 @@
 .env.example
 node_modules/
 .vscode-test/
+.opencode/**
 .vscode/**
 .wiki-browser-profile/**
 .wiki-push/**
