@@ -1016,7 +1016,7 @@
     ]
   },
   "devDependencies": {
-    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.0.0",
     "playwright": "^1.61.0",
     "sharp": "^0.35.2"
