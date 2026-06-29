@@ -117,7 +117,7 @@ suite('Extension Test Suite', () => {
     );
 
     assert.ok(walkthrough);
-    assert.equal(walkthrough.steps.length, 7);
+    assert.equal(walkthrough.steps.length, 8);
   });
 
   test('Agents empty-state CTA opens create-agent flow', async () => {

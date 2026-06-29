@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.6
+
+- Add descriptions to all Show Actions quick pick items
+- Show platform-specific shortcut hints in Tips & Tricks (macOS vs Windows/Linux)
+- Add MCP server walkthrough step with SVG illustration (step 7 of 8)
+
 ## 0.0.5
 
 - Add custom OpenCode agent definition with docs
