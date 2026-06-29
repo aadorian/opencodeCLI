@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenCode Walkthrough — VS Code Extension</title>
+  <meta name="description" content="Interactive walkthrough, sidebar trees, CLI commands, and agent harness for OpenCode in Visual Studio Code.">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="https://raw.githubusercontent.com/aadorian/opencodeCLI/master/media/opencode-icon.png">
+</head>
+<body>
+  <header>
+    <div class="container hero">
+      <h1>OpenCode Walkthrough</h1>
+      <p>
+        A Visual Studio Code extension for <a href="https://opencode.ai">OpenCode</a> —
+        walkthrough onboarding, sidebar trees, CLI quick actions, and an in-editor agent harness.
+      </p>
+      <div class="badges">
+        <a class="btn btn-primary" href="https://marketplace.visualstudio.com/items?itemName=AlejandroAdorjan.opencode-walkthrough">Install from Marketplace</a>
+        <a class="btn btn-secondary" href="https://github.com/aadorian/opencodeCLI">View on GitHub</a>
+        <a class="btn btn-secondary" href="https://opencode.ai/docs/cli/">OpenCode CLI docs</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>Features</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Getting Started walkthrough</h3>
+          <p>Step-by-step onboarding for install, inline prompts, interactive mode, and custom agents.</p>
+        </article>
+        <article class="card">
+          <h3>Sidebar trees</h3>
+          <p>Browse agents, models, MCP servers, and sessions from the OpenCode activity bar.</p>
+        </article>
+        <article class="card">
+          <h3>Command palette &amp; shortcuts</h3>
+          <p>Run OpenCode CLI commands from the status bar, quick pick, and keyboard shortcuts.</p>
+        </article>
+        <article class="card">
+          <h3>Agent harness</h3>
+          <p>VS Code–native agent loop with context assembly, tools, and chat webview (in progress).</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Screenshots</h2>
+      <figure>
+        <img src="https://raw.githubusercontent.com/aadorian/opencodeCLI/master/media/screenshots/sidebar-overview.png" alt="OpenCode sidebar overview">
+        <figcaption>Activity bar and sidebar overview with quick actions.</figcaption>
+      </figure>
+      <figure>
+        <img src="https://raw.githubusercontent.com/aadorian/opencodeCLI/master/media/screenshots/sidebar-trees.png" alt="Agents and models tree views">
+        <figcaption>Agents and models tree views powered by the CLI.</figcaption>
+      </figure>
+      <figure>
+        <img src="https://raw.githubusercontent.com/aadorian/opencodeCLI/master/media/screenshots/walkthrough.png" alt="Getting Started walkthrough">
+        <figcaption>Built-in Getting Started walkthrough.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Quick install</h2>
+      <div class="card">
+        <p>Install the OpenCode CLI, then add the extension from the Marketplace or clone this repo and press <strong>F5</strong> in VS Code.</p>
+        <pre><code>npm install -g opencode-ai
+opencode --version</code></pre>
+        <p>Publisher: <strong>AlejandroAdorjan</strong> · License: MIT · Version: 0.0.2</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Documentation</h2>
+      <div class="links">
+        <a href="https://github.com/aadorian/opencodeCLI/blob/master/README.md">Extension README</a>
+        <a href="https://github.com/aadorian/opencodeCLI/blob/master/docs/building-opencode-agent-harness.md">Building the agent harness</a>
+        <a href="https://github.com/aadorian/opencodeCLI/blob/master/.github/ROADMAP.md">Extension roadmap</a>
+        <a href="https://github.com/aadorian/opencodeCLI/blob/master/CONTRIBUTING.md">Contributing guide</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        <a href="https://github.com/aadorian/opencodeCLI">aadorian/opencodeCLI</a> ·
+        Published with <a href="https://pages.github.com">GitHub Pages</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
