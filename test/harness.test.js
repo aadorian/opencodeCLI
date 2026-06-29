@@ -71,9 +71,22 @@ suite('Harness Test Suite', () => {
     assert.equal(call.args.path, '/a');
   });
 
+  test('parseToolCallFromEvent handles actual opencode tool_use format', () => {
+    const event = { type: 'tool_use', sessionID: 'ses_abc', part: { type: 'tool', tool: 'read', state: { input: { filePath: '/tmp/x' } } } };
+    const call = parseToolCallFromEvent(event);
+    assert.ok(call);
+    assert.equal(call.name, 'read');
+    assert.equal(call.args.filePath, '/tmp/x');
+  });
+
   test('parseTextFromEvent extracts text deltas', () => {
     assert.equal(parseTextFromEvent({ type: 'text', delta: 'hi' }), 'hi');
     assert.equal(parseTextFromEvent({ content: 'hello' }), 'hello');
+  });
+
+  test('parseTextFromEvent handles actual opencode text event format', () => {
+    const event = { type: 'text', sessionID: 'ses_abc', part: { type: 'text', text: 'Hello!' } };
+    assert.equal(parseTextFromEvent(event), 'Hello!');
   });
 
   test('stripAnsi removes color codes', () => {
