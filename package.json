@@ -104,12 +104,16 @@
     "onCommand:opencode-walkthrough.startAgent",
     "onCommand:opencode-walkthrough.cancelAgent",
     "onCommand:opencode-walkthrough.openAgentPanel",
+    "onCommand:opencode-walkthrough.openAgentInEditor",
     "onCommand:opencode-walkthrough.resumeSession",
     "onCommand:opencode-walkthrough.version",
     "onCommand:opencode-walkthrough.checkHealth",
     "onCommand:opencode-walkthrough.authLogout",
     "onCommand:opencode-walkthrough.mcpRemove",
-    "onCommand:opencode-walkthrough.uninstall"
+    "onCommand:opencode-walkthrough.uninstall",
+    "onCommand:opencode-walkthrough.showSettings",
+    "onCommand:opencode-walkthrough.openTerminalPanel",
+    "onView:opencode-walkthrough.terminal"
   ],
   "main": "./extension.js",
   "scripts": {
@@ -456,6 +460,11 @@
         "icon": "$(comment-discussion)"
       },
       {
+        "command": "opencode-walkthrough.openAgentInEditor",
+        "title": "OpenCode: Open Agent Chat in Editor",
+        "icon": "$(link-external)"
+      },
+      {
         "command": "opencode-walkthrough.resumeSession",
         "title": "OpenCode: Resume Session",
         "icon": "$(history)"
@@ -484,6 +493,16 @@
         "command": "opencode-walkthrough.uninstall",
         "title": "OpenCode: Uninstall OpenCode",
         "icon": "$(trash)"
+      },
+      {
+        "command": "opencode-walkthrough.showSettings",
+        "title": "OpenCode: Settings",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "opencode-walkthrough.openTerminalPanel",
+        "title": "OpenCode: Open Terminal Panel",
+        "icon": "$(terminal)"
       }
     ],
     "viewsContainers": {
@@ -523,6 +542,11 @@
           "type": "webview",
           "id": "opencode-walkthrough.agent",
           "name": "Agent"
+        },
+        {
+          "type": "webview",
+          "id": "opencode-walkthrough.terminal",
+          "name": "Terminal"
         }
       ],
       "opencode-mcp": [
@@ -562,6 +586,10 @@
       {
         "view": "opencode-walkthrough.agent",
         "contents": "Chat with OpenCode from VS Code using the agent harness.\n\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Open TUI](command:opencode-walkthrough.runInteractive)"
+      },
+      {
+        "view": "opencode-walkthrough.terminal",
+        "contents": "Run OpenCode commands directly from VS Code.\n\n[Open Terminal Panel](command:opencode-walkthrough.openTerminalPanel)"
       }
     ],
     "submenus": [
@@ -622,6 +650,11 @@
           "group": "navigation"
         },
         {
+          "command": "opencode-walkthrough.openAgentInEditor",
+          "when": "view == opencode-walkthrough.agent",
+          "group": "navigation"
+        },
+        {
           "command": "opencode-walkthrough.createAgent",
           "when": "view == opencode-walkthrough.overview",
           "group": "navigation"
@@ -638,6 +671,11 @@
         },
         {
           "command": "opencode-walkthrough.showTips",
+          "when": "view == opencode-walkthrough.overview",
+          "group": "navigation"
+        },
+        {
+          "command": "opencode-walkthrough.showSettings",
           "when": "view == opencode-walkthrough.overview",
           "group": "navigation"
         },
@@ -735,6 +773,9 @@
           "command": "opencode-walkthrough.showTips"
         },
         {
+          "command": "opencode-walkthrough.showSettings"
+        },
+        {
           "command": "opencode-walkthrough.showCliHelp"
         },
         {
@@ -755,6 +796,9 @@
         },
         {
           "command": "opencode-walkthrough.openAgentPanel"
+        },
+        {
+          "command": "opencode-walkthrough.openAgentInEditor"
         },
         {
           "command": "opencode-walkthrough.cancelAgent"

@@ -649,6 +649,503 @@ function getModelsHtml() {
 </html>`;
 }
 
+function getSettingsHtml(config) {
+  const GROUPS = [
+    { id: 'general', title: 'General', settings: [
+      { key: 'opencode.logLevel', label: 'Log Level', type: 'select',
+        options: [{ label: '(default)', value: '' }, { label: 'DEBUG', value: 'DEBUG' },
+                  { label: 'INFO', value: 'INFO' }, { label: 'WARN', value: 'WARN' }, { label: 'ERROR', value: 'ERROR' }],
+        desc: 'CLI log verbosity level (OPENCODE_LOG_LEVEL)' },
+      { key: 'opencode.modelsUrl', label: 'Models URL', type: 'text', placeholder: 'https://...', desc: 'Custom URL for fetching models configuration' },
+      { key: 'opencode.configPath', label: 'Config Path', type: 'text', placeholder: '/path/to/opencode.json', desc: 'Path to opencode.json config file' },
+      { key: 'opencode.configDir', label: 'Config Dir', type: 'text', placeholder: '/path/to/config/', desc: 'Path to OpenCode config directory' },
+      { key: 'opencode.tuiConfigPath', label: 'TUI Config', type: 'text', placeholder: '/path/to/tui.json', desc: 'Path to tui.json config file' },
+      { key: 'opencode.autoShare', label: 'Auto Share Sessions', type: 'bool', desc: 'Automatically share sessions (OPENCODE_AUTO_SHARE)' },
+      { key: 'opencode.enableExa', label: 'Enable Exa Search', type: 'bool', desc: 'Enable Exa web search tools (OPENCODE_ENABLE_EXA)' },
+    ]},
+    { id: 'auth', title: 'Server Auth', settings: [
+      { key: 'opencode.serverUsername', label: 'Username', type: 'text', placeholder: 'opencode', desc: 'HTTP basic auth username for serve/web (default: opencode)' },
+      { key: 'opencode.serverPassword', label: 'Password', type: 'password', placeholder: '', desc: 'HTTP basic auth password for serve/web' },
+    ]},
+    { id: 'disable', title: 'Disable Options', settings: [
+      { key: 'opencode.disableAutoUpdate', label: 'Auto Update', type: 'bool', desc: 'Disable automatic update checks' },
+      { key: 'opencode.disableModelsFetch', label: 'Models Fetch', type: 'bool', desc: 'Disable fetching models from remote sources' },
+      { key: 'opencode.disableAutoCompact', label: 'Auto Compact', type: 'bool', desc: 'Disable automatic context compaction' },
+      { key: 'opencode.disableClaudeCode', label: 'Claude Code Files', type: 'bool', desc: 'Disable reading from .claude files' },
+      { key: 'opencode.disableMouse', label: 'Mouse Capture', type: 'bool', desc: 'Disable mouse capture in the TUI' },
+      { key: 'opencode.disablePrune', label: 'Data Pruning', type: 'bool', desc: 'Disable pruning of old session data' },
+      { key: 'opencode.disableTerminalTitle', label: 'Terminal Title', type: 'bool', desc: 'Disable automatic terminal title updates' },
+      { key: 'opencode.disableDefaultPlugins', label: 'Default Plugins', type: 'bool', desc: 'Disable default built-in plugins' },
+      { key: 'opencode.disableLspDownload', label: 'LSP Download', type: 'bool', desc: 'Disable automatic LSP server downloads' },
+    ]},
+    { id: 'experimental', title: 'Experimental', settings: [
+      { key: 'opencode.experimental', label: 'Enable All Experimental', type: 'bool', desc: 'Enable all experimental features at once' },
+      { key: 'opencode.experimental.planMode', label: 'Plan Mode', type: 'bool', desc: 'Experimental plan-before-execute mode' },
+      { key: 'opencode.experimental.backgroundSubagents', label: 'Background Subagents', type: 'bool', desc: 'Enable background subagent tasks' },
+      { key: 'opencode.experimental.nativeLlm', label: 'Native LLM', type: 'bool', desc: 'Use native LLM request path' },
+      { key: 'opencode.experimental.scout', label: 'Scout Subagent', type: 'bool', desc: 'Enable Scout subagent for file discovery' },
+      { key: 'opencode.experimental.workspaces', label: 'Workspaces', type: 'bool', desc: 'Enable workspace support' },
+    ]},
+    { id: 'harness', title: 'Agent Harness', settings: [
+      { key: 'opencode.harness.maxRounds', label: 'Max Rounds', type: 'number', min: 1, max: 100, desc: 'Maximum agent loop rounds per user turn (default: 25)' },
+      { key: 'opencode.harness.serverUrl', label: 'Server URL', type: 'text', placeholder: 'http://127.0.0.1:4096', desc: 'URL for opencode serve in harness mode' },
+      { key: 'opencode.harness.autoStartServer', label: 'Auto Start Server', type: 'bool', desc: 'Auto-start opencode serve when using the harness' },
+      { key: 'opencode.harness.toolConfirmation', label: 'Tool Confirmation', type: 'select',
+        options: [{ label: 'Always', value: 'always' }, { label: 'Smart (recommended)', value: 'smart' }, { label: 'Never', value: 'never' }],
+        desc: 'When to ask before running destructive tools' },
+      { key: 'opencode.harness.customInstructions', label: 'Custom Instructions', type: 'textarea', placeholder: 'Always prefer TypeScript. Follow project conventions.', desc: 'Instructions injected into every harness-initiated session' },
+    ]},
+    { id: 'context', title: 'Harness Context', settings: [
+      { key: 'opencode.harness.context.includeWorkspace', label: 'Workspace Folders', type: 'bool', desc: 'Include workspace folder paths in context' },
+      { key: 'opencode.harness.context.includeOpenEditors', label: 'Open Editors', type: 'bool', desc: 'Include open editor tabs in context' },
+      { key: 'opencode.harness.context.includeActiveFile', label: 'Active File', type: 'bool', desc: 'Include active file metadata in context' },
+      { key: 'opencode.harness.context.includeSelection', label: 'Editor Selection', type: 'bool', desc: 'Include active editor selection in context' },
+      { key: 'opencode.harness.context.includeDiagnostics', label: 'Diagnostics', type: 'bool', desc: 'Include workspace diagnostics in context' },
+      { key: 'opencode.harness.context.includeGit', label: 'Git Status', type: 'bool', desc: 'Include git branch and dirty files in context' },
+      { key: 'opencode.harness.context.includeFileContents', label: 'File Contents', type: 'bool', desc: 'Include full active file contents (privacy-sensitive)' },
+    ]},
+  ];
+
+  function renderControl(s, val) {
+    const v = val !== null && val !== undefined ? val : '';
+    if (s.type === 'bool') {
+      const checked = v === true ? 'checked' : '';
+      return `<label class="toggle"><input type="checkbox" data-key="${s.key}" ${checked}><span class="slider"></span></label>`;
+    }
+    if (s.type === 'select') {
+      const opts = s.options.map(o => `<option value="${o.value}"${v === o.value ? ' selected' : ''}>${o.label}</option>`).join('');
+      return `<select data-key="${s.key}">${opts}</select>`;
+    }
+    if (s.type === 'number') {
+      return `<input type="number" data-key="${s.key}" value="${v !== '' ? v : ''}" min="${s.min || 1}" max="${s.max || 100}" class="num-input">`;
+    }
+    if (s.type === 'textarea') {
+      return `<textarea data-key="${s.key}" rows="3" placeholder="${s.placeholder || ''}">${v}</textarea>`;
+    }
+    if (s.type === 'password') {
+      return `<input type="password" data-key="${s.key}" value="${v}" placeholder="${s.placeholder || ''}">`;
+    }
+    return `<input type="text" data-key="${s.key}" value="${v}" placeholder="${s.placeholder || ''}">`;
+  }
+
+  const sections = GROUPS.map(g => {
+    const rows = g.settings.map(s => {
+      const val = config.get(s.key);
+      const isBool = s.type === 'bool';
+      return `<div class="row${isBool ? ' row-bool' : ''}">
+        <div class="row-left">
+          <span class="row-label">${s.label}</span>
+          <span class="row-desc">${s.desc}</span>
+        </div>
+        <div class="row-ctrl">${renderControl(s, val)}</div>
+      </div>`;
+    }).join('\n');
+    return `<details open>
+      <summary><strong>${g.title}</strong></summary>
+      <div class="section-body">${rows}</div>
+    </details>`;
+  }).join('\n');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenCode Settings</title>
+  <style>
+    body {
+      font-family: var(--vscode-font-family);
+      font-size: var(--vscode-font-size);
+      color: var(--vscode-editor-foreground);
+      background: var(--vscode-editor-background);
+      padding: 24px;
+      max-width: 760px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.6em; font-weight: 600; margin-bottom: 4px; }
+    .subtitle { color: var(--vscode-descriptionForeground); margin: 0 0 20px; font-size: 0.92em; }
+    .subtitle a { color: var(--vscode-textLink-foreground); cursor: pointer; text-decoration: none; }
+    .subtitle a:hover { text-decoration: underline; }
+    details {
+      background: var(--vscode-sideBar-background);
+      border: 1px solid var(--vscode-sideBar-border);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    summary {
+      cursor: pointer; padding: 10px 16px;
+      font-size: 1em; color: var(--vscode-sideBarTitle-foreground);
+      list-style: none; display: flex; align-items: center; gap: 6px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶'; font-size: 0.7em; opacity: 0.6; transition: transform 0.15s; }
+    details[open] summary::before { transform: rotate(90deg); }
+    .section-body { padding: 4px 0 8px; border-top: 1px solid var(--vscode-sideBar-border); }
+    .row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 8px 16px; gap: 12px;
+      border-bottom: 1px solid var(--vscode-sideBar-border, rgba(128,128,128,0.1));
+    }
+    .row:last-child { border-bottom: none; }
+    .row-bool { align-items: center; }
+    .row-left { flex: 1; min-width: 0; }
+    .row-label { display: block; font-size: 0.9em; font-weight: 500; margin-bottom: 2px; }
+    .row-desc { display: block; font-size: 0.77em; color: var(--vscode-descriptionForeground); }
+    .row-ctrl { flex-shrink: 0; }
+    input[type="text"], input[type="password"], input[type="number"], select, textarea {
+      background: var(--vscode-input-background);
+      color: var(--vscode-input-foreground);
+      border: 1px solid var(--vscode-input-border, transparent);
+      border-radius: 3px;
+      padding: 4px 7px;
+      font-family: inherit;
+      font-size: 0.88em;
+      outline: none;
+      width: 220px;
+    }
+    input[type="number"] { width: 80px; }
+    textarea { width: 220px; resize: vertical; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--vscode-focusBorder);
+      outline: 1px solid var(--vscode-focusBorder);
+      outline-offset: -1px;
+    }
+    .saved-flash { color: var(--vscode-testing-iconPassed, #4caf50); font-size: 0.78em; margin-left: 6px; opacity: 0; transition: opacity 0.3s; }
+    .saved-flash.show { opacity: 1; }
+    /* Toggle switch */
+    .toggle { position: relative; display: inline-block; width: 34px; height: 20px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: var(--vscode-input-border, #555);
+      border-radius: 20px; transition: background 0.2s;
+    }
+    .slider::before {
+      content: ''; position: absolute;
+      height: 14px; width: 14px; left: 3px; bottom: 3px;
+      background: #fff; border-radius: 50%; transition: transform 0.2s;
+    }
+    input:checked + .slider { background: var(--vscode-button-background); }
+    input:checked + .slider::before { transform: translateX(14px); }
+    hr { border: none; border-top: 1px solid var(--vscode-sideBar-border); margin: 20px 0; }
+    .footer { color: var(--vscode-descriptionForeground); font-size: 0.85em; }
+    .footer a { color: var(--vscode-textLink-foreground); }
+  </style>
+</head>
+<body>
+  <h1>OpenCode Settings</h1>
+  <p class="subtitle">
+    Configure the OpenCode VS Code extension. Changes take effect immediately.
+    &nbsp;<a id="btn-vscode-settings">Open in VS Code Settings editor ↗</a>
+  </p>
+  ${sections}
+  <hr>
+  <p class="footer">
+    Settings map to OpenCode environment variables.
+    <a href="https://opencode.ai/docs">Read the docs</a> for details.
+  </p>
+<script>
+(function() {
+  var vscode = acquireVsCodeApi();
+  var saveTimers = {};
+
+  function flashSaved(key) {
+    var el = document.querySelector('[data-saved="' + key + '"]');
+    if (!el) return;
+    el.classList.add('show');
+    clearTimeout(saveTimers[key]);
+    saveTimers[key] = setTimeout(function() { el.classList.remove('show'); }, 1400);
+  }
+
+  function postUpdate(key, value) {
+    vscode.postMessage({ type: 'updateSetting', key: key, value: value });
+    flashSaved(key);
+  }
+
+  document.querySelectorAll('input[type="checkbox"][data-key]').forEach(function(el) {
+    el.addEventListener('change', function() {
+      postUpdate(el.getAttribute('data-key'), el.checked);
+    });
+  });
+
+  document.querySelectorAll('select[data-key]').forEach(function(el) {
+    el.addEventListener('change', function() {
+      postUpdate(el.getAttribute('data-key'), el.value);
+    });
+  });
+
+  var textTimers = {};
+  document.querySelectorAll('input[type="text"][data-key], input[type="password"][data-key], input[type="number"][data-key], textarea[data-key]').forEach(function(el) {
+    el.addEventListener('input', function() {
+      var key = el.getAttribute('data-key');
+      clearTimeout(textTimers[key]);
+      textTimers[key] = setTimeout(function() {
+        var val = el.type === 'number' ? (el.value === '' ? null : parseInt(el.value, 10)) : el.value;
+        postUpdate(key, val);
+      }, 600);
+    });
+  });
+
+  document.getElementById('btn-vscode-settings').addEventListener('click', function() {
+    vscode.postMessage({ type: 'openVscodeSettings' });
+  });
+})();
+</script>
+</body>
+</html>`;
+}
+
+class TerminalPanelProvider {
+  constructor(getConfigFn) {
+    this._getConfig = getConfigFn;
+    this._view = null;
+    this._history = [];
+  }
+
+  resolveWebviewView(webviewView) {
+    this._view = webviewView;
+    webviewView.webview.options = { enableScripts: true };
+    webviewView.webview.html = this._getHtml();
+
+    webviewView.webview.onDidReceiveMessage(msg => {
+      if (msg.type === 'run') {
+        const cmd = (msg.command || '').trim();
+        if (!cmd) return;
+        const terminal = vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode');
+        terminal.show();
+        terminal.sendText(buildTerminalCommand(this._getConfig, cmd));
+        if (!this._history.includes(cmd)) {
+          this._history.unshift(cmd);
+          if (this._history.length > 30) this._history.pop();
+        }
+        this._postHistory();
+      } else if (msg.type === 'clearHistory') {
+        this._history = [];
+        this._postHistory();
+      } else if (msg.type === 'ready') {
+        this._postHistory();
+      }
+    });
+  }
+
+  _postHistory() {
+    if (this._view) {
+      this._view.webview.postMessage({ type: 'history', items: this._history });
+    }
+  }
+
+  _getHtml() {
+    const quickCmds = [
+      { label: 'Run', cmds: [
+        { label: 'opencode', cmd: 'opencode', title: 'Start interactive TUI' },
+        { label: 'run "…"', cmd: 'opencode run ""', title: 'Run a one-shot prompt', focus: true },
+        { label: 'stats', cmd: 'opencode stats', title: 'Token usage and costs' },
+        { label: '--version', cmd: 'opencode --version', title: 'Show installed version' },
+        { label: 'upgrade', cmd: 'opencode upgrade', title: 'Upgrade the CLI' },
+      ]},
+      { label: 'Auth', cmds: [
+        { label: 'auth login', cmd: 'opencode auth login', title: 'Log in to a provider' },
+        { label: 'auth ls', cmd: 'opencode auth ls', title: 'List authenticated providers' },
+        { label: 'auth logout', cmd: 'opencode auth logout', title: 'Log out from a provider' },
+      ]},
+      { label: 'Agents', cmds: [
+        { label: 'agent create', cmd: 'opencode agent create', title: 'Create a new agent' },
+        { label: 'agent list', cmd: 'opencode agent list', title: 'List agents' },
+      ]},
+      { label: 'MCP', cmds: [
+        { label: 'mcp add', cmd: 'opencode mcp add', title: 'Add an MCP server' },
+        { label: 'mcp list', cmd: 'opencode mcp list', title: 'List MCP servers' },
+        { label: 'mcp remove', cmd: 'opencode mcp remove', title: 'Remove an MCP server' },
+      ]},
+      { label: 'Models', cmds: [
+        { label: 'models', cmd: 'opencode models', title: 'List available models' },
+        { label: 'models --refresh', cmd: 'opencode models --refresh', title: 'Refresh model cache' },
+      ]},
+      { label: 'Server', cmds: [
+        { label: 'serve', cmd: 'opencode serve', title: 'Start headless server' },
+        { label: 'web', cmd: 'opencode web', title: 'Start web interface' },
+        { label: 'session list', cmd: 'opencode session list', title: 'List sessions' },
+      ]},
+    ];
+
+    const categorySections = quickCmds.map(cat => {
+      const btns = cat.cmds.map(c =>
+        `<button class="qbtn" data-cmd="${c.cmd.replace(/"/g, '&quot;')}" data-focus="${c.focus ? '1' : '0'}" title="${c.title}">${c.label}</button>`
+      ).join('');
+      return `<div class="cat"><div class="cat-label">${cat.label}</div><div class="cat-btns">${btns}</div></div>`;
+    }).join('');
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenCode Terminal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--vscode-font-family);
+      font-size: var(--vscode-font-size);
+      color: var(--vscode-foreground);
+      background: var(--vscode-sideBar-background);
+      height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+    }
+    #cmd-area {
+      padding: 8px; border-bottom: 1px solid var(--vscode-sideBar-border); flex-shrink: 0;
+    }
+    .cmd-row {
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid var(--vscode-input-border, var(--vscode-sideBar-border));
+      border-radius: 5px; background: var(--vscode-input-background);
+      padding: 0 8px;
+    }
+    .cmd-row:focus-within {
+      border-color: var(--vscode-focusBorder);
+      outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px;
+    }
+    .prompt { color: var(--vscode-terminal-ansiGreen, #4caf50); font-family: var(--vscode-editor-font-family); font-size: 0.9em; flex-shrink: 0; }
+    #cmd-input {
+      flex: 1; border: none; outline: none; background: transparent;
+      color: var(--vscode-input-foreground); font-family: var(--vscode-editor-font-family);
+      font-size: 0.9em; padding: 7px 0;
+    }
+    #cmd-input::placeholder { color: var(--vscode-input-placeholderForeground); }
+    #run-btn {
+      background: var(--vscode-button-background); color: var(--vscode-button-foreground);
+      border: none; border-radius: 4px; padding: 3px 10px; cursor: pointer;
+      font-size: 0.82em; font-family: inherit; flex-shrink: 0;
+    }
+    #run-btn:hover { background: var(--vscode-button-hoverBackground); }
+    #quick-area {
+      flex: 1; overflow-y: auto; padding: 6px 8px;
+    }
+    .cat { margin-bottom: 10px; }
+    .cat-label {
+      font-size: 0.72em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--vscode-descriptionForeground); margin-bottom: 4px;
+    }
+    .cat-btns { display: flex; flex-wrap: wrap; gap: 4px; }
+    .qbtn {
+      padding: 3px 9px; border: 1px solid var(--vscode-sideBar-border);
+      border-radius: 12px; background: var(--vscode-editor-background);
+      color: var(--vscode-foreground); cursor: pointer; font-size: 0.78em;
+      font-family: var(--vscode-editor-font-family);
+    }
+    .qbtn:hover { background: var(--vscode-list-hoverBackground); border-color: var(--vscode-focusBorder); }
+    #history-area { flex-shrink: 0; border-top: 1px solid var(--vscode-sideBar-border); }
+    #history-header {
+      padding: 4px 10px; display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.72em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--vscode-descriptionForeground);
+    }
+    #clear-btn {
+      background: none; border: none; cursor: pointer; font-size: 0.9em; padding: 0;
+      color: var(--vscode-descriptionForeground);
+    }
+    #clear-btn:hover { color: var(--vscode-foreground); }
+    #history-list { max-height: 140px; overflow-y: auto; }
+    .hist-item {
+      display: flex; align-items: center; padding: 3px 10px; gap: 6px;
+      cursor: pointer; font-family: var(--vscode-editor-font-family); font-size: 0.82em;
+    }
+    .hist-item:hover { background: var(--vscode-list-hoverBackground); }
+    .hist-arrow { color: var(--vscode-descriptionForeground); flex-shrink: 0; }
+    .hist-cmd { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #no-history { padding: 6px 10px; font-size: 0.8em; color: var(--vscode-descriptionForeground); }
+  </style>
+</head>
+<body>
+  <div id="cmd-area">
+    <div class="cmd-row">
+      <span class="prompt">$</span>
+      <input id="cmd-input" type="text" placeholder="opencode command…" autocomplete="off" spellcheck="false">
+      <button id="run-btn">Run</button>
+    </div>
+  </div>
+
+  <div id="quick-area">
+    ${categorySections}
+  </div>
+
+  <div id="history-area">
+    <div id="history-header">
+      <span>History</span>
+      <button id="clear-btn" title="Clear history">✕ clear</button>
+    </div>
+    <div id="history-list"><div id="no-history">No commands yet</div></div>
+  </div>
+
+<script>
+(function() {
+  var vscode = acquireVsCodeApi();
+  var cmdInput = document.getElementById('cmd-input');
+  var runBtn = document.getElementById('run-btn');
+  var histList = document.getElementById('history-list');
+  var noHist = document.getElementById('no-history');
+  var clearBtn = document.getElementById('clear-btn');
+
+  function run(cmd) {
+    if (!cmd.trim()) return;
+    vscode.postMessage({ type: 'run', command: cmd });
+    cmdInput.value = '';
+    cmdInput.focus();
+  }
+
+  runBtn.addEventListener('click', function() { run(cmdInput.value); });
+  cmdInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); run(cmdInput.value); }
+  });
+
+  document.querySelectorAll('.qbtn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var cmd = btn.getAttribute('data-cmd');
+      var needsFocus = btn.getAttribute('data-focus') === '1';
+      if (needsFocus) {
+        cmdInput.value = cmd;
+        cmdInput.focus();
+        var pos = cmd.indexOf('"') + 1;
+        if (pos) cmdInput.setSelectionRange(pos, pos + 1);
+      } else {
+        run(cmd);
+      }
+    });
+  });
+
+  clearBtn.addEventListener('click', function() { vscode.postMessage({ type: 'clearHistory' }); });
+
+  function renderHistory(items) {
+    if (!items || items.length === 0) {
+      histList.innerHTML = '<div id="no-history">No commands yet</div>';
+      return;
+    }
+    histList.innerHTML = items.map(function(cmd) {
+      return '<div class="hist-item" data-cmd="' + cmd.replace(/"/g, '&quot;') + '">'
+        + '<span class="hist-arrow">↵</span>'
+        + '<span class="hist-cmd" title="' + cmd.replace(/"/g, '&quot;') + '">' + cmd.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>'
+        + '</div>';
+    }).join('');
+    histList.querySelectorAll('.hist-item').forEach(function(el) {
+      el.addEventListener('click', function() {
+        run(el.getAttribute('data-cmd'));
+      });
+    });
+  }
+
+  window.addEventListener('message', function(e) {
+    if (e.data.type === 'history') renderHistory(e.data.items);
+  });
+
+  vscode.postMessage({ type: 'ready' });
+})();
+</script>
+</body>
+</html>`;
+  }
+}
+
 function activate(context) {
   const getConfig = () => vscode.workspace.getConfiguration();
   const outputChannel = vscode.window.createOutputChannel('OpenCode Agent');
@@ -889,6 +1386,8 @@ function activate(context) {
     vscode.window.showQuickPick([
       { label: '$(book) Show Walkthrough', description: 'Open the getting started guide', command: 'opencode-walkthrough.showWalkthrough' },
       { label: '$(lightbulb) Tips & Tricks', description: 'View usage tips and keyboard shortcuts', command: 'opencode-walkthrough.showTips' },
+      { label: '$(settings-gear) Settings', description: 'Configure OpenCode VS Code extension settings', command: 'opencode-walkthrough.showSettings' },
+      { label: '$(terminal) Terminal Panel', description: 'Run OpenCode commands from the sidebar terminal', command: 'opencode-walkthrough.openTerminalPanel' },
       { label: '$(cloud-download) Install CLI', description: 'Install or update the OpenCode CLI', command: 'opencode-walkthrough.install' },
       { label: '$(versions) Check Version', description: 'Show the installed OpenCode version', command: 'opencode-walkthrough.version' },
       { label: '$(heart) Check Health', description: 'Check auth status and CLI health', command: 'opencode-walkthrough.checkHealth' },
@@ -980,6 +1479,39 @@ function activate(context) {
     panel.webview.html = getModelsHtml();
   });
 
+  const showSettingsCmd = vscode.commands.registerCommand('opencode-walkthrough.showSettings', () => {
+    const panel = vscode.window.createWebviewPanel(
+      'opencodeSettings',
+      'OpenCode Settings',
+      vscode.ViewColumn.One,
+      { enableScripts: true }
+    );
+    panel.webview.html = getSettingsHtml(vscode.workspace.getConfiguration());
+
+    const configListener = vscode.workspace.onDidChangeConfiguration(e => {
+      if (e.affectsConfiguration('opencode')) {
+        panel.webview.html = getSettingsHtml(vscode.workspace.getConfiguration());
+      }
+    });
+    panel.onDidDispose(() => configListener.dispose());
+
+    panel.webview.onDidReceiveMessage(async msg => {
+      if (msg.type === 'updateSetting') {
+        const cfg = vscode.workspace.getConfiguration();
+        const value = msg.value === null || msg.value === '' ? undefined : msg.value;
+        await cfg.update(msg.key, value, vscode.ConfigurationTarget.Global);
+      } else if (msg.type === 'openVscodeSettings') {
+        vscode.commands.executeCommand('workbench.action.openSettings', 'opencode');
+      }
+    });
+  });
+
+  const terminalPanelProvider = new TerminalPanelProvider(getConfig);
+  const openTerminalPanelCmd = vscode.commands.registerCommand('opencode-walkthrough.openTerminalPanel', () => {
+    vscode.commands.executeCommand('opencode-walkthrough.terminal.focus');
+  });
+  const terminalPanelRegistration = vscode.window.registerWebviewViewProvider('opencode-walkthrough.terminal', terminalPanelProvider);
+
   const runOnProjectCmd = vscode.commands.registerCommand('opencode-walkthrough.runOnProject', async () => {
     if (!(await ensureInstalled())) {
       return;
@@ -1064,6 +1596,10 @@ function activate(context) {
     vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
   });
 
+  const openAgentInEditorCmd = vscode.commands.registerCommand('opencode-walkthrough.openAgentInEditor', () => {
+    agentPanelProvider.openInEditor();
+  });
+
   const resumeSessionCmd = vscode.commands.registerCommand('opencode-walkthrough.resumeSession', async (sessionId) => {
     if (!sessionId) {
       vscode.commands.executeCommand('opencode-walkthrough.sessionList');
@@ -1095,9 +1631,10 @@ function activate(context) {
     versionCmd, checkHealthCmd, mcpRemoveCmd, uninstallCmd,
     statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
+    showSettingsCmd, openTerminalPanelCmd, terminalPanelRegistration,
     agentsProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
-    startAgentCmd, cancelAgentCmd, openAgentPanelCmd, resumeSessionCmd,
+    startAgentCmd, cancelAgentCmd, openAgentPanelCmd, openAgentInEditorCmd, resumeSessionCmd,
     webviewRegistration, agentPanelProvider, agentLoop, outputChannel
   );
 }
