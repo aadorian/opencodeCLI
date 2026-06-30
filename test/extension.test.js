@@ -130,4 +130,19 @@ suite('Extension Test Suite', () => {
     assert.equal(items[0].description, 'Create one to get started');
     assert.equal(items[0].command.command, 'opencode-walkthrough.createAgent');
   });
+
+  test('Opening the agent in a new tab creates a visible editor webview panel', async () => {
+    await assert.doesNotReject(
+      vscode.commands.executeCommand('opencode-walkthrough.openAgentTab')
+    );
+
+    const hasAgentTab = () =>
+      vscode.window.tabGroups.all.flatMap(g => g.tabs).some(t => t.label === 'OpenCode Agent');
+
+    for (let i = 0; i < 20 && !hasAgentTab(); i++) {
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    assert.ok(hasAgentTab(), 'The new tab should be the OpenCode Agent panel');
+  });
 });

@@ -104,6 +104,7 @@
     "onCommand:opencode-walkthrough.startAgent",
     "onCommand:opencode-walkthrough.cancelAgent",
     "onCommand:opencode-walkthrough.openAgentPanel",
+    "onCommand:opencode-walkthrough.openAgentTab",
     "onCommand:opencode-walkthrough.resumeSession",
     "onCommand:opencode-walkthrough.version",
     "onCommand:opencode-walkthrough.checkHealth",
@@ -456,6 +457,11 @@
         "icon": "$(comment-discussion)"
       },
       {
+        "command": "opencode-walkthrough.openAgentTab",
+        "title": "OpenCode: Open Agent in New Tab",
+        "icon": "$(link-external)"
+      },
+      {
         "command": "opencode-walkthrough.resumeSession",
         "title": "OpenCode: Resume Session",
         "icon": "$(history)"
@@ -622,6 +628,11 @@
           "group": "navigation"
         },
         {
+          "command": "opencode-walkthrough.openAgentTab",
+          "when": "view == opencode-walkthrough.agent",
+          "group": "navigation"
+        },
+        {
           "command": "opencode-walkthrough.createAgent",
           "when": "view == opencode-walkthrough.overview",
           "group": "navigation"
@@ -755,6 +766,9 @@
         },
         {
           "command": "opencode-walkthrough.openAgentPanel"
+        },
+        {
+          "command": "opencode-walkthrough.openAgentTab"
         },
         {
           "command": "opencode-walkthrough.cancelAgent"

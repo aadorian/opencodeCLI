@@ -1064,6 +1064,10 @@ function activate(context) {
     vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
   });
 
+  const openAgentTabCmd = vscode.commands.registerCommand('opencode-walkthrough.openAgentTab', () => {
+    agentPanelProvider.openInNewTab();
+  });
+
   const resumeSessionCmd = vscode.commands.registerCommand('opencode-walkthrough.resumeSession', async (sessionId) => {
     if (!sessionId) {
       vscode.commands.executeCommand('opencode-walkthrough.sessionList');
@@ -1097,7 +1101,7 @@ function activate(context) {
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
-    startAgentCmd, cancelAgentCmd, openAgentPanelCmd, resumeSessionCmd,
+    startAgentCmd, cancelAgentCmd, openAgentPanelCmd, openAgentTabCmd, resumeSessionCmd,
     webviewRegistration, agentPanelProvider, agentLoop, outputChannel
   );
 }
