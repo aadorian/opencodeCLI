@@ -93,6 +93,9 @@ test('Agent panel webview has correct UI structure', () => {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpenCode</title>
+  <style>
+    body { background: var(--vscode-sideBar-background); }
+  </style>
 </head>
 <body>
   <div id="welcome">
