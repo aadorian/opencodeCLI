@@ -308,6 +308,11 @@
         "opencode.enableExa": {
           "type": "boolean",
           "markdownDescription": "Enable Exa web search tools. Maps to `OPENCODE_ENABLE_EXA`"
+        },
+        "opencode.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show OpenCode status bar items when the OpenCode CLI is installed."
         }
       }
     },

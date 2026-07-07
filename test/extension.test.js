@@ -1,6 +1,11 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { AgentsProvider, getShortcutHints } = require('../extension');
+const {
+  AgentsProvider,
+  getShortcutHints,
+  refreshStatusBarVisibility,
+  setStatusBarVisibility,
+} = require('../extension');
 
 suite('Extension Test Suite', () => {
   let extension;
@@ -71,6 +76,45 @@ suite('Extension Test Suite', () => {
     const props = pkg.contributes?.configuration?.properties ?? {};
     assert.ok(props['opencode.harness.maxRounds'], 'Should contribute harness maxRounds');
     assert.ok(props['opencode.harness.customInstructions'], 'Should contribute customInstructions');
+  });
+
+  test('Status bar setting is contributed', () => {
+    const pkg = extension?.packageJSON;
+    const props = pkg.contributes?.configuration?.properties ?? {};
+    assert.equal(props['opencode.showStatusBar']?.default, true);
+  });
+
+  test('Status bar visibility follows install state and setting', async () => {
+    const makeItem = () => ({
+      visible: false,
+      show() { this.visible = true; },
+      hide() { this.visible = false; },
+    });
+    const items = [makeItem(), makeItem()];
+
+    setStatusBarVisibility(items, true);
+    assert.ok(items.every(item => item.visible));
+
+    await refreshStatusBarVisibility(
+      items,
+      () => ({ get: () => true }),
+      async () => null
+    );
+    assert.ok(items.every(item => !item.visible));
+
+    await refreshStatusBarVisibility(
+      items,
+      () => ({ get: () => false }),
+      async () => '1.0.0'
+    );
+    assert.ok(items.every(item => !item.visible));
+
+    await refreshStatusBarVisibility(
+      items,
+      () => ({ get: () => true }),
+      async () => '1.0.0'
+    );
+    assert.ok(items.every(item => item.visible));
   });
 
   test('Agent webview view is contributed', () => {

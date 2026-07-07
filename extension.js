@@ -420,6 +420,19 @@ function getShortcutHints(platform = process.platform) {
   };
 }
 
+function setStatusBarVisibility(items, visible) {
+  for (const item of items) {
+    if (visible) item.show();
+    else item.hide();
+  }
+}
+
+async function refreshStatusBarVisibility(items, getConfig = () => vscode.workspace.getConfiguration(), getInstall = checkInstall) {
+  const enabled = getConfig().get('opencode.showStatusBar', true);
+  const version = enabled ? await getInstall() : null;
+  setStatusBarVisibility(items, Boolean(enabled && version));
+}
+
 function getAgentsHtml() {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -877,13 +890,18 @@ function activate(context) {
   statusBarItem.text = '$(terminal) OpenCode';
   statusBarItem.tooltip = 'OpenCode — Click to run an action';
   statusBarItem.command = 'opencode-walkthrough.showActions';
-  statusBarItem.show();
 
   const agentsItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 99);
   agentsItem.text = '$(robot) Agents';
   agentsItem.tooltip = 'OpenCode Agents — Click to list agents';
   agentsItem.command = 'opencode-walkthrough.listAgents';
-  agentsItem.show();
+  const statusBarItems = [statusBarItem, agentsItem];
+  refreshStatusBarVisibility(statusBarItems);
+  const statusBarConfigWatcher = vscode.workspace.onDidChangeConfiguration((event) => {
+    if (event.affectsConfiguration('opencode.showStatusBar')) {
+      refreshStatusBarVisibility(statusBarItems);
+    }
+  });
 
   const showActionsCmd = vscode.commands.registerCommand('opencode-walkthrough.showActions', () => {
     vscode.window.showQuickPick([
@@ -1102,7 +1120,7 @@ function activate(context) {
     agentsProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
     startAgentCmd, cancelAgentCmd, openAgentPanelCmd, openAgentTabCmd, resumeSessionCmd,
-    webviewRegistration, agentPanelProvider, agentLoop, outputChannel
+    webviewRegistration, agentPanelProvider, agentLoop, outputChannel, statusBarConfigWatcher
   );
 }
 
@@ -1113,5 +1131,7 @@ module.exports = {
   deactivate,
   AgentsProvider,
   AgentTreeItem,
-  getShortcutHints
+  getShortcutHints,
+  setStatusBarVisibility,
+  refreshStatusBarVisibility
 };
