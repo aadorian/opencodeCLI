@@ -482,11 +482,11 @@ function getAgentsHtml() {
   <title>OpenCode Agents</title>
 </head>
 <body>
-  <h1>$(robot) OpenCode Agents</h1>
+  <h1>🤖 OpenCode Agents</h1>
   <p class="subtitle">Create custom agents with specific instructions, permissions, and models.</p>
 
   <div class="section">
-    <h2>$(robot) Agents</h2>
+    <h2>🤖 Agents</h2>
     <p>Agents are specialized configurations that define how OpenCode behaves for different tasks. Each agent can have its own system prompt, tool permissions, and model.</p>
     <ul>
       <li>Create agents with custom system prompts</li>
@@ -502,7 +502,7 @@ function getAgentsHtml() {
   </div>
 
   <div class="section">
-    <h2>$(symbol-parameter) Models</h2>
+    <h2>🧠 Models</h2>
     <p>View and manage the models available through your configured providers.</p>
     <ul>
       <li>List all models from configured providers</li>
@@ -518,7 +518,7 @@ function getAgentsHtml() {
   </div>
 
   <div class="section">
-    <h2>$(key) Providers</h2>
+    <h2>🔑 Providers</h2>
     <p>Configure API keys for LLM providers to use with OpenCode.</p>
     <div class="actions">
       <a href="command:opencode-walkthrough.authLogin">Auth Login</a>
@@ -598,11 +598,11 @@ function getModelsHtml() {
   <title>OpenCode Models</title>
 </head>
 <body>
-  <h1>$(symbol-parameter) OpenCode Models</h1>
+  <h1>🧠 OpenCode Models</h1>
   <p class="subtitle">Browse and manage models available through your configured LLM providers.</p>
 
   <div class="section">
-    <h2>$(symbol-parameter) Available Models</h2>
+    <h2>🧠 Available Models</h2>
     <p>OpenCode supports models from multiple providers. Use the commands below to list your configured models.</p>
     <ul>
       <li>Models are listed in <code>provider/model</code> format</li>
@@ -618,7 +618,7 @@ function getModelsHtml() {
   </div>
 
   <div class="section">
-    <h2>$(server) Local Models</h2>
+    <h2>🖥️ Local Models</h2>
     <p>Run models locally using providers like Ollama, LM Studio, or vLLM.</p>
     <ul>
       <li>Configure local providers in your <code>opencode.json</code></li>
@@ -631,7 +631,7 @@ function getModelsHtml() {
   </div>
 
   <div class="section">
-    <h2>$(key) Provider Setup</h2>
+    <h2>🔑 Provider Setup</h2>
     <p>Before listing models, authenticate with your preferred provider.</p>
     <div class="actions">
       <a href="command:opencode-walkthrough.authLogin">Auth Login</a>
