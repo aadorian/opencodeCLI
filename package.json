@@ -110,7 +110,8 @@
     "onCommand:opencode-walkthrough.checkHealth",
     "onCommand:opencode-walkthrough.authLogout",
     "onCommand:opencode-walkthrough.mcpRemove",
-    "onCommand:opencode-walkthrough.uninstall"
+    "onCommand:opencode-walkthrough.uninstall",
+    "onCommand:opencode-walkthrough.createConfig"
   ],
   "main": "./extension.js",
   "scripts": {
@@ -321,6 +322,11 @@
         "command": "opencode-walkthrough.install",
         "title": "OpenCode: Install CLI",
         "icon": "$(cloud-download)"
+      },
+      {
+        "command": "opencode-walkthrough.createConfig",
+        "title": "OpenCode: Create Config Template",
+        "icon": "$(new-file)"
       },
       {
         "command": "opencode-walkthrough.runInline",
@@ -547,7 +553,7 @@
     "viewsWelcome": [
       {
         "view": "opencode-walkthrough.overview",
-        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Check Version](command:opencode-walkthrough.version)\n[Check Health](command:opencode-walkthrough.checkHealth)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Auth Login](command:opencode-walkthrough.authLogin)\n[Auth Logout](command:opencode-walkthrough.authLogout)\n\n[Agents Overview](command:opencode-walkthrough.showAgents)\n[Models Overview](command:opencode-walkthrough.showModels)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Tips & Tricks](command:opencode-walkthrough.showTips)\n[Read Documentation](https://opencode.ai)\n"
+        "contents": "OpenCode is a CLI for AI-assisted software engineering tasks.\n\n[Show Walkthrough](command:opencode-walkthrough.showWalkthrough)\n[Install CLI](command:opencode-walkthrough.install)\n[Create Config Template](command:opencode-walkthrough.createConfig)\n[Check Version](command:opencode-walkthrough.version)\n[Check Health](command:opencode-walkthrough.checkHealth)\n[Run Inline Prompt](command:opencode-walkthrough.runInline)\n[Run on Project Files](command:opencode-walkthrough.runOnProject)\n[Start Interactive Session](command:opencode-walkthrough.runInteractive)\n[Start Agent Session](command:opencode-walkthrough.startAgent)\n[Create Agent](command:opencode-walkthrough.createAgent)\n\n[Auth Login](command:opencode-walkthrough.authLogin)\n[Auth Logout](command:opencode-walkthrough.authLogout)\n\n[Agents Overview](command:opencode-walkthrough.showAgents)\n[Models Overview](command:opencode-walkthrough.showModels)\n\n[CLI Help](command:opencode-walkthrough.showCliHelp)\n[Tips & Tricks](command:opencode-walkthrough.showTips)\n[Read Documentation](https://opencode.ai)\n"
       },
       {
         "view": "opencode-walkthrough.agents",
@@ -729,6 +735,9 @@
       "opencode-walkthrough.helpSubmenu": [
         {
           "command": "opencode-walkthrough.install"
+        },
+        {
+          "command": "opencode-walkthrough.createConfig"
         },
         {
           "command": "opencode-walkthrough.version"

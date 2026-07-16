@@ -9,6 +9,7 @@ const { ServerManager } = require('./lib/server');
 const { ToolRegistry } = require('./lib/tools');
 const { AgentLoop } = require('./lib/agentLoop');
 const { AgentPanelProvider } = require('./lib/agentPanel');
+const { createConfigTemplate } = require('./lib/configTemplate');
 
 function sendToTerminal(text) {
   const getConfig = () => vscode.workspace.getConfiguration();
@@ -678,6 +679,19 @@ function activate(context) {
     vscode.commands.executeCommand('workbench.action.openWalkthrough', gettingStartedWalkthroughId);
   });
 
+  const createConfigCmd = vscode.commands.registerCommand('opencode-walkthrough.createConfig', async () => {
+    await createConfigTemplate({
+      getWorkspaceFolders: () => vscode.workspace.workspaceFolders,
+      stat: uri => vscode.workspace.fs.stat(uri),
+      writeFile: (uri, content) => vscode.workspace.fs.writeFile(uri, content),
+      showWarningMessage: (...args) => vscode.window.showWarningMessage(...args),
+      openTextDocument: uri => vscode.workspace.openTextDocument(uri),
+      showTextDocument: doc => vscode.window.showTextDocument(doc),
+      showSaveDialog: options => vscode.window.showSaveDialog(options),
+      Uri: vscode.Uri,
+    });
+  });
+
   const installCmd = vscode.commands.registerCommand('opencode-walkthrough.install', async () => {
     const version = await checkInstall();
     if (version) {
@@ -1092,7 +1106,7 @@ function activate(context) {
   modelsProvider.refresh();
 
   context.subscriptions.push(
-    showWalkthrough, installCmd, runCmd, interactiveCmd,
+    showWalkthrough, createConfigCmd, installCmd, runCmd, interactiveCmd,
     createAgentCmd, listAgentsCmd, addMcpCmd, listMcpCmd,
     authLoginCmd, authListCmd, authLogoutCmd, modelsCmd, sessionListCmd,
     statsCmd, upgradeCmd, serveCmd, webCmd,
