@@ -24,7 +24,15 @@
       "Bash(node --check /tmp/_panel_check.js)",
       "Bash(rm -f /tmp/_panel_check.js)",
       "Bash(node --check /tmp/_panel_check2.js)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(node --test test/agentCreate.test.js)",
+      "Bash(node --test test/)",
+      "Bash(node --test test/*.test.js)",
+      "Bash(node --test test/extension.test.js)",
+      "Bash(git -C /Users/user/Desktop/opencodeCLI stash)",
+      "Bash(git -C /Users/user/Desktop/opencodeCLI stash pop)",
+      "Bash(node --check extension.js)",
+      "Bash(node --test test/agentCreate.test.js test/configTemplate.test.js test/ui.test.js)"
     ],
     "additionalDirectories": [
       "/Users/user/Desktop/opencodeCLI/.claude",

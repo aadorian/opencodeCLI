@@ -10,6 +10,7 @@ const { ToolRegistry } = require('./lib/tools');
 const { AgentLoop } = require('./lib/agentLoop');
 const { AgentPanelProvider } = require('./lib/agentPanel');
 const { createConfigTemplate } = require('./lib/configTemplate');
+const { createAgentInteractive, AGENT_DIR } = require('./lib/agentCreate');
 
 function sendToTerminal(text) {
   const getConfig = () => vscode.workspace.getConfiguration();
@@ -421,7 +422,18 @@ function getShortcutHints(platform = process.platform) {
   };
 }
 
-function getAgentsHtml() {
+function getAgentsHtml(hasAgents) {
+  const onboardingBanner = hasAgents
+    ? ''
+    : `
+  <div class="section" style="border-color: var(--vscode-textLink-foreground);">
+    <h2>$(sparkle) New here?</h2>
+    <p>You don't have any agents yet. Agents let you package a system prompt, tool permissions, and model into something you can switch to or delegate work to. Start with guided setup below — it only takes a minute.</p>
+    <div class="actions">
+      <a href="command:opencode-walkthrough.createAgent">Create your first agent</a>
+      <a href="https://opencode.ai/docs/agents" class="sec">Learn about agents</a>
+    </div>
+  </div>`;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -485,6 +497,7 @@ function getAgentsHtml() {
 <body>
   <h1>$(robot) OpenCode Agents</h1>
   <p class="subtitle">Create custom agents with specific instructions, permissions, and models.</p>
+${onboardingBanner}
 
   <div class="section">
     <h2>$(robot) Agents</h2>
@@ -762,10 +775,39 @@ function activate(context) {
   });
 
   const createAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.createAgent', async () => {
-    if (!(await ensureInstalled())) {
+    const choice = await vscode.window.showQuickPick(
+      [
+        { label: '$(edit) Guided setup', description: 'Answer a few prompts, agent file is created for you', id: 'guided' },
+        { label: '$(terminal) Use opencode CLI', description: 'Run "opencode agent create" in the terminal instead', id: 'cli' },
+      ],
+      { placeHolder: 'How do you want to create the agent?' }
+    );
+    if (!choice) {
       return;
     }
-    sendToTerminal('opencode agent create');
+    if (choice.id === 'cli') {
+      if (!(await ensureInstalled())) {
+        return;
+      }
+      sendToTerminal('opencode agent create');
+      return;
+    }
+    const result = await createAgentInteractive({
+      getWorkspaceFolders: () => vscode.workspace.workspaceFolders,
+      showInputBox: options => vscode.window.showInputBox(options),
+      showQuickPick: (items, options) => vscode.window.showQuickPick(items, options),
+      stat: uri => vscode.workspace.fs.stat(uri),
+      writeFile: (uri, content) => vscode.workspace.fs.writeFile(uri, content),
+      showWarningMessage: (...args) => vscode.window.showWarningMessage(...args),
+      showErrorMessage: (...args) => vscode.window.showErrorMessage(...args),
+      openTextDocument: uri => vscode.workspace.openTextDocument(uri),
+      showTextDocument: doc => vscode.window.showTextDocument(doc),
+      Uri: vscode.Uri,
+    });
+    if (result?.created) {
+      vscode.window.showInformationMessage(`Agent "${result.name}" created.`);
+      agentsProvider.refresh();
+    }
   });
 
   const listAgentsCmd = vscode.commands.registerCommand('opencode-walkthrough.listAgents', () => {
@@ -974,14 +1016,21 @@ function activate(context) {
     panel.webview.html = getTipsHtml();
   });
 
-  const showAgentsCmd = vscode.commands.registerCommand('opencode-walkthrough.showAgents', () => {
+  const showAgentsCmd = vscode.commands.registerCommand('opencode-walkthrough.showAgents', async () => {
     const panel = vscode.window.createWebviewPanel(
       'opencodeAgents',
       'OpenCode Agents',
       vscode.ViewColumn.One,
       { enableScripts: false }
     );
-    panel.webview.html = getAgentsHtml();
+    let hasAgents = true;
+    try {
+      const found = await vscode.workspace.findFiles(`${AGENT_DIR}/**/*.md`, null, 1);
+      hasAgents = found.length > 0;
+    } catch {
+      // Ignore lookup failures and default to hiding the onboarding banner.
+    }
+    panel.webview.html = getAgentsHtml(hasAgents);
   });
 
   const showModelsCmd = vscode.commands.registerCommand('opencode-walkthrough.showModels', () => {

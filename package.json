@@ -991,7 +991,7 @@
           {
             "id": "opencode.createAgent",
             "title": "Create an Agent",
-            "description": "Create a custom agent with specific instructions and permissions.\n[Create Agent](command:opencode-walkthrough.createAgent)",
+            "description": "Create a custom agent with specific instructions and permissions. Choose guided setup for an in-editor form, or use the opencode CLI directly.\n[Create Agent](command:opencode-walkthrough.createAgent)",
             "media": {
               "markdown": "walkthroughs/04-create-agent.md"
             },

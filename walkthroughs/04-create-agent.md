@@ -1,12 +1,12 @@
 ![Create agent example](../media/walkthrough/agent.svg)
 
-Create custom agents with specific instructions and permissions:
+Create custom agents with specific instructions and permissions. New to agents? Use **Guided setup** — it walks you through name, description, mode, model, and tools, then creates and opens the agent file for you. Prefer the CLI? Choose **Use opencode CLI** to run:
 
 ```bash
 opencode agent create
 ```
 
-You'll be prompted to name your agent and describe what it should do. Agents can specialize in areas like testing, code review, or documentation.
+Either way you'll define a name and description for your agent. Agents can specialize in areas like testing, code review, or documentation.
 
 ### Non-interactive creation
 
