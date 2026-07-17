@@ -9,6 +9,12 @@ Browse screenshots, install steps, and documentation on the **[project website](
 
 ---
 
+## Demo
+
+![OpenCode Walkthrough demo — sidebar, quick actions, and panels](media/opencode-demo.gif)
+
+---
+
 ## Screenshots
 
 Each image below matches the extension UI in VS Code — sidebar links, toolbar buttons, quick picks, and panel actions as shipped in v0.0.2.

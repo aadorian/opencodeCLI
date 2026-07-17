@@ -40,7 +40,14 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['scripts']\\)\")",
       "Bash(grep -l \"failing tests\" /tmp/out_*.log)",
       "Read(//private/tmp/**)",
-      "Bash(tail -30 /tmp/out_extension.test.js.log)"
+      "Bash(tail -30 /tmp/out_extension.test.js.log)",
+      "Bash(ffmpeg -version)",
+      "Bash(identify media/screenshots/sidebar-overview.png)",
+      "Bash(python3 -c \"import PIL; print\\(PIL.__version__\\)\")",
+      "Bash(node -e \"console.log\\(require.resolve\\('sharp'\\)\\)\")",
+      "Bash(node -e \"console.log\\(require.resolve\\('gifencoder'\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -)"
     ],
     "additionalDirectories": [
       "/Users/user/Desktop/opencodeCLI/.claude",
