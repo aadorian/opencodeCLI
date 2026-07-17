@@ -202,6 +202,11 @@
           "type": "boolean",
           "markdownDescription": "Disable reading from `.claude` (prompt + skills). Maps to `OPENCODE_DISABLE_CLAUDE_CODE`"
         },
+        "opencode.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show OpenCode status bar items when the CLI is installed."
+        },
         "opencode.disableModelsFetch": {
           "type": "boolean",
           "markdownDescription": "Disable fetching models from remote sources. Maps to `OPENCODE_DISABLE_MODELS_FETCH`"

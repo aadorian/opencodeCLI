@@ -7,6 +7,20 @@ const { checkHealth } = require('./lib/health');
 const { listSessions } = require('./lib/sessions');
 const { createConfigTemplate } = require('./lib/configTemplate');
 const { createAgentInteractive, AGENT_DIR } = require('./lib/agentCreate');
+const { shouldShowStatusBarItems } = require('./lib/statusBar');
+
+async function refreshStatusBarItems(statusBarItem, agentsItem) {
+  const config = vscode.workspace.getConfiguration('opencode');
+  const showSetting = config.get('showStatusBar', true);
+  const installed = !!(await checkInstall());
+  if (shouldShowStatusBarItems(showSetting, installed)) {
+    statusBarItem.show();
+    agentsItem.show();
+  } else {
+    statusBarItem.hide();
+    agentsItem.hide();
+  }
+}
 
 function sendToTerminal(text) {
   const getConfig = () => vscode.workspace.getConfiguration();
@@ -950,13 +964,20 @@ function activate(context) {
   statusBarItem.text = '$(terminal) OpenCode';
   statusBarItem.tooltip = 'OpenCode — Click to run an action';
   statusBarItem.command = 'opencode-walkthrough.showActions';
-  statusBarItem.show();
 
   const agentsItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 99);
   agentsItem.text = '$(robot) Agents';
   agentsItem.tooltip = 'OpenCode Agents — Click to list agents';
   agentsItem.command = 'opencode-walkthrough.listAgents';
-  agentsItem.show();
+
+  void refreshStatusBarItems(statusBarItem, agentsItem);
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(event => {
+      if (event.affectsConfiguration('opencode.showStatusBar')) {
+        void refreshStatusBarItems(statusBarItem, agentsItem);
+      }
+    })
+  );
 
   const showActionsCmd = vscode.commands.registerCommand('opencode-walkthrough.showActions', () => {
     vscode.window.showQuickPick([
@@ -1152,5 +1173,7 @@ module.exports = {
   AgentTreeItem,
   OverviewProvider,
   OverviewTreeItem,
-  getShortcutHints
+  getShortcutHints,
+  refreshStatusBarItems,
+  shouldShowStatusBarItems,
 };
