@@ -32,7 +32,10 @@
       "Bash(git -C /Users/user/Desktop/opencodeCLI stash)",
       "Bash(git -C /Users/user/Desktop/opencodeCLI stash pop)",
       "Bash(node --check extension.js)",
-      "Bash(node --test test/agentCreate.test.js test/configTemplate.test.js test/ui.test.js)"
+      "Bash(node --test test/agentCreate.test.js test/configTemplate.test.js test/ui.test.js)",
+      "Bash(node -c \"require\\('./lib/agentPanel.js'\\)\")",
+      "Bash(node -e \"require\\('./lib/agentPanel.js'\\)\")",
+      "Bash(node --check lib/agentPanel.js)"
     ],
     "additionalDirectories": [
       "/Users/user/Desktop/opencodeCLI/.claude",
