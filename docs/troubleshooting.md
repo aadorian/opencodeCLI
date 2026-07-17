@@ -1,6 +1,6 @@
 # Troubleshooting & FAQ
 
-Common issues when using the OpenCode Walkthrough extension with the integrated terminal, environment variables, and the agent harness.
+Common issues when using the OpenCode Walkthrough extension with the integrated terminal and environment variables.
 
 ---
 
@@ -10,7 +10,6 @@ Common issues when using the OpenCode Walkthrough extension with the integrated 
 - [Troubleshooting matrix](#troubleshooting-matrix)
 - [Environment variables](#environment-variables)
 - [Terminal & shell issues](#terminal--shell-issues)
-- [Agent harness](#agent-harness)
 - [Install & PATH](#install--path)
 - [Wiki & CI sync](#wiki--ci-sync)
 - [Still stuck?](#still-stuck)
@@ -29,8 +28,7 @@ Run these in order:
    opencode auth ls
    ```
 
-3. Open **Agent** sidebar — read the header line (health message).
-4. **View → Output** → select **OpenCode Agent** for harness errors.
+3. Run **OpenCode: Check Health** to confirm auth/install status.
 
 | Header / symptom | Likely cause | Jump to |
 |------------------|--------------|---------|
@@ -38,7 +36,6 @@ Run these in order:
 | `no providers configured` | Auth not set up | [Matrix: Auth](#troubleshooting-matrix) |
 | Command runs but env ignored | Manual terminal vs extension dispatch | [Environment variables](#environment-variables) |
 | `curl \| bash` fails on Windows | Wrong install method | [Install & PATH](#install--path) |
-| Agent stuck on `running` | CLI hang or spawn error | [Agent harness](#agent-harness) |
 | Untrusted workspace warning | Workspace trust off | [Matrix: Trust](#troubleshooting-matrix) |
 
 ---
@@ -56,10 +53,8 @@ Run these in order:
 | PowerShell shows `export: term not recognized` | Unix syntax in PowerShell | Use extension commands (auto `$env:VAR=`) or set `$env:OPENCODE_*` manually |
 | Semicolon command chain fails in cmd.exe | cmd ≠ PowerShell | Set default profile to PowerShell or Git Bash |
 | `no providers configured` | No `opencode auth login` | **OpenCode: Auth Login** or `opencode auth login` |
-| Agent panel empty / webview error | Untrusted workspace | Trust the folder: **Manage Workspace Trust** |
-| Port 4096 already in use | Another `opencode serve` running | Kill old server or set `opencode.harness.serverUrl` to a free port |
+| Port 4096 already in use | Another `opencode serve` running | Kill old server or pick a different port |
 | Sessions tree empty | No sessions yet or stale cache | Run a prompt; **Refresh** on Sessions toolbar |
-| Hybrid tool never runs | Workspace untrusted or confirmation denied | Trust workspace; set `opencode.harness.toolConfirmation` to `smart` or `always` |
 | Wiki push: repository not found | Wiki never initialized in browser | `npm run wiki:init` then `npm run wiki:push` |
 
 ---
@@ -71,7 +66,7 @@ The extension maps VS Code settings under `opencode.*` to `OPENCODE_*` variables
 | Mechanism | When it applies |
 |-----------|-----------------|
 | `buildTerminalCommand()` | **OpenCode: Install**, **Run Inline**, **Start Interactive**, **serve**, etc. — prepends `$env:VAR="…";` (Windows) or `export VAR="…" &&` (Unix) |
-| `buildEnvObject()` | Harness `spawnCli()` / health checks — child process `env` |
+| `buildEnvObject()` | Health checks — child process `env` |
 
 ### Mapped settings (reference)
 
@@ -130,30 +125,7 @@ Platform is detected at extension runtime (`process.platform`), not from your te
 
 ### `OpenCode Server` terminal
 
-When `opencode.harness.autoStartServer` is true, the harness may create a separate **OpenCode Server** terminal. Do not close it mid-session if Agent chat uses `--attach`. Run **OpenCode: Start Server** manually if auto-start is off.
-
----
-
-## Agent harness
-
-| Issue | What to check |
-|-------|----------------|
-| No streaming text | Output channel for spawn errors; CLI supports `--format json` |
-| Immediate `error` bubble | Auth, install, or untrusted workspace |
-| `Agent loop is already running` | Wait for completion or **OpenCode: Cancel Agent** |
-| Tool confirmation loop | `opencode.harness.toolConfirmation`: try `never` for read-only tasks (use with care) |
-| Wrong context in replies | Toggle `opencode.harness.context.*`; enable `includeFileContents` only when needed |
-| Session id not sticking | Resume via Sessions tree; confirm `--session` in Output log |
-
-### Disable auto-start server (debugging)
-
-```json
-{
-  "opencode.harness.autoStartServer": false
-}
-```
-
-Run **OpenCode: Start Server** when you need `--attach`.
+Run **OpenCode: Start Server** to open a terminal running `opencode serve`.
 
 ---
 
@@ -194,6 +166,4 @@ Run **OpenCode: Start Server** when you need `--attach`.
    - OS and VS Code version
    - Default terminal profile
    - Output of `opencode --version` and `opencode auth ls` (redact secrets)
-   - **OpenCode Agent** output channel excerpt
-2. See [Practical Workflow Examples](./practical-workflow-examples.md) for expected UI behavior.
-3. CLI reference: [opencode.ai/docs](https://opencode.ai/docs)
+2. CLI reference: [opencode.ai/docs](https://opencode.ai/docs)

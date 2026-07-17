@@ -35,7 +35,12 @@
       "Bash(node --test test/agentCreate.test.js test/configTemplate.test.js test/ui.test.js)",
       "Bash(node -c \"require\\('./lib/agentPanel.js'\\)\")",
       "Bash(node -e \"require\\('./lib/agentPanel.js'\\)\")",
-      "Bash(node --check lib/agentPanel.js)"
+      "Bash(node --check lib/agentPanel.js)",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('package.json','utf8'\\)\\); console.log\\('valid json'\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['scripts']\\)\")",
+      "Bash(grep -l \"failing tests\" /tmp/out_*.log)",
+      "Read(//private/tmp/**)",
+      "Bash(tail -30 /tmp/out_extension.test.js.log)"
     ],
     "additionalDirectories": [
       "/Users/user/Desktop/opencodeCLI/.claude",

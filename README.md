@@ -20,7 +20,7 @@ Open the **OpenCode** activity bar view for one-click access to walkthrough, CLI
 **Welcome links shown:**
 
 - Show Walkthrough · Install CLI · Run Inline Prompt · Run on Project Files
-- Start Interactive Session · Start Agent Session · Create Agent
+- Start Interactive Session · Create Agent
 - Agents Overview · Models Overview · CLI Help · Tips & Tricks · Read Documentation
 
 **Status bar:** `$(zap) OpenCode` (Show Actions) · `$(hubot) Agents` (List Agents)
@@ -41,7 +41,7 @@ Live data from `opencode agent list` and `opencode models` in the sidebar.
 Bottom panel container **MCP Servers** with two tabs.
 
 **MCP Servers tab:** listed servers (e.g. filesystem, github) · **Add MCP Server**  
-**Sessions tab:** recent sessions · refresh toolbar · empty-state links to Run Inline Prompt / Start Agent Session / Start Interactive Session
+**Sessions tab:** recent sessions · refresh toolbar · empty-state links to Run Inline Prompt / Start Interactive Session
 
 ![MCP Servers and Sessions panel](media/screenshots/panel-mcp-sessions.png)
 
@@ -317,7 +317,6 @@ OpenCode is a CLI for AI-assisted software engineering tasks.
 [Run Inline Prompt](command:opencode-walkthrough.runInline)
 [Run on Project Files](command:opencode-walkthrough.runOnProject)
 [Start Interactive Session](command:opencode-walkthrough.runInteractive)
-[Start Agent Session](command:opencode-walkthrough.startAgent)
 [Create Agent](command:opencode-walkthrough.createAgent)
 
 [Agents Overview](command:opencode-walkthrough.showAgents)
@@ -548,8 +547,6 @@ We use **GitHub Flow** with Conventional Commits, automated CI, and tag-based re
 | Branch protection (rulesets) | [.github/branch-protection.md](./.github/branch-protection.md) |
 | Ruleset definition | [.github/rulesets/master-protection.json](./.github/rulesets/master-protection.json) |
 | Good first issues | [Issue #17](https://github.com/aadorian/opencodeCLI/issues/17) |
-| Agent Loop feature plan | [.github/FEATURE_PLAN_opencode-agent-loop.md](./.github/FEATURE_PLAN_opencode-agent-loop.md) |
-| Building the agent harness (wiki) | [GitHub Wiki](https://github.com/aadorian/opencodeCLI/wiki) · [docs/building-opencode-agent-harness.md](./docs/building-opencode-agent-harness.md) · sync: `npm run wiki:push` |
 
 ```bash
 git checkout -b feat/my-change
@@ -568,7 +565,7 @@ Uses `@vscode/test-cli` with `@vscode/test-electron`.
 
 ### Test Suite
 
-7 tests in `test/extension.test.js` plus 8 harness unit tests in `test/harness.test.js` (17 total):
+Tests in `test/extension.test.js` cover activation, command registration, and manifest validity:
 
 | Test | Description |
 |---|---|

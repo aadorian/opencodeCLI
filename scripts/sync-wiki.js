@@ -32,22 +32,10 @@ const WIKI_ARTICLES = [
     description: 'CLI install for all platforms, providers, /init, and extension setup',
   },
   {
-    src: 'docs/building-opencode-agent-harness.md',
-    wikiFile: 'Building-the-OpenCode-Agent-Harness.md',
-    title: 'Building the OpenCode Agent Harness',
-    description: 'How we built a VS Code–native agent loop on top of the OpenCode CLI',
-  },
-  {
-    src: 'docs/practical-workflow-examples.md',
-    wikiFile: 'Practical-Workflow-Examples.md',
-    title: 'Practical Workflow Examples',
-    description: 'Step-by-step walkthroughs: plan → build handoff, agent chat, session resume',
-  },
-  {
     src: 'docs/troubleshooting.md',
     wikiFile: 'Troubleshooting.md',
     title: 'Troubleshooting',
-    description: 'PATH, env vars, terminal shells, harness errors — diagnosis matrix',
+    description: 'PATH, env vars, terminal shells — diagnosis matrix',
   },
 ];
 
@@ -70,16 +58,8 @@ function adaptWikiContent(content) {
       (_, fragment) => `(${REPO_BASE}/README.md${fragment})`
     )
     .replace(
-      /\(\.\/building-opencode-agent-harness\.md\)/g,
-      `(${wikiLink('Building the OpenCode Agent Harness')})`
-    )
-    .replace(
       /\(\.\/installation\.md\)/g,
       `(${wikiLink('Installation')})`
-    )
-    .replace(
-      /\(\.\/practical-workflow-examples\.md\)/g,
-      `(${wikiLink('Practical Workflow Examples')})`
     )
     .replace(
       /\(\.\/troubleshooting\.md\)/g,

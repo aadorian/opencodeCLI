@@ -1,6 +1,6 @@
 # Installing OpenCode
 
-Install the [OpenCode](https://opencode.ai) CLI so the **OpenCode Walkthrough** VS Code extension can dispatch commands, run the agent harness, and open interactive sessions.
+Install the [OpenCode](https://opencode.ai) CLI so the **OpenCode Walkthrough** VS Code extension can dispatch commands and open interactive sessions.
 
 Official reference: [opencode.ai/docs](https://opencode.ai/docs) · [opencode.ai/download](https://opencode.ai/download)
 
@@ -148,7 +148,7 @@ After the CLI is installed and authenticated:
 |------|--------|
 | 1 | Install the [OpenCode Walkthrough](https://marketplace.visualstudio.com/items?itemName=AlejandroAdorjan.opencode-walkthrough) extension (or run `npm run run` from this repo) |
 | 2 | Open a **trusted** workspace folder |
-| 3 | Open the **OpenCode** activity bar → run **Show Walkthrough** or **Start Agent Session** |
+| 3 | Open the **OpenCode** activity bar → run **Show Walkthrough** |
 | 4 | Optional: set `opencode.*` settings in VS Code — they map to `OPENCODE_*` env vars when commands run in the terminal |
 
 Local development of this extension:
@@ -165,8 +165,6 @@ npm run run
 ## Related articles
 
 - [Troubleshooting & FAQ](./troubleshooting.md) — PATH, env vars, terminal shells
-- [Practical Workflow Examples](./practical-workflow-examples.md) — agent sidebar, sessions, plan → build
-- [Building the OpenCode Agent Harness](./building-opencode-agent-harness.md) — architecture
 - [OpenCode docs — Intro](https://opencode.ai/docs)
 - [OpenCode docs — Windows](https://opencode.ai/docs/windows/)
 - [OpenCode download page](https://opencode.ai/download)

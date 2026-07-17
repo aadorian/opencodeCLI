@@ -5,10 +5,6 @@ const { checkInstall, getGitBranch } = require('./lib/cli');
 const { getInstallTerminalCommand, getInstallOptions, promptInstallIfMissing } = require('./lib/install');
 const { checkHealth } = require('./lib/health');
 const { listSessions } = require('./lib/sessions');
-const { ServerManager } = require('./lib/server');
-const { ToolRegistry } = require('./lib/tools');
-const { AgentLoop } = require('./lib/agentLoop');
-const { AgentPanelProvider } = require('./lib/agentPanel');
 const { createConfigTemplate } = require('./lib/configTemplate');
 const { createAgentInteractive, AGENT_DIR } = require('./lib/agentCreate');
 
@@ -665,20 +661,7 @@ function getModelsHtml() {
 
 function activate(context) {
   const getConfig = () => vscode.workspace.getConfiguration();
-  const outputChannel = vscode.window.createOutputChannel('OpenCode Agent');
-  const log = msg => outputChannel.appendLine(msg);
   const gettingStartedWalkthroughId = `${context.extension.id}#opencode.gettingStarted`;
-
-  const serverManager = new ServerManager(getConfig);
-  const toolRegistry = new ToolRegistry(getConfig, { log });
-  const agentLoop = new AgentLoop({
-    vscode,
-    getConfig,
-    serverManager,
-    toolRegistry,
-    options: { log },
-  });
-  const agentPanelProvider = new AgentPanelProvider(agentLoop, checkHealth);
 
   checkHealth().then(health => {
     if (!health.installed) {
@@ -949,7 +932,6 @@ function activate(context) {
       { label: '$(versions) Check Version', description: 'Show the installed OpenCode version', command: 'opencode-walkthrough.version' },
       { label: '$(heart) Check Health', description: 'Check auth status and CLI health', command: 'opencode-walkthrough.checkHealth' },
       { label: '$(play) Run Inline Prompt', description: 'Send a prompt to OpenCode from VS Code', command: 'opencode-walkthrough.runInline' },
-      { label: '$(hubot) Start Agent Session', description: 'Start an agent loop session', command: 'opencode-walkthrough.startAgent' },
       { label: '$(folder) Run on Project Files', description: 'Run OpenCode with selected files', command: 'opencode-walkthrough.runOnProject' },
       { label: '$(terminal) Start Interactive', description: 'Open the interactive OpenCode TUI', command: 'opencode-walkthrough.runInteractive' },
       { label: '$(robot) Agents Overview', description: 'Show available agent concepts and actions', command: 'opencode-walkthrough.showAgents' },
@@ -1101,53 +1083,9 @@ function activate(context) {
   const refreshSessionsCmd = vscode.commands.registerCommand('opencode-walkthrough.refreshSessions', () => sessionsProvider.refresh());
   const refreshModelsCmd = vscode.commands.registerCommand('opencode-walkthrough.refreshModels', () => modelsProvider.refresh());
 
-  const startAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.startAgent', async () => {
-    await vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
-    const health = await checkHealth();
-    if (!health.installed) {
-      vscode.window.showWarningMessage('OpenCode CLI is not installed.');
-      return;
-    }
-    const prompt = await vscode.window.showInputBox({
-      placeHolder: 'What should the agent do?',
-      prompt: 'Start an agent session',
-      ignoreFocusOut: true,
-    });
-    if (prompt) {
-      await agentPanelProvider.sendMessage(prompt);
-    }
+  const resumeSessionCmd = vscode.commands.registerCommand('opencode-walkthrough.resumeSession', (sessionId) => {
+    sendToTerminal(sessionId ? `opencode --session ${sessionId}` : 'opencode session list');
   });
-
-  const cancelAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.cancelAgent', () => {
-    agentLoop.cancel();
-    vscode.window.showInformationMessage('Agent session cancelled.');
-  });
-
-  const openAgentPanelCmd = vscode.commands.registerCommand('opencode-walkthrough.openAgentPanel', () => {
-    vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
-  });
-
-  const openAgentTabCmd = vscode.commands.registerCommand('opencode-walkthrough.openAgentTab', () => {
-    agentPanelProvider.openInNewTab();
-  });
-
-  const resumeSessionCmd = vscode.commands.registerCommand('opencode-walkthrough.resumeSession', async (sessionId) => {
-    if (!sessionId) {
-      vscode.commands.executeCommand('opencode-walkthrough.sessionList');
-      return;
-    }
-    await vscode.commands.executeCommand('opencode-walkthrough.agent.focus');
-    const prompt = await vscode.window.showInputBox({
-      placeHolder: 'Continue this session…',
-      prompt: `Resume session ${sessionId.slice(0, 8)}`,
-      ignoreFocusOut: true,
-    });
-    if (!prompt) return;
-    agentLoop.sessionId = sessionId;
-    await agentPanelProvider.sendMessage(prompt);
-  });
-
-  const webviewRegistration = vscode.window.registerWebviewViewProvider('opencode-walkthrough.agent', agentPanelProvider);
 
   agentsProvider.refresh();
   mcpProvider.refresh();
@@ -1164,8 +1102,7 @@ function activate(context) {
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
-    startAgentCmd, cancelAgentCmd, openAgentPanelCmd, openAgentTabCmd, resumeSessionCmd,
-    webviewRegistration, agentPanelProvider, agentLoop, outputChannel
+    resumeSessionCmd
   );
 }
 

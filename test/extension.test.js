@@ -66,21 +66,6 @@ suite('Extension Test Suite', () => {
     );
   });
 
-  test('Harness settings are contributed', () => {
-    const pkg = extension?.packageJSON;
-    const props = pkg.contributes?.configuration?.properties ?? {};
-    assert.ok(props['opencode.harness.maxRounds'], 'Should contribute harness maxRounds');
-    assert.ok(props['opencode.harness.customInstructions'], 'Should contribute customInstructions');
-  });
-
-  test('Agent webview view is contributed', () => {
-    const pkg = extension?.packageJSON;
-    const views = Object.values(pkg.contributes?.views ?? {}).flat();
-    const agentView = views.find(v => v.id === 'opencode-walkthrough.agent');
-    assert.ok(agentView, 'Agent webview should be contributed');
-    assert.equal(agentView.type, 'webview');
-  });
-
   test('Tips shortcut hints match the current platform family', () => {
     assert.deepEqual(getShortcutHints('darwin'), {
       platformLabel: 'macOS',
@@ -129,20 +114,5 @@ suite('Extension Test Suite', () => {
     assert.equal(items[0].label, 'No agents found');
     assert.equal(items[0].description, 'Create one to get started');
     assert.equal(items[0].command.command, 'opencode-walkthrough.createAgent');
-  });
-
-  test('Opening the agent in a new tab creates a visible editor webview panel', async () => {
-    await assert.doesNotReject(
-      vscode.commands.executeCommand('opencode-walkthrough.openAgentTab')
-    );
-
-    const hasAgentTab = () =>
-      vscode.window.tabGroups.all.flatMap(g => g.tabs).some(t => t.label === 'OpenCode Agent');
-
-    for (let i = 0; i < 20 && !hasAgentTab(); i++) {
-      await new Promise(resolve => setTimeout(resolve, 50));
-    }
-
-    assert.ok(hasAgentTab(), 'The new tab should be the OpenCode Agent panel');
   });
 });
