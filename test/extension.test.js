@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { AgentsProvider, getShortcutHints } = require('../extension');
+const { AgentsProvider, OverviewProvider, getShortcutHints } = require('../extension');
 
 suite('Extension Test Suite', () => {
   let extension;
@@ -114,5 +114,17 @@ suite('Extension Test Suite', () => {
     assert.equal(items[0].label, 'No agents found');
     assert.equal(items[0].description, 'Create one to get started');
     assert.equal(items[0].command.command, 'opencode-walkthrough.createAgent');
+  });
+
+  test('Overview provider exposes quick-start actions', async () => {
+    const provider = new OverviewProvider();
+
+    provider.refresh();
+    const items = await provider.getChildren();
+
+    assert.ok(items.length >= 5, 'Overview should expose quick-start actions');
+    assert.equal(items[0].label, 'Show Walkthrough');
+    assert.equal(items[0].command.command, 'opencode-walkthrough.showWalkthrough');
+    assert.equal(items[1].command.command, 'opencode-walkthrough.install');
   });
 });

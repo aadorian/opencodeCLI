@@ -25,6 +25,40 @@ class AgentTreeItem extends vscode.TreeItem {
   }
 }
 
+class OverviewTreeItem extends vscode.TreeItem {
+  constructor(label, description, icon, command) {
+    super(label, vscode.TreeItemCollapsibleState.None);
+    this.description = description;
+    this.iconPath = new vscode.ThemeIcon(icon);
+    this.command = { command, title: '', arguments: [] };
+    this.contextValue = 'overview';
+  }
+}
+
+class OverviewProvider {
+  constructor() {
+    this._onDidChangeTreeData = new vscode.EventEmitter();
+    this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+    this.items = [];
+  }
+
+  refresh() {
+    this.items = [
+      new OverviewTreeItem('Show Walkthrough', 'Getting started guide', 'book', 'opencode-walkthrough.showWalkthrough'),
+      new OverviewTreeItem('Install CLI', 'Install OpenCode in your environment', 'cloud-download', 'opencode-walkthrough.install'),
+      new OverviewTreeItem('Run Inline Prompt', 'Run a one-off prompt', 'play', 'opencode-walkthrough.runInline'),
+      new OverviewTreeItem('Start Interactive Session', 'Open an interactive CLI session', 'terminal', 'opencode-walkthrough.runInteractive'),
+      new OverviewTreeItem('Create Agent', 'Create a custom agent config', 'add', 'opencode-walkthrough.createAgent'),
+      new OverviewTreeItem('Check Health', 'Verify CLI install and auth', 'pulse', 'opencode-walkthrough.checkHealth'),
+      new OverviewTreeItem('CLI Help', 'Show available CLI commands', 'question', 'opencode-walkthrough.showCliHelp'),
+    ];
+    this._onDidChangeTreeData.fire();
+  }
+
+  getTreeItem(el) { return el; }
+  getChildren(el) { return el ? [] : this.items; }
+}
+
 class AgentsProvider {
   constructor(runListAgents = (callback) => exec('opencode agent list 2>/dev/null || true', callback)) {
     this._onDidChangeTreeData = new vscode.EventEmitter();
@@ -1069,10 +1103,12 @@ function activate(context) {
   });
 
   const agentsProvider = new AgentsProvider();
+  const overviewProvider = new OverviewProvider();
   const mcpProvider = new McpProvider();
   const sessionsProvider = new SessionsProvider();
   const modelsProvider = new ModelsProvider();
 
+  vscode.window.registerTreeDataProvider('opencode-walkthrough.overview', overviewProvider);
   vscode.window.registerTreeDataProvider('opencode-walkthrough.agents', agentsProvider);
   vscode.window.registerTreeDataProvider('opencode-walkthrough.mcp', mcpProvider);
   vscode.window.registerTreeDataProvider('opencode-walkthrough.sessions', sessionsProvider);
@@ -1088,6 +1124,7 @@ function activate(context) {
   });
 
   agentsProvider.refresh();
+  overviewProvider.refresh();
   mcpProvider.refresh();
   sessionsProvider.refresh();
   modelsProvider.refresh();
@@ -1100,7 +1137,7 @@ function activate(context) {
     versionCmd, checkHealthCmd, mcpRemoveCmd, uninstallCmd,
     statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
-    agentsProvider, mcpProvider, sessionsProvider, modelsProvider,
+    agentsProvider, overviewProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
     resumeSessionCmd
   );
@@ -1113,5 +1150,7 @@ module.exports = {
   deactivate,
   AgentsProvider,
   AgentTreeItem,
+  OverviewProvider,
+  OverviewTreeItem,
   getShortcutHints
 };

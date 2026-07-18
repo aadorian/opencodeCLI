@@ -67,6 +67,7 @@ for (const walkthrough of walkthroughs) {
 
 const views = Object.values(pkg.contributes?.views ?? {}).flat();
 const registeredProviders = new Set([
+  'opencode-walkthrough.overview',
   'opencode-walkthrough.agents',
   'opencode-walkthrough.models',
   'opencode-walkthrough.mcp',
@@ -78,7 +79,7 @@ const registeredWebviews = new Set([
 ]);
 
 for (const view of views) {
-  if (view.type === 'tree' && view.id !== 'opencode-walkthrough.overview' && !registeredProviders.has(view.id)) {
+  if (view.type === 'tree' && !registeredProviders.has(view.id)) {
     console.warn(`validate-manifest: warning — tree view "${view.id}" has no known provider in extension.js`);
   }
   if (view.type === 'webview' && !registeredWebviews.has(view.id)) {
