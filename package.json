@@ -438,6 +438,11 @@
           "type": "tree",
           "id": "opencode-walkthrough.models",
           "name": "Models"
+        },
+        {
+          "type": "tree",
+          "id": "opencode-walkthrough.sessions",
+          "name": "Sessions"
         }
       ],
       "opencode-mcp": [
@@ -445,11 +450,6 @@
           "type": "tree",
           "id": "opencode-walkthrough.mcp",
           "name": "MCP Servers"
-        },
-        {
-          "type": "tree",
-          "id": "opencode-walkthrough.sessions",
-          "name": "Sessions"
         }
       ]
     },
