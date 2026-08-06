@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const path = require('path');
 const { exec } = require('child_process');
 const { buildTerminalCommand } = require('./lib/env');
 const { checkInstall, getGitBranch } = require('./lib/cli');
@@ -1102,6 +1103,34 @@ function activate(context) {
     term.sendText(buildTerminalCommand(getConfig, `opencode run ${fileFlags} "${prompt}"`));
   });
 
+  const runOnFileCmd = vscode.commands.registerCommand('opencode-walkthrough.runOnFile', async (uri) => {
+    if (!(await ensureInstalled())) {
+      return;
+    }
+    const fileUri = uri ?? vscode.window.activeTextEditor?.document.uri;
+    if (!fileUri) {
+      vscode.window.showErrorMessage('No file selected.');
+      return;
+    }
+
+    const folder = vscode.workspace.getWorkspaceFolder(fileUri);
+    const cwd = folder?.uri.fsPath;
+    const branch = cwd ? await getGitBranch(cwd) : null;
+    const branchLabel = branch ? ` $(git-branch) ${branch}` : '';
+
+    const prompt = await vscode.window.showInputBox({
+      placeHolder: 'What do you want OpenCode to do?',
+      prompt: `Running on ${path.basename(fileUri.fsPath)}${branchLabel}`,
+      ignoreFocusOut: true,
+    });
+    if (!prompt) return;
+
+    const term = vscode.window.createTerminal({ name: 'OpenCode', cwd });
+    term.show();
+    const getConfig = () => vscode.workspace.getConfiguration();
+    term.sendText(buildTerminalCommand(getConfig, `opencode run --file "${fileUri.fsPath}" "${prompt}"`));
+  });
+
   const agentsProvider = new AgentsProvider();
   const overviewProvider = new OverviewProvider();
   const mcpProvider = new McpProvider();
@@ -1136,7 +1165,7 @@ function activate(context) {
     statsCmd, upgradeCmd, serveCmd, webCmd,
     versionCmd, checkHealthCmd, mcpRemoveCmd, uninstallCmd,
     statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
-    runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
+    runOnProjectCmd, runOnFileCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, overviewProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
     resumeSessionCmd

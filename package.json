@@ -332,6 +332,11 @@
         "icon": "$(folder)"
       },
       {
+        "command": "opencode-walkthrough.runOnFile",
+        "title": "OpenCode: Run on This File",
+        "icon": "$(file)"
+      },
+      {
         "command": "opencode-walkthrough.showActions",
         "title": "OpenCode: Show Actions"
       },
@@ -710,10 +715,14 @@
         {
           "submenu": "opencode-walkthrough.submenu",
           "group": "navigation",
-          "when": "explorerResourceIsFolder"
+          "when": "explorerResourceIsFolder || explorerResourceIsFile"
         }
       ],
       "opencode-walkthrough.submenu": [
+        {
+          "command": "opencode-walkthrough.runOnFile",
+          "when": "explorerResourceIsFile"
+        },
         {
           "command": "opencode-walkthrough.runInline"
         },
