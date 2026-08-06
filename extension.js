@@ -697,11 +697,29 @@ function activate(context) {
   const getConfig = () => vscode.workspace.getConfiguration();
   const gettingStartedWalkthroughId = `${context.extension.id}#opencode.gettingStarted`;
 
+  const updateStatusBarVisibility = installed => {
+    const showStatusBar = getConfig().get('opencode.showStatusBar', true);
+    if (showStatusBar && installed) {
+      statusBarItem.show();
+      agentsItem.show();
+    } else {
+      statusBarItem.hide();
+      agentsItem.hide();
+    }
+  };
+
   checkHealth().then(health => {
+    updateStatusBarVisibility(health.installed);
     if (!health.installed) {
       vscode.window.setStatusBarMessage('OpenCode: CLI not installed', 5000);
     } else if (!health.ready) {
       vscode.window.setStatusBarMessage(health.message, 5000);
+    }
+  });
+
+  const configListener = vscode.workspace.onDidChangeConfiguration(e => {
+    if (e.affectsConfiguration('opencode.showStatusBar')) {
+      checkHealth().then(health => updateStatusBarVisibility(health.installed));
     }
   });
 
@@ -1135,7 +1153,7 @@ function activate(context) {
     authLoginCmd, authListCmd, authLogoutCmd, modelsCmd, sessionListCmd,
     statsCmd, upgradeCmd, serveCmd, webCmd,
     versionCmd, checkHealthCmd, mcpRemoveCmd, uninstallCmd,
-    statusBarItem, agentsItem, showActionsCmd, showCliHelpCmd,
+    statusBarItem, agentsItem, configListener, showActionsCmd, showCliHelpCmd,
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, overviewProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
