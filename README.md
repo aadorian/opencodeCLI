@@ -486,6 +486,8 @@ This extension contributes OpenCode CLI settings that can be configured in **Set
 
 Settings are read when sending terminal commands and prepended as `export` statements.
 
+`opencode.showStatusBar` is a VS Code-only display toggle (hides the status bar items when off or when the CLI isn't installed) and has no CLI environment variable equivalent, so it isn't listed in the table above.
+
 ### Environment Variables
 
 Copy `.env.example` to `.env` and configure your paths and tokens:
