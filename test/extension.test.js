@@ -1,6 +1,6 @@
 const assert = require('assert');
 const vscode = require('vscode');
-const { AgentsProvider, OverviewProvider, getShortcutHints } = require('../extension');
+const { AgentsProvider, OverviewProvider, getShortcutHints, mergeLineRanges, normalizeRange } = require('../extension');
 
 suite('Extension Test Suite', () => {
   let extension;
@@ -54,6 +54,30 @@ suite('Extension Test Suite', () => {
     assert.ok(pkg.contributes?.viewsContainers, 'Should contribute view containers');
     assert.ok(pkg.contributes?.views, 'Should contribute views');
     assert.ok(pkg.contributes?.walkthroughs, 'Should contribute walkthroughs');
+    assert.equal(pkg.contributes.configuration.properties['opencode.showMinimapDecorations'].default, true);
+  });
+
+  test('Minimap decoration ranges merge adjacent OpenCode edits', () => {
+    assert.deepEqual(
+      mergeLineRanges([
+        { startLine: 6, endLine: 8 },
+        { startLine: 1, endLine: 3 },
+        { startLine: 4, endLine: 4 },
+      ]),
+      [
+        { startLine: 1, endLine: 4 },
+        { startLine: 6, endLine: 8 },
+      ]
+    );
+  });
+
+  test('Minimap decoration range covers inserted lines', () => {
+    const range = normalizeRange({
+      range: new vscode.Range(new vscode.Position(2, 0), new vscode.Position(2, 0)),
+      text: 'one\ntwo\nthree',
+    });
+
+    assert.deepEqual(range, { startLine: 2, endLine: 4 });
   });
 
   test('Walkthrough step can be opened', async () => {

@@ -8,11 +8,132 @@ const { listSessions } = require('./lib/sessions');
 const { createConfigTemplate } = require('./lib/configTemplate');
 const { createAgentInteractive, AGENT_DIR } = require('./lib/agentCreate');
 
-function sendToTerminal(text) {
+function sendToTerminal(text, terminalOptions) {
   const getConfig = () => vscode.workspace.getConfiguration();
-  const terminal = vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode');
+  const terminal = terminalOptions
+    ? vscode.window.createTerminal({ name: 'OpenCode', ...terminalOptions })
+    : (vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode'));
   terminal.show();
   terminal.sendText(buildTerminalCommand(getConfig, text));
+  return terminal;
+}
+
+function normalizeRange(change) {
+  const startLine = Math.max(0, change.range.start.line);
+  const insertedLines = change.text === '' ? 0 : change.text.split(/\r\n|\r|\n/).length - 1;
+  const endLine = Math.max(startLine, change.range.end.line + insertedLines);
+  return { startLine, endLine };
+}
+
+function mergeLineRanges(ranges) {
+  const sorted = ranges
+    .filter(range => range && range.startLine <= range.endLine)
+    .sort((a, b) => a.startLine - b.startLine || a.endLine - b.endLine);
+  const merged = [];
+  for (const range of sorted) {
+    const last = merged[merged.length - 1];
+    if (last && range.startLine <= last.endLine + 1) {
+      last.endLine = Math.max(last.endLine, range.endLine);
+    } else {
+      merged.push({ ...range });
+    }
+  }
+  return merged;
+}
+
+function lineRangesToDecorations(document, lineRanges) {
+  return lineRanges.map(({ startLine, endLine }) => {
+    const safeStart = Math.min(startLine, Math.max(0, document.lineCount - 1));
+    const safeEnd = Math.min(endLine, Math.max(0, document.lineCount - 1));
+    const start = new vscode.Position(safeStart, 0);
+    const end = document.lineAt(safeEnd).range.end;
+    return new vscode.Range(start, end);
+  });
+}
+
+class MinimapDecorationTracker {
+  constructor(vscodeApi = vscode) {
+    this.vscode = vscodeApi;
+    this.touchedLinesByUri = new Map();
+    this.activeAiTerminals = new Set();
+    this.decorationType = vscodeApi.window.createTextEditorDecorationType({
+      overviewRulerColor: 'rgba(0, 188, 212, 0.85)',
+      overviewRulerLane: vscodeApi.OverviewRulerLane.Right,
+      minimap: {
+        color: 'rgba(0, 188, 212, 0.65)',
+        position: vscodeApi.MinimapPosition.Inline,
+      },
+      isWholeLine: true,
+      backgroundColor: 'rgba(0, 188, 212, 0.08)',
+    });
+  }
+
+  get enabled() {
+    return this.vscode.workspace
+      .getConfiguration('opencode')
+      .get('showMinimapDecorations', true);
+  }
+
+  trackTerminal(terminal) {
+    if (terminal) {
+      this.activeAiTerminals.add(terminal);
+    }
+  }
+
+  releaseTerminal(terminal) {
+    this.activeAiTerminals.delete(terminal);
+  }
+
+  recordAiChanges(document, contentChanges) {
+    if (!this.enabled || !document?.uri || contentChanges.length === 0) {
+      return;
+    }
+    const uri = document.uri.toString();
+    const existing = this.touchedLinesByUri.get(uri) || [];
+    const next = mergeLineRanges(existing.concat(contentChanges.map(normalizeRange)));
+    this.touchedLinesByUri.set(uri, next);
+    this.applyToVisibleEditors(uri);
+  }
+
+  clearDocument(document) {
+    const uri = document?.uri?.toString?.();
+    if (!uri) return;
+    this.touchedLinesByUri.delete(uri);
+    this.applyToVisibleEditors(uri);
+  }
+
+  handleDocumentChange(event) {
+    if (this.activeAiTerminals.size > 0) {
+      this.recordAiChanges(event.document, event.contentChanges);
+    } else {
+      this.clearDocument(event.document);
+    }
+  }
+
+  handleVisibleEditors(editors) {
+    for (const editor of editors) {
+      this.applyToEditor(editor);
+    }
+  }
+
+  applyToVisibleEditors(uri) {
+    for (const editor of this.vscode.window.visibleTextEditors || []) {
+      if (!uri || editor.document.uri.toString() === uri) {
+        this.applyToEditor(editor);
+      }
+    }
+  }
+
+  applyToEditor(editor) {
+    if (!editor) return;
+    const uri = editor.document.uri.toString();
+    const lineRanges = this.enabled ? (this.touchedLinesByUri.get(uri) || []) : [];
+    editor.setDecorations(this.decorationType, lineRangesToDecorations(editor.document, lineRanges));
+  }
+
+  dispose() {
+    this.decorationType.dispose();
+  }
 }
 
 class AgentTreeItem extends vscode.TreeItem {
@@ -287,7 +408,7 @@ function getTipsHtml() {
         'Set a custom models URL with `opencode.modelsUrl` setting',
         'Disable fetching models remotely: `opencode.disableModelsFetch`',
         'Set log level: `opencode.logLevel = DEBUG|INFO|WARN|ERROR`',
-        'All 23 VS Code settings map to OpenCode environment variables automatically',
+        'Most VS Code settings map to OpenCode environment variables automatically; UI-only settings control extension features such as minimap highlights.',
       ],
     },
     {
@@ -696,6 +817,27 @@ function getModelsHtml() {
 function activate(context) {
   const getConfig = () => vscode.workspace.getConfiguration();
   const gettingStartedWalkthroughId = `${context.extension.id}#opencode.gettingStarted`;
+  const minimapTracker = new MinimapDecorationTracker(vscode);
+  const runWithMinimapTracking = (text, terminalOptions) => {
+    const terminal = sendToTerminal(text, terminalOptions);
+    minimapTracker.trackTerminal(terminal);
+    return terminal;
+  };
+
+  const closeTerminalSubscription = vscode.window.onDidCloseTerminal(
+    terminal => minimapTracker.releaseTerminal(terminal)
+  );
+  const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(
+    event => minimapTracker.handleDocumentChange(event)
+  );
+  const visibleEditorsSubscription = vscode.window.onDidChangeVisibleTextEditors(
+    editors => minimapTracker.handleVisibleEditors(editors)
+  );
+  const configSubscription = vscode.workspace.onDidChangeConfiguration(event => {
+    if (event.affectsConfiguration('opencode.showMinimapDecorations')) {
+      minimapTracker.applyToVisibleEditors();
+    }
+  });
 
   checkHealth().then(health => {
     if (!health.installed) {
@@ -775,6 +917,7 @@ function activate(context) {
       ? vscode.window.createTerminal({ name: 'OpenCode', cwd })
       : (vscode.window.activeTerminal ?? vscode.window.createTerminal('OpenCode'));
     term.show();
+    minimapTracker.trackTerminal(term);
     const getConfig = () => vscode.workspace.getConfiguration();
     // Single-quote on Unix to prevent shell expansion of $vars, backticks, etc.
     // On Windows, double-quote with escaped double-quotes.
@@ -788,7 +931,7 @@ function activate(context) {
     if (!(await ensureInstalled())) {
       return;
     }
-    sendToTerminal('opencode');
+    runWithMinimapTracking('opencode');
   });
 
   const createAgentCmd = vscode.commands.registerCommand('opencode-walkthrough.createAgent', async () => {
@@ -1098,6 +1241,7 @@ function activate(context) {
     const fileFlags = uris.map(u => `--file "${u.fsPath}"`).join(' ');
     const term = vscode.window.createTerminal({ name: 'OpenCode', cwd: folder.uri.fsPath });
     term.show();
+    minimapTracker.trackTerminal(term);
     const getConfig = () => vscode.workspace.getConfiguration();
     term.sendText(buildTerminalCommand(getConfig, `opencode run ${fileFlags} "${prompt}"`));
   });
@@ -1139,7 +1283,9 @@ function activate(context) {
     runOnProjectCmd, showTipsCmd, showAgentsCmd, showModelsCmd,
     agentsProvider, overviewProvider, mcpProvider, sessionsProvider, modelsProvider,
     refreshAgentsCmd, refreshMcpCmd, refreshSessionsCmd, refreshModelsCmd,
-    resumeSessionCmd
+    resumeSessionCmd,
+    minimapTracker, closeTerminalSubscription, changeDocumentSubscription,
+    visibleEditorsSubscription, configSubscription
   );
 }
 
@@ -1152,5 +1298,8 @@ module.exports = {
   AgentTreeItem,
   OverviewProvider,
   OverviewTreeItem,
-  getShortcutHints
+  MinimapDecorationTracker,
+  getShortcutHints,
+  mergeLineRanges,
+  normalizeRange
 };
