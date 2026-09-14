@@ -210,6 +210,11 @@
           "type": "boolean",
           "markdownDescription": "Disable mouse capture in the TUI. Maps to `OPENCODE_DISABLE_MOUSE`"
         },
+        "opencode.showMinimapDecorations": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show minimap and overview-ruler highlights for lines last changed while an OpenCode terminal run is active."
+        },
         "opencode.experimental": {
           "type": "boolean",
           "markdownDescription": "Enable all experimental features. Maps to `OPENCODE_EXPERIMENTAL`"
