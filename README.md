@@ -538,7 +538,7 @@ For more on sideloading extensions, see the [VS Code extension marketplace docs]
 npx @vscode/vsce package
 ```
 
-Outputs `opencode-walkthrough-0.0.1.vsix`.
+Outputs `opencode-walkthrough-0.0.6.vsix`.
 
 ---
 
@@ -612,7 +612,7 @@ See the [VS Code extension marketplace docs](https://code.visualstudio.com/docs/
 ### Open VSX Registry
 
 ```bash
-source .env && npx ovsx publish opencode-walkthrough-0.0.1.vsix -p "$OVSX_PAT"
+source .env && npx ovsx publish opencode-walkthrough-0.0.6.vsix -p "$OVSX_PAT"
 ```
 
 Get a token at https://open-vsx.org/user-settings/tokens
@@ -625,6 +625,10 @@ See [CHANGELOG.md](./CHANGELOG.md) for detailed notes. Tags link to [GitHub Rele
 
 | Tag | Highlights |
 | --- | --- |
+| [v0.0.6](https://github.com/aadorian/opencodeCLI/releases/tag/v0.0.6) | MCP server walkthrough step with platform-specific shortcut hints |
+| [v0.0.5](https://github.com/aadorian/opencodeCLI/releases/tag/v0.0.5) | Redesigned agent chat panel with model/context selectors and run-inline promo screenshots |
+| [v0.0.4](https://github.com/aadorian/opencodeCLI/releases/tag/v0.0.4) | Cross-platform install flow with health-check and version commands |
+| [v0.0.3](https://github.com/aadorian/opencodeCLI/releases/tag/v0.0.3) | Aligned install/setup with opencode.ai; manifest-synced integration tests |
 | [v0.19.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.19.0) | Run on Project Files command with file picker, branch detection, and keybinding |
 | [v0.18.0](https://github.com/aadorian/opencodeCLI/releases/tag/v0.18.0) | Keyboard shortcuts for main commands; shortcuts listed in sidebar welcome |
 | [v0.17.1](https://github.com/aadorian/opencodeCLI/releases/tag/v0.17.1) | Configuration settings table for OpenCode CLI environment variables |
