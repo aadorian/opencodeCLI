@@ -243,166 +243,199 @@
     "commands": [
       {
         "command": "opencode-walkthrough.showWalkthrough",
-        "title": "OpenCode: Show Walkthrough",
+        "title": "Show Walkthrough",
+        "category": "OpenCode",
         "icon": "$(book)"
       },
       {
         "command": "opencode-walkthrough.install",
-        "title": "OpenCode: Install CLI",
+        "title": "Install CLI",
+        "category": "OpenCode",
         "icon": "$(cloud-download)"
       },
       {
         "command": "opencode-walkthrough.createConfig",
-        "title": "OpenCode: Create Config Template",
+        "title": "Create Config Template",
+        "category": "OpenCode",
         "icon": "$(new-file)"
       },
       {
         "command": "opencode-walkthrough.runInline",
-        "title": "OpenCode: Run Inline Prompt",
+        "title": "Run Inline Prompt",
+        "category": "OpenCode",
         "icon": "$(play)"
       },
       {
         "command": "opencode-walkthrough.runInteractive",
-        "title": "OpenCode: Start Interactive Session",
+        "title": "Start Interactive Session",
+        "category": "OpenCode",
         "icon": "$(terminal)"
       },
       {
         "command": "opencode-walkthrough.createAgent",
-        "title": "OpenCode: Create Agent",
+        "title": "Create Agent",
+        "category": "OpenCode",
         "icon": "$(robot)"
       },
       {
         "command": "opencode-walkthrough.listAgents",
-        "title": "OpenCode: List Agents",
+        "title": "List Agents",
+        "category": "OpenCode",
         "icon": "$(list-tree)"
       },
       {
         "command": "opencode-walkthrough.authLogin",
-        "title": "OpenCode: Auth Login",
+        "title": "Auth Login",
+        "category": "OpenCode",
         "icon": "$(key)"
       },
       {
         "command": "opencode-walkthrough.authList",
-        "title": "OpenCode: Auth List",
+        "title": "Auth List",
+        "category": "OpenCode",
         "icon": "$(key)"
       },
       {
         "command": "opencode-walkthrough.addMcp",
-        "title": "OpenCode: Add MCP Server",
+        "title": "Add MCP Server",
+        "category": "OpenCode",
         "icon": "$(plug)"
       },
       {
         "command": "opencode-walkthrough.listMcp",
-        "title": "OpenCode: List MCP Servers",
+        "title": "List MCP Servers",
+        "category": "OpenCode",
         "icon": "$(list-tree)"
       },
       {
         "command": "opencode-walkthrough.listModels",
-        "title": "OpenCode: List Models",
+        "title": "List Models",
+        "category": "OpenCode",
         "icon": "$(symbol-parameter)"
       },
       {
         "command": "opencode-walkthrough.sessionList",
-        "title": "OpenCode: List Sessions",
+        "title": "List Sessions",
+        "category": "OpenCode",
         "icon": "$(list-tree)"
       },
       {
         "command": "opencode-walkthrough.stats",
-        "title": "OpenCode: Stats",
+        "title": "Stats",
+        "category": "OpenCode",
         "icon": "$(graph)"
       },
       {
         "command": "opencode-walkthrough.serve",
-        "title": "OpenCode: Start Server",
+        "title": "Start Server",
+        "category": "OpenCode",
         "icon": "$(server)"
       },
       {
         "command": "opencode-walkthrough.web",
-        "title": "OpenCode: Start Web Interface",
+        "title": "Start Web Interface",
+        "category": "OpenCode",
         "icon": "$(globe)"
       },
       {
         "command": "opencode-walkthrough.upgrade",
-        "title": "OpenCode: Upgrade CLI",
+        "title": "Upgrade CLI",
+        "category": "OpenCode",
         "icon": "$(arrow-up)"
       },
       {
         "command": "opencode-walkthrough.runOnProject",
-        "title": "OpenCode: Run on Project Files",
+        "title": "Run on Project Files",
+        "category": "OpenCode",
         "icon": "$(folder)"
       },
       {
         "command": "opencode-walkthrough.showActions",
-        "title": "OpenCode: Show Actions"
+        "title": "Show Actions",
+        "category": "OpenCode"
       },
       {
         "command": "opencode-walkthrough.showTips",
-        "title": "OpenCode: Tips & Tricks",
+        "title": "Tips & Tricks",
+        "category": "OpenCode",
         "icon": "$(lightbulb)"
       },
       {
         "command": "opencode-walkthrough.showAgents",
-        "title": "OpenCode: Agents Overview",
+        "title": "Agents Overview",
+        "category": "OpenCode",
         "icon": "$(robot)"
       },
       {
         "command": "opencode-walkthrough.showModels",
-        "title": "OpenCode: Models Overview",
+        "title": "Models Overview",
+        "category": "OpenCode",
         "icon": "$(symbol-parameter)"
       },
       {
         "command": "opencode-walkthrough.refreshAgents",
-        "title": "OpenCode: Refresh Agents",
+        "title": "Refresh Agents",
+        "category": "OpenCode",
         "icon": "$(refresh)"
       },
       {
         "command": "opencode-walkthrough.refreshMcp",
-        "title": "OpenCode: Refresh MCP",
+        "title": "Refresh MCP",
+        "category": "OpenCode",
         "icon": "$(refresh)"
       },
       {
         "command": "opencode-walkthrough.refreshSessions",
-        "title": "OpenCode: Refresh Sessions",
+        "title": "Refresh Sessions",
+        "category": "OpenCode",
         "icon": "$(refresh)"
       },
       {
         "command": "opencode-walkthrough.refreshModels",
-        "title": "OpenCode: Refresh Models",
+        "title": "Refresh Models",
+        "category": "OpenCode",
         "icon": "$(refresh)"
       },
       {
         "command": "opencode-walkthrough.showCliHelp",
-        "title": "OpenCode: CLI Help",
+        "title": "CLI Help",
+        "category": "OpenCode",
         "icon": "$(question)"
       },
       {
         "command": "opencode-walkthrough.resumeSession",
-        "title": "OpenCode: Resume Session",
+        "title": "Resume Session",
+        "category": "OpenCode",
         "icon": "$(history)"
       },
       {
         "command": "opencode-walkthrough.version",
-        "title": "OpenCode: Check Version",
+        "title": "Check Version",
+        "category": "OpenCode",
         "icon": "$(versions)"
       },
       {
         "command": "opencode-walkthrough.checkHealth",
-        "title": "OpenCode: Check Health",
+        "title": "Check Health",
+        "category": "OpenCode",
         "icon": "$(heart)"
       },
       {
         "command": "opencode-walkthrough.authLogout",
-        "title": "OpenCode: Auth Logout",
+        "title": "Auth Logout",
+        "category": "OpenCode",
         "icon": "$(key)"
       },
       {
         "command": "opencode-walkthrough.mcpRemove",
-        "title": "OpenCode: Remove MCP Server",
+        "title": "Remove MCP Server",
+        "category": "OpenCode",
         "icon": "$(trash)"
       },
       {
         "command": "opencode-walkthrough.uninstall",
-        "title": "OpenCode: Uninstall OpenCode",
+        "title": "Uninstall OpenCode",
+        "category": "OpenCode",
         "icon": "$(trash)"
       }
     ],
